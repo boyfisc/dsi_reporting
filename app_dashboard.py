@@ -84,5 +84,6 @@ else:
     st.info("Chargement des données en cours ou fichier vide...")
 
 # --- AUTO REFRESH (Toutes les 10 minutes) ---
-time.sleep(600)
+time.sleep(300)
 st.rerun()
+
