@@ -10,7 +10,7 @@ st.set_page_config(page_title="DSI Monitor", layout="wide", initial_sidebar_stat
 @st.cache_data(ttl=300)
 def load_data():
     # URL modifiée pour l'export CSV
-    sheet_url = "https://docs.google.com/spreadsheets/d/1PGzq5lfrXtpXdUwcgjahi9-lMwKchuda7qR5YP21KOM/export?format=csv"
+    sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTN1Jwosf-2KEvw6HSBx4s01S24_Tzy9SM38LoGaHUrGc-cSn0vf19ugAiNnA_6InNBQxBnyI7JN3wa/pub?output=csv"
     try:
         df = pd.read_csv(sheet_url)
         return df
@@ -73,4 +73,5 @@ else:
 
 # --- AUTO REFRESH (10 min) ---
 time.sleep(600)
+
 st.rerun()
