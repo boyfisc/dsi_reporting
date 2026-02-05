@@ -246,7 +246,7 @@ if not df.empty:
 
     # ✅ Contrôle des états inattendus
     etats_attendus = {"non traite", "encours", "effectue"}
-    etats_inattendus = set(df_week["Etat_Calculé"].dropna.unique()) - etats_attendus
+    etats_inattendus = set(df_week["Etat_Calculé"].dropna().unique()) - etats_attendus
     if etats_inattendus:
         st.warning(f"Etats inattendus detectes: {sorted(etats_inattendus)}")
 
