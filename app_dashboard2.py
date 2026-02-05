@@ -31,7 +31,7 @@ st.markdown("""
     /* Style des cartes KPI - Plus compact */
     div[data-testid="stMetric"] {
         background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-        padding: 18px;
+        padding: 16px;
         border-radius: 10px;
         border: 1px solid rgba(255,255,255,0.1);
         box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3);
@@ -40,7 +40,7 @@ st.markdown("""
     }
     
     div[data-testid="stMetricValue"] { 
-        font-size: 3rem !important; 
+        font-size: 3.2rem !important; 
         font-weight: 700 !important;
         background: linear-gradient(120deg, #00d4ff, #0099ff);
         -webkit-background-clip: text;
@@ -50,7 +50,7 @@ st.markdown("""
     }
     
     div[data-testid="stMetricLabel"] { 
-        font-size: 2.5rem !important; 
+        font-size: 1.05rem !important; 
         color: #FFFFFF !important;
         font-weight: 600 !important;
         text-transform: uppercase;
@@ -110,7 +110,7 @@ st.markdown("""
         font-weight: 600 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.5rem !important;
-        font-size: 2.5rem !important;
+        font-size: 2rem !important;
     }
     
     h5 {
@@ -118,7 +118,7 @@ st.markdown("""
         font-weight: 600 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.4rem !important;
-        font-size: 2.5rem !important;
+        font-size: 2rem !important;
     }
     
     /* Ligne de séparation */
