@@ -217,10 +217,10 @@ if not df.empty:
 
     # Catégorisation : retourne UNIQUEMENT nontraite / encours / effectue (sans accents)
     def categorize_status(status):
-    s = "" if pd.isna(status) else str(status).strip().upper()
+        s = "" if pd.isna(status) else str(status).strip().upper()
 
-    if s == "" or s == "NAN":
-        return "non traite"
+        if s == "" or s == "NAN":
+            return "non traite"
 
     # ✅ IMPORTANT : gérer les statuts "NON ..." avant MOTS_TERMINES
     # évite que "TRAITE" matche "NON TRAITE"
