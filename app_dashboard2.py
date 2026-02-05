@@ -40,7 +40,7 @@ st.markdown("""
     }
     
     div[data-testid="stMetricValue"] { 
-        font-size: 3rem !important; 
+        font-size: 5rem !important; 
         font-weight: 700 !important;
         background: linear-gradient(120deg, #00d4ff, #0099ff);
         -webkit-background-clip: text;
