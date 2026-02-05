@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 
 # --- CONFIGURATION (Mode TV Plein Écran) ---
@@ -13,10 +13,11 @@ st.markdown("""
 <style>
     /* Réduire les marges */
     .block-container { 
-        padding-top: 1rem; 
+        padding-top: 0.5rem; 
         padding-bottom: 0rem; 
-        padding-left: 2rem; 
-        padding-right: 2rem; 
+        padding-left: 1.5rem; 
+        padding-right: 1.5rem; 
+        max-width: 100%;
     }
     header { visibility: hidden; }
     footer { visibility: hidden; }
@@ -29,28 +30,31 @@ st.markdown("""
     /* Style des cartes KPI */
     div[data-testid="stMetric"] {
         background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-        padding: 20px;
-        border-radius: 15px;
+        padding: 15px;
+        border-radius: 12px;
         border: 1px solid rgba(255,255,255,0.1);
         box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
         backdrop-filter: blur(4px);
+        text-align: center;
     }
     
     div[data-testid="stMetricValue"] { 
-        font-size: 3rem !important; 
+        font-size: 2.5rem !important; 
         font-weight: 700 !important;
         background: linear-gradient(120deg, #00d4ff, #0099ff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        text-align: center;
     }
     
     div[data-testid="stMetricLabel"] { 
-        font-size: 0.95rem !important; 
+        font-size: 0.85rem !important; 
         color: #FFFFFF !important;
         font-weight: 600 !important;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
+        text-align: center;
     }
     
     /* Couleurs personnalisées pour chaque KPI */
@@ -94,20 +98,41 @@ st.markdown("""
         color: #FFFFFF !important;
         text-align: center;
         font-weight: 700 !important;
-        margin-bottom: 2rem !important;
+        margin-bottom: 1rem !important;
+        font-size: 2rem !important;
     }
     
     /* Sous-titres */
-    h5 {
+    h3, h5 {
         color: #00d4ff !important;
         font-weight: 600 !important;
-        margin-top: 1.5rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+        font-size: 1rem !important;
     }
     
     /* Ligne de séparation */
     hr {
         border-color: rgba(255,255,255,0.1) !important;
-        margin: 1.5rem 0 !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    /* Style du tableau */
+    .stDataFrame {
+        text-align: center !important;
+    }
+    
+    /* Centrer les en-têtes et données du tableau */
+    thead tr th {
+        text-align: center !important;
+        background-color: rgba(0, 212, 255, 0.2) !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+    
+    tbody tr td {
+        text-align: center !important;
+        color: white !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -123,17 +148,18 @@ def load_data():
         df['Date_Obj'] = pd.to_datetime(df['Horodateur'], dayfirst=True, errors='coerce')
         df['Heure'] = df['Date_Obj'].dt.hour
         df['Date_Simple'] = df['Date_Obj'].dt.date
+        df['Semaine'] = df['Date_Obj'].dt.isocalendar().week
+        df['Annee'] = df['Date_Obj'].dt.year
         
         # 2. Nettoyage Statuts - Normalisation ROBUSTE
         if 'ETAT DE LA DEMANDE' in df.columns:
-            # Conversion en string, strip espaces, UPPERCASE, remplacement des variations
             df['Status_Clean'] = (df['ETAT DE LA DEMANDE']
                                   .astype(str)
                                   .str.strip()
                                   .str.upper()
-                                  .str.replace('É', 'E')  # Gérer les accents
+                                  .str.replace('É', 'E')
                                   .str.replace('È', 'E')
-                                  .str.replace('  ', ' '))  # Double espaces
+                                  .str.replace('  ', ' '))
         else:
             df['Status_Clean'] = "INCONNU"
             
@@ -145,10 +171,9 @@ def load_data():
 df = load_data()
 
 # --- TITRE ---
-st.markdown("# 📊 DSI - Tableau de Bord en Temps Réel")
+st.markdown("# 📊 DSI - Tableau de Bord Hebdomadaire")
 
 # --- CONFIGURATION DES MOTS CLÉS ---
-# Liste exhaustive pour capturer toutes les variations
 MOTS_TERMINES = [
     'TRAITE', 'TRAITEE', 'EFFECTUE', 'EFFECTUEE', 
     'OK', 'FAIT', 'FAITE', 'CLOTURE', 'CLOTUREE',
@@ -164,86 +189,86 @@ MOTS_EN_COURS = [
 if not df.empty:
     today = datetime.now().date()
     
-    # Fonction de catégorisation stricte avec priorité
+    # Calculer le début de la semaine (lundi)
+    start_of_week = today - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+    
+    # Fonction de catégorisation
     def categorize_status(status):
-        """Catégorise le statut avec logique claire"""
         if pd.isna(status) or status == 'NAN':
             return 'Non Traité'
         
-        # Vérifier d'abord si c'est terminé (priorité haute)
         for mot in MOTS_TERMINES:
             if mot in status:
                 return 'Effectué'
         
-        # Ensuite vérifier si c'est en cours
         for mot in MOTS_EN_COURS:
             if mot in status:
                 return 'En Cours'
         
-        # Sinon c'est non traité
         return 'Non Traité'
 
     # Appliquer la catégorisation
     df['Etat_Calculé'] = df['Status_Clean'].apply(categorize_status)
     
-    # Filtre du jour
-    df_today = df[df['Date_Simple'] == today].copy()
-    
-    # DEBUG: Afficher un échantillon des statuts (commentez en production)
-    # st.sidebar.write("### 🔍 Debug - Échantillon des statuts:")
-    # st.sidebar.dataframe(df[['Status_Clean', 'Etat_Calculé']].drop_duplicates())
+    # Filtre de la semaine
+    df_week = df[(df['Date_Simple'] >= start_of_week) & (df['Date_Simple'] <= end_of_week)].copy()
 
-    # --- RANGÉE 1 : KPI DU JOUR ---
+    # --- RANGÉE 1 : KPI DE LA SEMAINE ---
+    st.markdown(f"### 📅 Semaine du {start_of_week.strftime('%d/%m')} au {end_of_week.strftime('%d/%m/%Y')}")
+    
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
     
-    total_jour = len(df_today)
-    non_traites_jour = len(df_today[df_today['Etat_Calculé'] == 'Non Traité'])
-    en_cours_jour = len(df_today[df_today['Etat_Calculé'] == 'En Cours'])
-    effectue_jour = len(df_today[df_today['Etat_Calculé'] == 'Effectué'])
+    total_semaine = len(df_week)
+    non_traites_semaine = len(df_week[df_week['Etat_Calculé'] == 'Non Traité'])
+    en_cours_semaine = len(df_week[df_week['Etat_Calculé'] == 'En Cours'])
+    effectue_semaine = len(df_week[df_week['Etat_Calculé'] == 'Effectué'])
     
     with kpi1:
-        st.metric("📅 TOTAL JOUR", total_jour)
+        st.metric("📅 TOTAL REQUÊTES", total_semaine)
     
     with kpi2:
-        st.metric("⚠️ À FAIRE", non_traites_jour)
+        st.metric("⚠️ NON EFFECTUÉ", non_traites_semaine)
     
     with kpi3:
-        st.metric("⏳ EN COURS", en_cours_jour)
+        st.metric("⏳ EN COURS", en_cours_semaine)
     
     with kpi4:
-        st.metric("✅ EFFECTUÉ", effectue_jour)
+        st.metric("✅ EFFECTUÉ", effectue_semaine)
 
     st.markdown("---") 
 
-    # --- RANGÉE 2 : VISUALISATIONS ---
-    c_line, c_pie, c_bar = st.columns([2, 1, 1])
+    # --- RANGÉE 2 : VISUALISATIONS PRINCIPALES ---
+    col_line, col_pie = st.columns([3, 2])
     
-    GRAPH_HEIGHT = 280
+    GRAPH_HEIGHT = 320
     
-    with c_line:
-        # Activité horaire (global pour avoir une belle courbe)
-        hourly_counts = df.groupby('Heure').size().reset_index(name='Requetes')
+    with col_line:
+        # Activité par SEMAINE (dernières 12 semaines)
+        df_last_weeks = df[df['Date_Obj'] >= (datetime.now() - timedelta(weeks=12))]
+        weekly_counts = df_last_weeks.groupby(['Annee', 'Semaine']).size().reset_index(name='Requetes')
+        weekly_counts['Semaine_Label'] = 'S' + weekly_counts['Semaine'].astype(str)
         
         fig_line = go.Figure()
         fig_line.add_trace(go.Scatter(
-            x=hourly_counts['Heure'],
-            y=hourly_counts['Requetes'],
+            x=weekly_counts['Semaine_Label'],
+            y=weekly_counts['Requetes'],
             mode='lines+markers',
             line=dict(color='#00d4ff', width=3),
-            marker=dict(size=8, color='#00d4ff', line=dict(width=2, color='#0099ff')),
+            marker=dict(size=10, color='#00d4ff', line=dict(width=2, color='#0099ff')),
             fill='tozeroy',
             fillcolor='rgba(0, 212, 255, 0.1)'
         ))
         
         fig_line.update_layout(
-            title="📈 Activité par Heure",
+            title="📈 Activité par Semaine (12 dernières semaines)",
             height=GRAPH_HEIGHT,
-            margin=dict(l=30, r=20, t=50, b=30),
+            margin=dict(l=40, r=20, t=50, b=40),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
+            font=dict(color='white', size=11),
             xaxis=dict(
-                title="Heure",
+                title="Semaine",
                 gridcolor='rgba(255,255,255,0.1)',
                 showgrid=True
             ),
@@ -255,72 +280,56 @@ if not df.empty:
         )
         st.plotly_chart(fig_line, use_container_width=True)
         
-    with c_pie:
+    with col_pie:
         if 'LA PLATEFORME' in df.columns:
-            pie_data = df['LA PLATEFORME'].value_counts().reset_index()
+            pie_data = df_week['LA PLATEFORME'].value_counts().reset_index()
             pie_data.columns = ['App', 'Vol']
             
             fig_pie = go.Figure(data=[go.Pie(
                 labels=pie_data['App'],
                 values=pie_data['Vol'],
                 hole=.4,
-                marker=dict(colors=['#00d4ff', '#0099ff', '#0077cc', '#005599'])
+                marker=dict(colors=['#00d4ff', '#0099ff', '#0077cc', '#005599', '#003366'])
             )])
             
             fig_pie.update_traces(
                 textposition='inside',
                 textinfo='percent+label',
-                textfont=dict(size=11, color='white')
+                textfont=dict(size=10, color='white')
             )
             
             fig_pie.update_layout(
-                title="🖥️ Plateformes",
+                title="🖥️ Répartition Plateformes (Semaine)",
                 height=GRAPH_HEIGHT,
                 margin=dict(l=0, r=0, t=50, b=0),
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
-                font=dict(color='white'),
+                font=dict(color='white', size=11),
                 showlegend=True,
-                legend=dict(font=dict(size=10))
+                legend=dict(font=dict(size=9), orientation="v")
             )
             st.plotly_chart(fig_pie, use_container_width=True)
-            
-    with c_bar:
-        if 'CENTRE FISCAL' in df.columns:
-            bar_data = df['CENTRE FISCAL'].value_counts().head(5).reset_index()
-            bar_data.columns = ['Centre', 'Vol']
-            
-            fig_bar = go.Figure(data=[go.Bar(
-                x=bar_data['Centre'],
-                y=bar_data['Vol'],
-                marker=dict(
-                    color=bar_data['Vol'],
-                    colorscale='Blues',
-                    line=dict(color='rgba(0, 212, 255, 0.5)', width=2)
-                )
-            )])
-            
-            fig_bar.update_layout(
-                title="🏢 Top 5 Centres",
-                height=GRAPH_HEIGHT,
-                margin=dict(l=30, r=20, t=50, b=70),
-                plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)',
-                font=dict(color='white'),
-                xaxis=dict(
-                    tickangle=-45,
-                    gridcolor='rgba(255,255,255,0.1)'
-                ),
-                yaxis=dict(
-                    gridcolor='rgba(255,255,255,0.1)',
-                    showgrid=True
-                ),
-                showlegend=False
-            )
-            st.plotly_chart(fig_bar, use_container_width=True)
 
-    # --- RANGÉE 3 : TABLEAU SYNTHÈSE ---
-    st.markdown("##### 📊 BILAN GLOBAL (TOUTES PÉRIODES)")
+    # --- RANGÉE 3 : TOP 5 CENTRES (Tableau) ---
+    st.markdown("##### 🏢 Top 5 Centres Fiscaux (Semaine)")
+    
+    if 'CENTRE FISCAL' in df.columns:
+        top_centres = df_week['CENTRE FISCAL'].value_counts().head(5).reset_index()
+        top_centres.columns = ['Centre Fiscal', 'Nombre de Requêtes']
+        top_centres.index = range(1, len(top_centres) + 1)
+        top_centres.index.name = 'Rang'
+        
+        # Affichage en tableau centré
+        st.dataframe(
+            top_centres,
+            use_container_width=True,
+            height=220
+        )
+
+    st.markdown("---")
+
+    # --- RANGÉE 4 : TABLEAU SYNTHÈSE GLOBAL ---
+    st.markdown("##### 📊 Bilan Global (Toutes Périodes)")
     
     # Création Type Incident/Demande
     if 'OBJET' in df.columns:
@@ -332,7 +341,7 @@ if not df.empty:
     else:
         df['TYPE'] = 'Demande'
 
-    # Tableau Pivot avec réorganisation
+    # Tableau Pivot
     summary = df.pivot_table(
         index='TYPE', 
         columns='Etat_Calculé', 
@@ -340,33 +349,33 @@ if not df.empty:
         fill_value=0
     )
     
-    # Ajouter colonne TOTAL
     summary['TOTAL'] = summary.sum(axis=1)
     
-    # Réorganiser les colonnes dans l'ordre souhaité
     wanted_cols = ['TOTAL', 'Effectué', 'En Cours', 'Non Traité']
     existing_cols = [c for c in wanted_cols if c in summary.columns]
     
-    # Affichage avec styling
+    # Affichage simple sans gradient
     st.dataframe(
-        summary[existing_cols].style.background_gradient(
-            cmap='Blues', 
-            subset=[c for c in existing_cols if c != 'TOTAL']
-        ).format("{:.0f}"),
-        use_container_width=True
+        summary[existing_cols],
+        use_container_width=True,
+        height=150
     )
     
-    # Statistiques du jour en bas
-    col_stat1, col_stat2, col_stat3 = st.columns(3)
+    # --- PIED DE PAGE : Statistiques ---
+    col_stat1, col_stat2, col_stat3, col_stat4 = st.columns(4)
     
     with col_stat1:
-        taux_traitement = (effectue_jour / total_jour * 100) if total_jour > 0 else 0
-        st.metric("📈 Taux de Traitement (Jour)", f"{taux_traitement:.1f}%")
+        taux_traitement = (effectue_semaine / total_semaine * 100) if total_semaine > 0 else 0
+        st.metric("📈 Taux Traitement", f"{taux_traitement:.1f}%")
     
     with col_stat2:
-        st.metric("📅 Date", today.strftime("%d/%m/%Y"))
+        taux_encours = (en_cours_semaine / total_semaine * 100) if total_semaine > 0 else 0
+        st.metric("⏳ Taux En Cours", f"{taux_encours:.1f}%")
     
     with col_stat3:
+        st.metric("📅 Aujourd'hui", today.strftime("%d/%m/%Y"))
+    
+    with col_stat4:
         heure_actuelle = datetime.now().strftime("%H:%M:%S")
         st.metric("🕐 Dernière MAJ", heure_actuelle)
 
