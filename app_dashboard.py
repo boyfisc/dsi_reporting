@@ -225,9 +225,9 @@ if not df.empty:
 
     # Calculs préalables
     total_semaine = len(df_week)
-    non_traites_semaine = len(df_week[df_week['Etat_Calculé'] == 'Non Traité'])
-    en_cours_semaine = len(df_week[df_week['Etat_Calculé'] == 'En Cours'])
-    effectue_semaine = len(df_week[df_week['Etat_Calculé'] == 'Effectué'])
+    non_traites_semaine = len(df_week[df_week['Etat_Calculé'] == 'non traite'])
+    en_cours_semaine = len(df_week[df_week['Etat_Calculé'] == 'encours'])
+    effectue_semaine = len(df_week[df_week['Etat_Calculé'] == 'effectue'])
     
     # Statistiques
     taux_traitement = (effectue_semaine / total_semaine * 100) if total_semaine > 0 else 0
