@@ -40,7 +40,7 @@ st.markdown("""
     }
     
     div[data-testid="stMetricValue"] { 
-        font-size: 5rem !important; 
+        font-size: 3rem !important; 
         font-weight: 700 !important;
         background: linear-gradient(120deg, #00d4ff, #0099ff);
         -webkit-background-clip: text;
@@ -50,7 +50,7 @@ st.markdown("""
     }
     
     div[data-testid="stMetricLabel"] { 
-        font-size: 1.5rem !important; 
+        font-size: 2.5rem !important; 
         color: #FFFFFF !important;
         font-weight: 600 !important;
         text-transform: uppercase;
@@ -110,7 +110,7 @@ st.markdown("""
         font-weight: 600 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.5rem !important;
-        font-size: 1.5rem !important;
+        font-size: 2.5rem !important;
     }
     
     h5 {
@@ -118,7 +118,7 @@ st.markdown("""
         font-weight: 600 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.4rem !important;
-        font-size: 1.5rem !important;
+        font-size: 2.5rem !important;
     }
     
     /* Ligne de séparation */
