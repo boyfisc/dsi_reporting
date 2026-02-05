@@ -224,20 +224,20 @@ if not df.empty:
 
     # ✅ IMPORTANT : gérer les statuts "NON ..." avant MOTS_TERMINES
     # évite que "TRAITE" matche "NON TRAITE"
-    if "NON" in s or "PAS" in s:
-        return "non traite"
+        if "NON" in s or "PAS" in s:
+            return "non traite"
 
     # Terminés
-    for mot in MOTS_TERMINES:
-        if mot in s:
-            return "effectue"
+        for mot in MOTS_TERMINES:
+            if mot in s:
+                return "effectue"
 
     # En cours
-    for mot in MOTS_EN_COURS:
-        if mot in s:
-            return "encours"
+        for mot in MOTS_EN_COURS:
+            if mot in s:
+                return "encours"
 
-    return "non traite"
+        return "non traite"
 
     df['Etat_Calculé'] = df['Status_Clean'].apply(categorize_status)
 
