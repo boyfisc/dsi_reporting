@@ -30,7 +30,7 @@ st.markdown("""
     /* Style des cartes KPI - Plus compact */
     div[data-testid="stMetric"] {
         background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-        padding: 12px;
+        padding: 18px;
         border-radius: 10px;
         border: 1px solid rgba(255,255,255,0.1);
         box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3);
@@ -205,7 +205,7 @@ if not df.empty:
     # Fonction de catégorisation
     def categorize_status(status):
         if pd.isna(status) or status == 'NAN':
-            return 'Non Traité'
+            return 'non traite'
         
         for mot in MOTS_TERMINES:
             if mot in status:
