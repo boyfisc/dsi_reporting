@@ -242,11 +242,12 @@ if not df.empty:
     
     # GAUCHE : 4 KPI en ligne
     with col1:
-        kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+        kpi1, kpi2 = st.columns(2)
         with kpi1:
             st.metric("📅 TOTAL REQUÊTES", total_semaine)
         with kpi2:
             st.metric("⚠️ NON EFFECTUÉ", non_traites_semaine)
+        kpi3, kpi4 = st.columns(2)
         with kpi3:
             st.metric("⏳ EN COURS", en_cours_semaine)
         with kpi4:
