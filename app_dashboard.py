@@ -234,29 +234,26 @@ if not df.empty:
     taux_encours = (en_cours_semaine / total_semaine * 100) if total_semaine > 0 else 0
     heure_actuelle = datetime.now().strftime("%H:%M")
     
-    # ============ BLOC 1 : KPI (GAUCHE) + PLATEFORMES (DROITE) ============
+    # ============ SECTION EN-TÊTE ============
     st.markdown(f"### 📅 Semaine du {start_of_week.strftime('%d/%m')} au {end_of_week.strftime('%d/%m/%Y')}")
     
-    col_kpi_block, col_platforms = st.columns([1, 1])
+    # ============ LIGNE 1 : KPI (4 colonnes) + PLATEFORMES ============
+    col1, col2 = st.columns([2, 1])
     
-    # GAUCHE : Bloc KPI en grille 2x2
-    with col_kpi_block:
-        # Ligne 1 des KPI
-        kpi1, kpi2 = st.columns(2)
+    # GAUCHE : 4 KPI en ligne
+    with col1:
+        kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         with kpi1:
             st.metric("📅 TOTAL REQUÊTES", total_semaine)
         with kpi2:
             st.metric("⚠️ NON EFFECTUÉ", non_traites_semaine)
-        
-        # Ligne 2 des KPI
-        kpi3, kpi4 = st.columns(2)
         with kpi3:
             st.metric("⏳ EN COURS", en_cours_semaine)
         with kpi4:
             st.metric("✅ EFFECTUÉ", effectue_semaine)
     
     # DROITE : Répartition Plateformes
-    with col_platforms:
+    with col2:
         if 'LA PLATEFORME' in df.columns:
             pie_data = df_week['LA PLATEFORME'].value_counts().reset_index()
             pie_data.columns = ['App', 'Vol']
@@ -286,8 +283,8 @@ if not df.empty:
             )
             st.plotly_chart(fig_pie, use_container_width=True)
 
-    # ============ BLOC 2 : ACTIVITÉ SEMAINE (GAUCHE) + TOP 5 CENTRES (DROITE) ============
-    col_activity, col_centres = st.columns([3, 2])
+    # ============ LIGNE 2 : ACTIVITÉ SEMAINE + TOP 5 CENTRES ============
+    col_activity, col_centres = st.columns([2, 1])
     
     # GAUCHE : Activité par JOUR de la semaine
     with col_activity:
@@ -347,8 +344,8 @@ if not df.empty:
                 height=245
             )
 
-    # ============ BLOC 3 : BILAN GLOBAL (GAUCHE) + STATS EN GRILLE (DROITE) ============
-    col_bilan, col_stats = st.columns([1, 1])
+    # ============ LIGNE 3 : BILAN GLOBAL + STATS ============
+    col_bilan, col_stats = st.columns([2, 1])
     
     # GAUCHE : Bilan Global
     with col_bilan:
