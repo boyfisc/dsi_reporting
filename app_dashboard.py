@@ -238,7 +238,7 @@ if not df.empty:
     st.markdown(f"### 📅 Semaine du {start_of_week.strftime('%d/%m')} au {end_of_week.strftime('%d/%m/%Y')}")
     
     # ============ LIGNE 1 : KPI (4 colonnes) + PLATEFORMES ============
-    col1, col2 = st.columns([2, 1])
+    col1, col2 = st.columns([2, 1], gap="large")
     
     # GAUCHE : 4 KPI en ligne
     with col1:
