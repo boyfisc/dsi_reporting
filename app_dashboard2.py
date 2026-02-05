@@ -40,7 +40,7 @@ st.markdown("""
     }
     
     div[data-testid="stMetricValue"] { 
-        font-size: 2.2rem !important; 
+        font-size: 3rem !important; 
         font-weight: 700 !important;
         background: linear-gradient(120deg, #00d4ff, #0099ff);
         -webkit-background-clip: text;
@@ -50,7 +50,7 @@ st.markdown("""
     }
     
     div[data-testid="stMetricLabel"] { 
-        font-size: 0.8rem !important; 
+        font-size: 1.5rem !important; 
         color: #FFFFFF !important;
         font-weight: 600 !important;
         text-transform: uppercase;
@@ -101,7 +101,7 @@ st.markdown("""
         font-weight: 700 !important;
         margin-bottom: 0.5rem !important;
         margin-top: 0rem !important;
-        font-size: 1.6rem !important;
+        font-size: 3rem !important;
     }
     
     /* Sous-titres - compact */
@@ -110,7 +110,7 @@ st.markdown("""
         font-weight: 600 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.5rem !important;
-        font-size: 0.95rem !important;
+        font-size: 1.5rem !important;
     }
     
     h5 {
@@ -118,7 +118,7 @@ st.markdown("""
         font-weight: 600 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.4rem !important;
-        font-size: 0.85rem !important;
+        font-size: 1.5rem !important;
     }
     
     /* Ligne de séparation */
@@ -243,6 +243,12 @@ if not df.empty:
 
     # Filtre semaine
     df_week = df[(df['Date_Simple'] >= start_of_week) & (df['Date_Simple'] <= end_of_week)].copy()
+
+    # ✅ Contrôle des états inattendus
+    etats_attendus = {"non traite", "encours", "effectue"}
+    etats_inattendus = set(df_week["Etat_Calculé"].dropna.unique()) - etats_attendus
+    if etats_inattendus:
+        st.warning(f"Etats inattendus detectes: {sorted(etats_inattendus)}")
 
     # (debug temporaire si besoin)
     # st.write("Valeurs uniques Etat_Calculé:", df_week["Etat_Calculé"].dropna().unique())
