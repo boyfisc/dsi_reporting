@@ -11,35 +11,35 @@ st.set_page_config(page_title="DSI TV Dashboard", layout="wide", initial_sidebar
 # --- CSS MODERNE (Style inspiré du design SVG) ---
 st.markdown("""
 <style>
-    /* Réduire les marges */
+    /* Réduire les marges au maximum */
     .block-container { 
-        padding-top: 0.5rem; 
+        padding-top: 0.3rem; 
         padding-bottom: 0rem; 
-        padding-left: 1.5rem; 
-        padding-right: 1.5rem; 
+        padding-left: 1rem; 
+        padding-right: 1rem; 
         max-width: 100%;
     }
-    header { visibility: hidden; }
-    footer { visibility: hidden; }
+    header { visibility: hidden; height: 0px; }
+    footer { visibility: hidden; height: 0px; }
     
     /* Fond moderne */
     .stApp { 
         background: linear-gradient(135deg, #0E1117 0%, #1a1f2e 100%);
     }
     
-    /* Style des cartes KPI */
+    /* Style des cartes KPI - Plus compact */
     div[data-testid="stMetric"] {
         background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-        padding: 15px;
-        border-radius: 12px;
+        padding: 12px;
+        border-radius: 10px;
         border: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
+        box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3);
         backdrop-filter: blur(4px);
         text-align: center;
     }
     
     div[data-testid="stMetricValue"] { 
-        font-size: 2.5rem !important; 
+        font-size: 2.2rem !important; 
         font-weight: 700 !important;
         background: linear-gradient(120deg, #00d4ff, #0099ff);
         -webkit-background-clip: text;
@@ -49,11 +49,11 @@ st.markdown("""
     }
     
     div[data-testid="stMetricLabel"] { 
-        font-size: 0.85rem !important; 
+        font-size: 0.8rem !important; 
         color: #FFFFFF !important;
         font-weight: 600 !important;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
         text-align: center;
     }
     
@@ -93,22 +93,31 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
     }
     
-    /* Titre principal */
+    /* Titre principal - compact */
     h1 {
         color: #FFFFFF !important;
         text-align: center;
         font-weight: 700 !important;
-        margin-bottom: 1rem !important;
-        font-size: 2rem !important;
+        margin-bottom: 0.5rem !important;
+        margin-top: 0rem !important;
+        font-size: 1.6rem !important;
     }
     
-    /* Sous-titres */
-    h3, h5 {
+    /* Sous-titres - compact */
+    h3 {
         color: #00d4ff !important;
         font-weight: 600 !important;
-        margin-top: 0.5rem !important;
+        margin-top: 0.3rem !important;
         margin-bottom: 0.5rem !important;
-        font-size: 1rem !important;
+        font-size: 0.95rem !important;
+    }
+    
+    h5 {
+        color: #00d4ff !important;
+        font-weight: 600 !important;
+        margin-top: 0.3rem !important;
+        margin-bottom: 0.4rem !important;
+        font-size: 0.85rem !important;
     }
     
     /* Ligne de séparation */
@@ -171,18 +180,18 @@ def load_data():
 df = load_data()
 
 # --- TITRE ---
-st.markdown("# 📊 DSI - Tableau de Bord Hebdomadaire")
+st.markdown("# 📊 DGID/DSI - GESTION HEBDO DES REQUETES")
 
 # --- CONFIGURATION DES MOTS CLÉS ---
 MOTS_TERMINES = [
     'TRAITE', 'TRAITEE', 'EFFECTUE', 'EFFECTUEE', 
     'OK', 'FAIT', 'FAITE', 'CLOTURE', 'CLOTUREE',
-    'TERMINE', 'TERMINEE', 'RESOLU', 'RESOLUE'
+    'TERMINE', 'TERMINEE', 'RESOLU', 'RESOLUE','traite'
 ] 
 
 MOTS_EN_COURS = [
     'ENCOURS', 'EN COURS', 'ATTENTE', 'EN ATTENTE',
-    'TRAITEMENT', 'EN TRAITEMENT', 'ENCOUR', 'COURS'
+    'TRAITEMENT', 'EN TRAITEMENT', 'ENCOUR', 'COURS','encours'
 ] 
 
 # --- CALCULS ---
@@ -214,73 +223,40 @@ if not df.empty:
     # Filtre de la semaine
     df_week = df[(df['Date_Simple'] >= start_of_week) & (df['Date_Simple'] <= end_of_week)].copy()
 
-    # --- RANGÉE 1 : KPI DE LA SEMAINE ---
-    st.markdown(f"### 📅 Semaine du {start_of_week.strftime('%d/%m')} au {end_of_week.strftime('%d/%m/%Y')}")
-    
-    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-    
+    # Calculs préalables
     total_semaine = len(df_week)
     non_traites_semaine = len(df_week[df_week['Etat_Calculé'] == 'Non Traité'])
     en_cours_semaine = len(df_week[df_week['Etat_Calculé'] == 'En Cours'])
     effectue_semaine = len(df_week[df_week['Etat_Calculé'] == 'Effectué'])
     
-    with kpi1:
-        st.metric("📅 TOTAL REQUÊTES", total_semaine)
+    # Statistiques
+    taux_traitement = (effectue_semaine / total_semaine * 100) if total_semaine > 0 else 0
+    taux_encours = (en_cours_semaine / total_semaine * 100) if total_semaine > 0 else 0
+    heure_actuelle = datetime.now().strftime("%H:%M")
     
-    with kpi2:
-        st.metric("⚠️ NON EFFECTUÉ", non_traites_semaine)
+    # ============ BLOC 1 : KPI (GAUCHE) + PLATEFORMES (DROITE) ============
+    st.markdown(f"### 📅 Semaine du {start_of_week.strftime('%d/%m')} au {end_of_week.strftime('%d/%m/%Y')}")
     
-    with kpi3:
-        st.metric("⏳ EN COURS", en_cours_semaine)
+    col_kpi_block, col_platforms = st.columns([1, 1])
     
-    with kpi4:
-        st.metric("✅ EFFECTUÉ", effectue_semaine)
-
-    st.markdown("---") 
-
-    # --- RANGÉE 2 : VISUALISATIONS PRINCIPALES ---
-    col_line, col_pie = st.columns([3, 2])
-    
-    GRAPH_HEIGHT = 320
-    
-    with col_line:
-        # Activité par SEMAINE (dernières 12 semaines)
-        df_last_weeks = df[df['Date_Obj'] >= (datetime.now() - timedelta(weeks=12))]
-        weekly_counts = df_last_weeks.groupby(['Annee', 'Semaine']).size().reset_index(name='Requetes')
-        weekly_counts['Semaine_Label'] = 'S' + weekly_counts['Semaine'].astype(str)
+    # GAUCHE : Bloc KPI en grille 2x2
+    with col_kpi_block:
+        # Ligne 1 des KPI
+        kpi1, kpi2 = st.columns(2)
+        with kpi1:
+            st.metric("📅 TOTAL REQUÊTES", total_semaine)
+        with kpi2:
+            st.metric("⚠️ NON EFFECTUÉ", non_traites_semaine)
         
-        fig_line = go.Figure()
-        fig_line.add_trace(go.Scatter(
-            x=weekly_counts['Semaine_Label'],
-            y=weekly_counts['Requetes'],
-            mode='lines+markers',
-            line=dict(color='#00d4ff', width=3),
-            marker=dict(size=10, color='#00d4ff', line=dict(width=2, color='#0099ff')),
-            fill='tozeroy',
-            fillcolor='rgba(0, 212, 255, 0.1)'
-        ))
-        
-        fig_line.update_layout(
-            title="📈 Activité par Semaine (12 dernières semaines)",
-            height=GRAPH_HEIGHT,
-            margin=dict(l=40, r=20, t=50, b=40),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white', size=11),
-            xaxis=dict(
-                title="Semaine",
-                gridcolor='rgba(255,255,255,0.1)',
-                showgrid=True
-            ),
-            yaxis=dict(
-                title="Nombre de requêtes",
-                gridcolor='rgba(255,255,255,0.1)',
-                showgrid=True
-            )
-        )
-        st.plotly_chart(fig_line, use_container_width=True)
-        
-    with col_pie:
+        # Ligne 2 des KPI
+        kpi3, kpi4 = st.columns(2)
+        with kpi3:
+            st.metric("⏳ EN COURS", en_cours_semaine)
+        with kpi4:
+            st.metric("✅ EFFECTUÉ", effectue_semaine)
+    
+    # DROITE : Répartition Plateformes
+    with col_platforms:
         if 'LA PLATEFORME' in df.columns:
             pie_data = df_week['LA PLATEFORME'].value_counts().reset_index()
             pie_data.columns = ['App', 'Vol']
@@ -295,89 +271,136 @@ if not df.empty:
             fig_pie.update_traces(
                 textposition='inside',
                 textinfo='percent+label',
-                textfont=dict(size=10, color='white')
+                textfont=dict(size=11, color='white')
             )
             
             fig_pie.update_layout(
-                title="🖥️ Répartition Plateformes (Semaine)",
-                height=GRAPH_HEIGHT,
-                margin=dict(l=0, r=0, t=50, b=0),
+                title="🖥️ Répartition Plateformes",
+                height=260,
+                margin=dict(l=10, r=10, t=40, b=10),
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 font=dict(color='white', size=11),
                 showlegend=True,
-                legend=dict(font=dict(size=9), orientation="v")
+                legend=dict(font=dict(size=10), orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5)
             )
             st.plotly_chart(fig_pie, use_container_width=True)
 
-    # --- RANGÉE 3 : TOP 5 CENTRES (Tableau) ---
-    st.markdown("##### 🏢 Top 5 Centres Fiscaux (Semaine)")
+    # ============ BLOC 2 : ACTIVITÉ SEMAINE (GAUCHE) + TOP 5 CENTRES (DROITE) ============
+    col_activity, col_centres = st.columns([3, 2])
     
-    if 'CENTRE FISCAL' in df.columns:
-        top_centres = df_week['CENTRE FISCAL'].value_counts().head(5).reset_index()
-        top_centres.columns = ['Centre Fiscal', 'Nombre de Requêtes']
-        top_centres.index = range(1, len(top_centres) + 1)
-        top_centres.index.name = 'Rang'
+    # GAUCHE : Activité par JOUR de la semaine
+    with col_activity:
+        # Grouper par jour de la semaine courante
+        daily_counts = df_week.groupby(df_week['Date_Obj'].dt.day_name()).size().reset_index(name='Requetes')
         
-        # Affichage en tableau centré
+        # Ordonner les jours de la semaine
+        days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        days_fr = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+        
+        daily_counts['Order'] = daily_counts['Date_Obj'].apply(lambda x: days_order.index(x) if x in days_order else 7)
+        daily_counts = daily_counts.sort_values('Order')
+        daily_counts['Jour_FR'] = daily_counts['Date_Obj'].map(dict(zip(days_order, days_fr)))
+        
+        fig_activity = go.Figure()
+        fig_activity.add_trace(go.Bar(
+            x=daily_counts['Jour_FR'],
+            y=daily_counts['Requetes'],
+            marker=dict(
+                color=daily_counts['Requetes'],
+                colorscale='Blues',
+                line=dict(color='rgba(0, 212, 255, 0.5)', width=2)
+            )
+        ))
+        
+        fig_activity.update_layout(
+            title="📈 Activité par Jour (Semaine Courante)",
+            height=280,
+            margin=dict(l=40, r=20, t=50, b=60),
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='white', size=11),
+            xaxis=dict(
+                tickangle=-30,
+                gridcolor='rgba(255,255,255,0.1)'
+            ),
+            yaxis=dict(
+                gridcolor='rgba(255,255,255,0.1)',
+                showgrid=True
+            ),
+            showlegend=False
+        )
+        st.plotly_chart(fig_activity, use_container_width=True)
+    
+    # DROITE : Top 5 Centres Fiscaux
+    with col_centres:
+        if 'CENTRE FISCAL' in df.columns:
+            top_centres = df_week['CENTRE FISCAL'].value_counts().head(5).reset_index()
+            top_centres.columns = ['Centre Fiscal', 'Requêtes']
+            top_centres.index = range(1, len(top_centres) + 1)
+            top_centres.index.name = '#'
+            
+            st.markdown("##### 🏢 Top 5 Centres Fiscaux")
+            st.dataframe(
+                top_centres,
+                use_container_width=True,
+                height=245
+            )
+
+    # ============ BLOC 3 : BILAN GLOBAL (GAUCHE) + STATS EN GRILLE (DROITE) ============
+    col_bilan, col_stats = st.columns([1, 1])
+    
+    # GAUCHE : Bilan Global
+    with col_bilan:
+        st.markdown("##### 📊 Bilan Global (Toutes Périodes)")
+        
+        # Création Type Incident/Demande
+        if 'OBJET' in df.columns:
+            df['TYPE'] = df['OBJET'].apply(
+                lambda x: 'Incident' if isinstance(x, str) and 
+                any(w in x.lower() for w in ['panne', 'bug', 'erreur', 'incident', 'problème', 'dysfonction']) 
+                else 'Demande'
+            )
+        else:
+            df['TYPE'] = 'Demande'
+
+        # Tableau avec uniquement TOTAL et EFFECTUÉ
+        summary = df.pivot_table(
+            index='TYPE', 
+            columns='Etat_Calculé', 
+            aggfunc='size', 
+            fill_value=0
+        )
+        
+        summary['TOTAL'] = summary.sum(axis=1)
+        
+        # Seulement TOTAL et Effectué
+        wanted_cols = ['TOTAL', 'Effectué']
+        existing_cols = [c for c in wanted_cols if c in summary.columns]
+        
         st.dataframe(
-            top_centres,
+            summary[existing_cols],
             use_container_width=True,
-            height=220
+            height=150
         )
-
-    st.markdown("---")
-
-    # --- RANGÉE 4 : TABLEAU SYNTHÈSE GLOBAL ---
-    st.markdown("##### 📊 Bilan Global (Toutes Périodes)")
     
-    # Création Type Incident/Demande
-    if 'OBJET' in df.columns:
-        df['TYPE'] = df['OBJET'].apply(
-            lambda x: 'Incident' if isinstance(x, str) and 
-            any(w in x.lower() for w in ['panne', 'bug', 'erreur', 'incident', 'problème', 'dysfonction']) 
-            else 'Demande'
-        )
-    else:
-        df['TYPE'] = 'Demande'
-
-    # Tableau Pivot
-    summary = df.pivot_table(
-        index='TYPE', 
-        columns='Etat_Calculé', 
-        aggfunc='size', 
-        fill_value=0
-    )
-    
-    summary['TOTAL'] = summary.sum(axis=1)
-    
-    wanted_cols = ['TOTAL', 'Effectué', 'En Cours', 'Non Traité']
-    existing_cols = [c for c in wanted_cols if c in summary.columns]
-    
-    # Affichage simple sans gradient
-    st.dataframe(
-        summary[existing_cols],
-        use_container_width=True,
-        height=150
-    )
-    
-    # --- PIED DE PAGE : Statistiques ---
-    col_stat1, col_stat2, col_stat3, col_stat4 = st.columns(4)
-    
-    with col_stat1:
-        taux_traitement = (effectue_semaine / total_semaine * 100) if total_semaine > 0 else 0
-        st.metric("📈 Taux Traitement", f"{taux_traitement:.1f}%")
-    
-    with col_stat2:
-        taux_encours = (en_cours_semaine / total_semaine * 100) if total_semaine > 0 else 0
-        st.metric("⏳ Taux En Cours", f"{taux_encours:.1f}%")
-    
-    with col_stat3:
-        st.metric("📅 Aujourd'hui", today.strftime("%d/%m/%Y"))
-    
-    with col_stat4:
-        heure_actuelle = datetime.now().strftime("%H:%M:%S")
-        st.metric("🕐 Dernière MAJ", heure_actuelle)
+    # DROITE : Stats en grille 2x2
+    with col_stats:
+        st.markdown("##### 📈 Statistiques")
+        
+        # Ligne 1
+        stat1, stat2 = st.columns(2)
+        with stat1:
+            st.metric("✅ Taux Traitement", f"{taux_traitement:.1f}%")
+        with stat2:
+            st.metric("⏳ Taux En Cours", f"{taux_encours:.1f}%")
+        
+        # Ligne 2
+        stat3, stat4 = st.columns(2)
+        with stat3:
+            st.metric("📅 Aujourd'hui", today.strftime("%d/%m"))
+        with stat4:
+            st.metric("🕐 MAJ", heure_actuelle)
 
 else:
     st.info("⏳ Chargement des données...")
