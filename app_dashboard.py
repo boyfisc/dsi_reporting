@@ -242,7 +242,7 @@ if not df.empty:
     
     # GAUCHE : 4 KPI en ligne
     with col1:
-        kpi1, kpi2 = st.columns(2)
+        kpi1, kpi2 = st.columns(2, gap="large")
         with kpi1:
             st.metric("📅 TOTAL REQUÊTES", total_semaine)
         with kpi2:
