@@ -222,6 +222,9 @@ if not df.empty:
     
     # Filtre de la semaine
     df_week = df[(df['Date_Simple'] >= start_of_week) & (df['Date_Simple'] <= end_of_week)].copy()
+    st.write("Valeurs uniques Etat_Calculé:", df_week["Etat_Calculé"].dropna().unique())
+    st.write(df_week[["Etat_Calculé"]])
+
 
     # Calculs préalables
     total_semaine = len(df_week)
