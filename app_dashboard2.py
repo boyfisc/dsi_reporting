@@ -284,37 +284,34 @@ if not df.empty:
         with kpi4:
             st.metric("✅ EFFECTUÉ", int(effectue_semaine))
 
-    # DROITE : Répartition Plateformes
-    with col2:
-        if 'LA PLATEFORME' in df.columns:
-            pie_data = df_week['LA PLATEFORME'].value_counts().reset_index()
-            pie_data.columns = ['App', 'Vol']
+    # DROITE : Répartition Plateformes (Treemap)
+with col2:
+    if 'LA PLATEFORME' in df.columns:
+        pie_data = df_week['LA PLATEFORME'].value_counts().reset_index()
+        pie_data.columns = ['Plateforme', 'Volume']
 
-            fig_pie = go.Figure(data=[go.Pie(
-                labels=pie_data['App'],
-                values=pie_data['Vol'],
-                hole=.4,
-                marker=dict(colors=['#00d4ff', '#0099ff', '#0077cc', '#005599', '#003366'])
-            )])
+        fig_tree = px.treemap(
+            pie_data,
+            path=['Plateforme'],
+            values='Volume',
+        )
 
-            fig_pie.update_traces(
-                textposition='inside',
-                textinfo='percent+label',
-                textfont=dict(size=11, color='white')
-            )
+        fig_tree.update_traces(
+            textinfo="label+percent parent",
+            textfont_size=16,
+            hovertemplate="<b>%{label}</b><br>Requêtes: %{value}<br>Part: %{percentParent:.1%}<extra></extra>"
+        )
 
-            fig_pie.update_layout(
-                title="🖥️ Répartition Plateformes",
-                height=260,
-                margin=dict(l=10, r=10, t=40, b=10),
-                plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)',
-                font=dict(color='white', size=11),
-                showlegend=True,
-                legend=dict(font=dict(size=10), orientation="h", yanchor="bottom",
-                            y=-0.2, xanchor="center", x=0.5)
-            )
-            st.plotly_chart(fig_pie, use_container_width=True)
+        fig_tree.update_layout(
+            title="🖥️ Répartition Plateformes",
+            height=280,
+            margin=dict(l=10, r=10, t=40, b=10),
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='white', size=12),
+        )
+
+        st.plotly_chart(fig_tree, use_container_width=True)
 
     # ============ LIGNE 2 : ACTIVITÉ + TOP 5 CENTRES ============
     col_activity, col_centres = st.columns([1, 1])
