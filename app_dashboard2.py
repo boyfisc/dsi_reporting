@@ -154,29 +154,32 @@ def load_data():
     try:
         df = pd.read_csv(csv_url)
 
-        # 1. Conversion Date
-        df['Date_Obj'] = pd.to_datetime(df['Horodateur'], dayfirst=True, errors='coerce')
-        df['Heure'] = df['Date_Obj'].dt.hour
-        df['Date_Simple'] = df['Date_Obj'].dt.date
-        df['Semaine'] = df['Date_Obj'].dt.isocalendar().week
-        df['Annee'] = df['Date_Obj'].dt.year
+        # 1) Conversion Date
+        df["Date_Obj"] = pd.to_datetime(df["Horodateur"], dayfirst=True, errors="coerce")
+        df["Heure"] = df["Date_Obj"].dt.hour
+        df["Date_Simple"] = df["Date_Obj"].dt.date
+        df["Semaine"] = df["Date_Obj"].dt.isocalendar().week
+        df["Annee"] = df["Date_Obj"].dt.year
 
-        # 2. Nettoyage Statuts - Normalisation ROBUSTE (sans accents + upper)
-        if 'ETAT DE LA DEMANDE' in df.columns:
-            df['Status_Clean'] = (df['ETAT DE LA DEMANDE']
-                                  .astype(str)
-                                  .str.strip()
-                                  .str.upper()
-                                  .str.replace('É', 'E')
-                                  .str.replace('È', 'E')
-                                  .str.replace('Ê', 'E')
-                                  .str.replace('À', 'A')
-                                  .str.replace('Ç', 'C')
-                                  .str.replace('  ', ' '))
+        # 2) Nettoyage Statuts - Normalisation ROBUSTE (sans accents + upper)
+        if "ETAT DE LA DEMANDE" in df.columns:
+            df["Status_Clean"] = (
+                df["ETAT DE LA DEMANDE"]
+                .astype(str)
+                .str.strip()
+                .str.upper()
+                .str.replace("É", "E")
+                .str.replace("È", "E")
+                .str.replace("Ê", "E")
+                .str.replace("À", "A")
+                .str.replace("Ç", "C")
+                .str.replace("  ", " ")
+            )
         else:
-            df['Status_Clean'] = "INCONNU"
+            df["Status_Clean"] = "INCONNU"
 
         return df
+
     except Exception as e:
         st.error(f"❌ Erreur de lecture des données: {e}")
         return pd.DataFrame()
@@ -188,22 +191,21 @@ st.markdown("# 📊 DGID/DSI - GESTION HEBDO DES REQUETES")
 
 # --- CONFIGURATION DES MOTS CLÉS ---
 MOTS_TERMINES = [
-    'TRAITE', 'TRAITEE', 'EFFECTUE', 'EFFECTUEE',
-    'OK', 'FAIT', 'FAITE', 'CLOTURE', 'CLOTUREE',
-    'TERMINE', 'TERMINEE', 'RESOLU', 'RESOLUE'
+    "TRAITE", "TRAITEE", "EFFECTUE", "EFFECTUEE",
+    "OK", "FAIT", "FAITE", "CLOTURE", "CLOTUREE",
+    "TERMINE", "TERMINEE", "RESOLU", "RESOLUE"
 ]
 
 MOTS_EN_COURS = [
-    'ENCOURS', 'EN COURS', 'ATTENTE', 'EN ATTENTE',
-    'TRAITEMENT', 'EN TRAITEMENT', 'ENCOUR', 'COURS'
+    "ENCOURS", "EN COURS", "ATTENTE", "EN ATTENTE",
+    "TRAITEMENT", "EN TRAITEMENT", "ENCOUR", "COURS"
 ]
 
-# --- OUTIL DE NORMALISATION (pour les comparaisons KPI) ---
+# --- OUTIL DE NORMALISATION (au besoin pour comparaisons) ---
 def norm_noaccent_lower(x: str) -> str:
     x = "" if x is None else str(x)
     x = x.strip().lower()
     x = "".join(c for c in unicodedata.normalize("NFD", x) if unicodedata.category(c) != "Mn")
-    # harmoniser "en cours" / "en_cours" / "en-cours" / "encours"
     x = x.replace(" ", "").replace("_", "").replace("-", "")
     return x
 
@@ -211,54 +213,49 @@ def norm_noaccent_lower(x: str) -> str:
 if not df.empty:
     today = datetime.now().date()
 
-    # Début/fin semaine
+    # Début/fin semaine (lundi -> dimanche)
     start_of_week = today - timedelta(days=today.weekday())
     end_of_week = start_of_week + timedelta(days=6)
 
-    # Catégorisation : retourne UNIQUEMENT nontraite / encours / effectue (sans accents)
+    # Catégorisation : retourne UNIQUEMENT non traite / encours / effectue (sans accents)
     def categorize_status(status):
         s = "" if pd.isna(status) else str(status).strip().upper()
 
         if s == "" or s == "NAN":
             return "non traite"
 
-    # ✅ IMPORTANT : gérer les statuts "NON ..." avant MOTS_TERMINES
-    # évite que "TRAITE" matche "NON TRAITE"
+        # IMPORTANT : gérer "NON ..." avant mots terminés (évite "TRAITE" qui match "NON TRAITE")
         if "NON" in s or "PAS" in s:
             return "non traite"
 
-    # Terminés
+        # Terminés
         for mot in MOTS_TERMINES:
             if mot in s:
                 return "effectue"
 
-    # En cours
+        # En cours
         for mot in MOTS_EN_COURS:
             if mot in s:
                 return "encours"
 
         return "non traite"
 
-    df['Etat_Calculé'] = df['Status_Clean'].apply(categorize_status)
+    df["Etat_Calculé"] = df["Status_Clean"].apply(categorize_status)
 
     # Filtre semaine
-    df_week = df[(df['Date_Simple'] >= start_of_week) & (df['Date_Simple'] <= end_of_week)].copy()
+    df_week = df[(df["Date_Simple"] >= start_of_week) & (df["Date_Simple"] <= end_of_week)].copy()
 
-    # ✅ Contrôle des états inattendus
+    # Contrôle des états inattendus
     etats_attendus = {"non traite", "encours", "effectue"}
     etats_inattendus = set(df_week["Etat_Calculé"].dropna().unique()) - etats_attendus
     if etats_inattendus:
         st.warning(f"Etats inattendus detectes: {sorted(etats_inattendus)}")
 
-    # (debug temporaire si besoin)
-    # st.write("Valeurs uniques Etat_Calculé:", df_week["Etat_Calculé"].dropna().unique())
-    # st.write(df_week[["Etat_Calculé"]])
-
-    # KPI (comparaison exacte avec les valeurs renvoyées par categorize_status)
+    # KPI
     total_semaine = len(df_week)
-    non_traites_semaine = (df_week['Etat_Calculé'] == 'non traite').sum()
-    en_cours_semaine = (df_week['Etat_Calculé'] == 'encours').sum()
-    effectue_semaine = (df_week['Etat_Calculé'] == 'effectue').sum()
+    non_traites_semaine = (df_week["Etat_Calculé"] == "non traite").sum()
+    en_cours_semaine = (df_week["Etat_Calculé"] == "encours").sum()
+    effectue_semaine = (df_week["Etat_Calculé"] == "effectue").sum()
 
     taux_traitement = (effectue_semaine / total_semaine * 100) if total_semaine > 0 else 0
     taux_encours = (en_cours_semaine / total_semaine * 100) if total_semaine > 0 else 0
@@ -284,81 +281,97 @@ if not df.empty:
         with kpi4:
             st.metric("✅ EFFECTUÉ", int(effectue_semaine))
 
-    # DROITE : Répartition Plateformes (Treemap)
-with col2:
-    if 'LA PLATEFORME' in df.columns:
-        pie_data = df_week['LA PLATEFORME'].value_counts().reset_index()
-        pie_data.columns = ['Plateforme', 'Volume']
+    # DROITE : Répartition Plateformes (TREEMAP)
+    with col2:
+        if "LA PLATEFORME" in df.columns:
+            plat = (
+                df_week["LA PLATEFORME"]
+                .fillna("INCONNU")
+                .astype(str)
+                .str.strip()
+            )
 
-        fig_tree = px.treemap(
-            pie_data,
-            path=['Plateforme'],
-            values='Volume',
-        )
+            pie_data = plat.value_counts().reset_index()
+            pie_data.columns = ["Plateforme", "Volume"]
 
-        fig_tree.update_traces(
-            textinfo="label+percent parent",
-            textfont_size=16,
-            hovertemplate="<b>%{label}</b><br>Requêtes: %{value}<br>Part: %{percentParent:.1%}<extra></extra>"
-        )
+            fig_tree = px.treemap(
+                pie_data,
+                path=["Plateforme"],
+                values="Volume",
+            )
 
-        fig_tree.update_layout(
-            title="🖥️ Répartition Plateformes",
-            height=280,
-            margin=dict(l=10, r=10, t=40, b=10),
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white', size=12),
-        )
+            fig_tree.update_traces(
+                textinfo="label+percent parent",
+                textfont_size=16,
+                hovertemplate="<b>%{label}</b><br>Requêtes: %{value}<br>Part: %{percentParent:.1%}<extra></extra>"
+            )
 
-        st.plotly_chart(fig_tree, use_container_width=True)
+            fig_tree.update_layout(
+                title="🖥️ Répartition Plateformes",
+                height=280,
+                margin=dict(l=10, r=10, t=40, b=10),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font=dict(color="white", size=12),
+            )
+
+            st.plotly_chart(fig_tree, use_container_width=True)
+        else:
+            st.info("Colonne 'LA PLATEFORME' introuvable.")
 
     # ============ LIGNE 2 : ACTIVITÉ + TOP 5 CENTRES ============
     col_activity, col_centres = st.columns([1, 1])
 
     with col_activity:
-        daily_counts = df_week.groupby(df_week['Date_Obj'].dt.day_name()).size().reset_index(name='Requetes')
+        daily_counts = df_week.groupby(df_week["Date_Obj"].dt.day_name()).size().reset_index(name="Requetes")
 
-        days_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        days_fr = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+        days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
 
-        daily_counts['Order'] = daily_counts['Date_Obj'].apply(lambda x: days_order.index(x) if x in days_order else 7)
-        daily_counts = daily_counts.sort_values('Order')
-        daily_counts['Jour_FR'] = daily_counts['Date_Obj'].map(dict(zip(days_order, days_fr)))
+        daily_counts["Order"] = daily_counts["Date_Obj"].apply(
+            lambda x: days_order.index(x) if x in days_order else 7
+        )
+        daily_counts = daily_counts.sort_values("Order")
+        daily_counts["Jour_FR"] = daily_counts["Date_Obj"].map(dict(zip(days_order, days_fr)))
 
         fig_activity = go.Figure()
-        fig_activity.add_trace(go.Bar(
-            x=daily_counts['Jour_FR'],
-            y=daily_counts['Requetes'],
-            marker=dict(
-                color=daily_counts['Requetes'],
-                colorscale='Blues',
-                line=dict(color='rgba(0, 212, 255, 0.5)', width=2)
+        fig_activity.add_trace(
+            go.Bar(
+                x=daily_counts["Jour_FR"],
+                y=daily_counts["Requetes"],
+                marker=dict(
+                    color=daily_counts["Requetes"],
+                    colorscale="Blues",
+                    line=dict(color="rgba(0, 212, 255, 0.5)", width=2),
+                ),
             )
-        ))
+        )
 
         fig_activity.update_layout(
             title="📈 Activité par Jour (Semaine Courante)",
             height=280,
             margin=dict(l=40, r=20, t=50, b=60),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white', size=11),
-            xaxis=dict(tickangle=-30, gridcolor='rgba(255,255,255,0.1)'),
-            yaxis=dict(gridcolor='rgba(255,255,255,0.1)', showgrid=True),
-            showlegend=False
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font=dict(color="white", size=11),
+            xaxis=dict(tickangle=-30, gridcolor="rgba(255,255,255,0.1)"),
+            yaxis=dict(gridcolor="rgba(255,255,255,0.1)", showgrid=True),
+            showlegend=False,
         )
+
         st.plotly_chart(fig_activity, use_container_width=True)
 
     with col_centres:
-        if 'CENTRE FISCAL' in df.columns:
-            top_centres = df_week['CENTRE FISCAL'].value_counts().head(5).reset_index()
-            top_centres.columns = ['Centre Fiscal', 'Requêtes']
+        if "CENTRE FISCAL" in df.columns:
+            top_centres = df_week["CENTRE FISCAL"].value_counts().head(5).reset_index()
+            top_centres.columns = ["Centre Fiscal", "Requêtes"]
             top_centres.index = range(1, len(top_centres) + 1)
-            top_centres.index.name = '#'
+            top_centres.index.name = "#"
 
             st.markdown("##### 🏢 Top 5 Centres Fiscaux")
             st.dataframe(top_centres, use_container_width=True, height=245)
+        else:
+            st.info("Colonne 'CENTRE FISCAL' introuvable.")
 
     # ============ LIGNE 3 : BILAN + STATS ============
     col_bilan, col_stats = st.columns([1, 1])
@@ -366,25 +379,25 @@ with col2:
     with col_bilan:
         st.markdown("##### 📊 Bilan Global (Toutes Périodes)")
 
-        if 'OBJET' in df.columns:
-            df['TYPE'] = df['OBJET'].apply(
-                lambda x: 'Incident' if isinstance(x, str) and
-                any(w in x.lower() for w in ['panne', 'bug', 'erreur', 'incident', 'problème', 'dysfonction'])
-                else 'Demande'
+        if "OBJET" in df.columns:
+            df["TYPE"] = df["OBJET"].apply(
+                lambda x: "Incident"
+                if isinstance(x, str)
+                and any(w in x.lower() for w in ["panne", "bug", "erreur", "incident", "problème", "dysfonction"])
+                else "Demande"
             )
         else:
-            df['TYPE'] = 'Demande'
+            df["TYPE"] = "Demande"
 
         summary = df.pivot_table(
-            index='TYPE',
-            columns='Etat_Calculé',
-            aggfunc='size',
-            fill_value=0
+            index="TYPE",
+            columns="Etat_Calculé",
+            aggfunc="size",
+            fill_value=0,
         )
-        summary['TOTAL'] = summary.sum(axis=1)
+        summary["TOTAL"] = summary.sum(axis=1)
 
-        # colonnes existantes (sans accents)
-        wanted_cols = ['TOTAL', 'effectue']
+        wanted_cols = ["TOTAL", "effectue"]
         existing_cols = [c for c in wanted_cols if c in summary.columns]
 
         st.dataframe(summary[existing_cols], use_container_width=True, height=150)
@@ -407,6 +420,6 @@ with col2:
 else:
     st.info("⏳ Chargement des données...")
 
-# Auto-refresh toutes les 5 minutes
+# Auto-refresh toutes les 5 minutes (300s)
 time.sleep(300)
 st.rerun()
