@@ -602,13 +602,26 @@ if not df.empty:
 </div>""", unsafe_allow_html=True)
 
         with stat2:
-            st.metric("⏳ Taux En Cours", f"{taux_encours:.1f}%")
+            # Taux en cours avec style homogène
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">⏳ TAUX EN COURS</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: #2196f3; line-height: 1.1;">{taux_encours:.1f}%</div>
+</div>""", unsafe_allow_html=True)
 
         stat3, stat4 = st.columns(2)
         with stat3:
-            st.metric("📅 Aujourd'hui", today.strftime("%d/%m"))
+            # Aujourd'hui avec style homogène
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">📅 AUJOURD'HUI</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: #00d4ff; line-height: 1.1;">{today.strftime("%d/%m")}</div>
+</div>""", unsafe_allow_html=True)
+
         with stat4:
-            st.metric("🕐 MAJ", heure_actuelle)
+            # MAJ avec style homogène
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">🕐 MAJ</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: #00d4ff; line-height: 1.1;">{heure_actuelle}</div>
+</div>""", unsafe_allow_html=True)
 
 else:
     st.info("⏳ Chargement des données...")
