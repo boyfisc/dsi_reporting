@@ -523,22 +523,11 @@ if not df.empty:
             taux_color = get_taux_color(taux_traitement)
             delta_display = f"{evolution_taux:+.1f}%" if total_prev > 0 else ""
 
-            st.markdown(f"""
-            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-                        padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15);
-                        box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3); text-align: center;">
-                <div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase;
-                            letter-spacing: 1px; margin-bottom: 8px;">✅ TAUX TRAITEMENT</div>
-                <div style="font-size: 4.5rem; font-weight: 800; color: {taux_color};
-                            text-shadow: 0 0 20px {taux_color}80; line-height: 1.1;">
-                    {taux_traitement:.1f}%
-                </div>
-                <div style="font-size: 1.2rem; color: {'#4caf50' if evolution_taux >= 0 else '#f44336'};
-                            font-weight: 600; margin-top: 5px;">
-                    {delta_display}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">✅ TAUX TRAITEMENT</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: {taux_color}; text-shadow: 0 0 20px {taux_color}80; line-height: 1.1;">{taux_traitement:.1f}%</div>
+<div style="font-size: 1.2rem; color: {'#4caf50' if evolution_taux >= 0 else '#f44336'}; font-weight: 600; margin-top: 5px;">{delta_display}</div>
+</div>""", unsafe_allow_html=True)
 
         with stat2:
             st.metric("⏳ Taux En Cours", f"{taux_encours:.1f}%")
