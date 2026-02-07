@@ -9,140 +9,188 @@ import unicodedata
 # --- CONFIGURATION (Mode TV Plein Écran) ---
 st.set_page_config(page_title="DSI TV Dashboard", layout="wide", initial_sidebar_state="collapsed")
 
-# --- CSS MODERNE (Style inspiré du design SVG) ---
+# --- CSS OPTIMISÉ POUR TV (Affichage Grand Format) ---
 st.markdown("""
 <style>
     /* Réduire les marges au maximum */
-    .block-container { 
-        padding-top: 0.3rem; 
-        padding-bottom: 0rem; 
-        padding-left: 1rem; 
-        padding-right: 1rem; 
+    .block-container {
+        padding-top: 0.2rem;
+        padding-bottom: 0rem;
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
         max-width: 100%;
     }
     header { visibility: hidden; height: 0px; }
     footer { visibility: hidden; height: 0px; }
-    
-    /* Fond moderne */
-    .stApp { 
+
+    /* Fond moderne avec texture */
+    .stApp {
         background: linear-gradient(135deg, #0E1117 0%, #1a1f2e 100%);
     }
-    
-    /* Style des cartes KPI - Plus compact */
-    div[data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-        padding: 16px;
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3);
-        backdrop-filter: blur(4px);
-        text-align: center;
+
+    /* Animation pulse pour les KPI */
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3), 0 0 20px rgba(0, 212, 255, 0.2); }
+        50% { box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3), 0 0 30px rgba(0, 212, 255, 0.4); }
     }
-    
-    div[data-testid="stMetricValue"] { 
-        font-size: 3.2rem !important; 
-        font-weight: 700 !important;
+
+    /* Style des cartes KPI - Optimisé TV */
+    div[data-testid="stMetric"] {
+        background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+        padding: 20px 16px;
+        border-radius: 12px;
+        border: 2px solid rgba(255,255,255,0.15);
+        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.4), 0 0 20px rgba(0, 212, 255, 0.15);
+        backdrop-filter: blur(6px);
+        text-align: center;
+        animation: pulse-glow 4s ease-in-out infinite;
+        transition: all 0.3s ease;
+    }
+
+    div[data-testid="stMetric"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px 0 rgba(0,0,0,0.5), 0 0 40px rgba(0, 212, 255, 0.3);
+    }
+
+    /* Valeurs KPI - Plus grandes pour TV */
+    div[data-testid="stMetricValue"] {
+        font-size: 4.5rem !important;
+        font-weight: 800 !important;
         background: linear-gradient(120deg, #00d4ff, #0099ff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-align: center;
+        text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        line-height: 1.1;
     }
-    
-    div[data-testid="stMetricLabel"] { 
-        font-size: 1.05rem !important; 
+
+    /* Labels KPI - Plus lisibles pour TV */
+    div[data-testid="stMetricLabel"] {
+        font-size: 1.5rem !important;
         color: #FFFFFF !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         text-transform: uppercase;
-        letter-spacing: 0.3px;
+        letter-spacing: 1px;
         text-align: center;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        margin-bottom: 8px;
     }
     
-    /* Couleurs personnalisées pour chaque KPI */
+    /* Couleurs personnalisées pour chaque KPI - Renforcées pour TV */
     [data-testid="column"]:nth-of-type(1) div[data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 153, 255, 0.05) 100%);
-        border-color: rgba(0, 212, 255, 0.3);
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 153, 255, 0.08) 100%);
+        border-color: rgba(0, 212, 255, 0.5);
     }
-    
+
     [data-testid="column"]:nth-of-type(2) div[data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 193, 7, 0.05) 100%);
-        border-color: rgba(255, 152, 0, 0.3);
+        background: linear-gradient(135deg, rgba(255, 152, 0, 0.2) 0%, rgba(255, 193, 7, 0.08) 100%);
+        border-color: rgba(255, 152, 0, 0.5);
     }
     [data-testid="column"]:nth-of-type(2) div[data-testid="stMetricValue"] {
         background: linear-gradient(120deg, #ff9800, #ffc107);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(255, 152, 0, 0.5);
     }
-    
+
     [data-testid="column"]:nth-of-type(3) div[data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(3, 169, 244, 0.05) 100%);
-        border-color: rgba(33, 150, 243, 0.3);
+        background: linear-gradient(135deg, rgba(33, 150, 243, 0.2) 0%, rgba(3, 169, 244, 0.08) 100%);
+        border-color: rgba(33, 150, 243, 0.5);
     }
     [data-testid="column"]:nth-of-type(3) div[data-testid="stMetricValue"] {
         background: linear-gradient(120deg, #2196f3, #03a9f4);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(33, 150, 243, 0.5);
     }
-    
+
     [data-testid="column"]:nth-of-type(4) div[data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(139, 195, 74, 0.05) 100%);
-        border-color: rgba(76, 175, 80, 0.3);
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(139, 195, 74, 0.08) 100%);
+        border-color: rgba(76, 175, 80, 0.5);
     }
     [data-testid="column"]:nth-of-type(4) div[data-testid="stMetricValue"] {
         background: linear-gradient(120deg, #4caf50, #8bc34a);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
     }
     
-    /* Titre principal - compact */
+    /* Titre principal - Optimisé TV */
     h1 {
         color: #FFFFFF !important;
         text-align: center;
-        font-weight: 700 !important;
-        margin-bottom: 0.5rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 0.4rem !important;
         margin-top: 0rem !important;
-        font-size: 3rem !important;
+        font-size: 3.5rem !important;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 212, 255, 0.3);
+        letter-spacing: 2px;
     }
-    
-    /* Sous-titres - compact */
+
+    /* Sous-titres - Plus visibles */
     h3 {
         color: #00d4ff !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.5rem !important;
-        font-size: 2rem !important;
+        font-size: 2.2rem !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 212, 255, 0.3);
+        letter-spacing: 1px;
     }
-    
+
     h5 {
         color: #00d4ff !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.4rem !important;
-        font-size: 2rem !important;
+        font-size: 2.2rem !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 212, 255, 0.3);
+        letter-spacing: 1px;
     }
-    
+
     /* Ligne de séparation */
     hr {
-        border-color: rgba(255,255,255,0.1) !important;
+        border-color: rgba(255,255,255,0.15) !important;
         margin: 0.5rem 0 !important;
+        box-shadow: 0 1px 3px rgba(0, 212, 255, 0.2);
     }
-    
-    /* Style du tableau */
+
+    /* Style du tableau - Optimisé pour TV */
     .stDataFrame {
         text-align: center !important;
+        font-size: 1.3rem !important;
     }
-    
-    /* Centrer les en-têtes et données du tableau */
+
+    /* En-têtes de tableau - Plus visibles */
     thead tr th {
         text-align: center !important;
-        background-color: rgba(0, 212, 255, 0.2) !important;
+        background-color: rgba(0, 212, 255, 0.3) !important;
         color: white !important;
         font-weight: bold !important;
+        font-size: 1.4rem !important;
+        padding: 12px !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        border-bottom: 2px solid rgba(0, 212, 255, 0.5) !important;
     }
-    
+
+    /* Données de tableau - Zebra striping pour lisibilité */
     tbody tr td {
         text-align: center !important;
         color: white !important;
+        font-size: 1.3rem !important;
+        padding: 10px !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.03) !important;
+    }
+
+    tbody tr:hover {
+        background-color: rgba(0, 212, 255, 0.1) !important;
+        transition: background-color 0.2s ease;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -302,17 +350,24 @@ if not df.empty:
 
             fig_tree.update_traces(
                 textinfo="label+percent parent",
-                textfont_size=16,
-                hovertemplate="<b>%{label}</b><br>Requêtes: %{value}<br>Part: %{percentParent:.1%}<extra></extra>"
+                textfont_size=20,
+                textfont=dict(family="Arial Black", color="white"),
+                hovertemplate="<b>%{label}</b><br>Requêtes: %{value}<br>Part: %{percentParent:.1%}<extra></extra>",
+                marker=dict(line=dict(color="rgba(255,255,255,0.3)", width=2))
             )
 
             fig_tree.update_layout(
-                title="🖥️ Répartition Plateformes",
+                title=dict(
+                    text="🖥️ Répartition Plateformes",
+                    font=dict(size=24, color="#00d4ff", family="Arial Black"),
+                    x=0.5,
+                    xanchor="center"
+                ),
                 height=280,
-                margin=dict(l=10, r=10, t=40, b=10),
+                margin=dict(l=10, r=10, t=50, b=10),
                 paper_bgcolor="rgba(0,0,0,0)",
                 plot_bgcolor="rgba(0,0,0,0)",
-                font=dict(color="white", size=12),
+                font=dict(color="white", size=16, family="Arial"),
             )
 
             st.plotly_chart(fig_tree, use_container_width=True)
@@ -342,20 +397,36 @@ if not df.empty:
                 marker=dict(
                     color=daily_counts["Requetes"],
                     colorscale="Blues",
-                    line=dict(color="rgba(0, 212, 255, 0.5)", width=2),
+                    line=dict(color="rgba(0, 212, 255, 0.8)", width=3),
                 ),
+                text=daily_counts["Requetes"],
+                textposition="outside",
+                textfont=dict(size=18, color="white", family="Arial Black"),
             )
         )
 
         fig_activity.update_layout(
-            title="📈 Activité par Jour (Semaine Courante)",
+            title=dict(
+                text="📈 Activité par Jour (Semaine Courante)",
+                font=dict(size=24, color="#00d4ff", family="Arial Black"),
+                x=0.5,
+                xanchor="center"
+            ),
             height=280,
             margin=dict(l=40, r=20, t=50, b=60),
             plot_bgcolor="rgba(0,0,0,0)",
             paper_bgcolor="rgba(0,0,0,0)",
-            font=dict(color="white", size=11),
-            xaxis=dict(tickangle=-30, gridcolor="rgba(255,255,255,0.1)"),
-            yaxis=dict(gridcolor="rgba(255,255,255,0.1)", showgrid=True),
+            font=dict(color="white", size=16, family="Arial"),
+            xaxis=dict(
+                tickangle=-30,
+                gridcolor="rgba(255,255,255,0.1)",
+                tickfont=dict(size=15, family="Arial")
+            ),
+            yaxis=dict(
+                gridcolor="rgba(255,255,255,0.1)",
+                showgrid=True,
+                tickfont=dict(size=15, family="Arial")
+            ),
             showlegend=False,
         )
 
