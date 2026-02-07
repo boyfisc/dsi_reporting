@@ -237,6 +237,17 @@ df = load_data()
 # --- TITRE ---
 st.markdown("# 📊 DGID/DSI - GESTION HEBDO DES REQUETES")
 
+# --- FILTRE PLATEFORME ---
+plateforme_selectionnee = "TOUTES"
+if not df.empty and "LA PLATEFORME" in df.columns:
+    plateformes_disponibles = ["TOUTES"] + sorted(df["LA PLATEFORME"].dropna().unique().tolist())
+    plateforme_selectionnee = st.selectbox(
+        "🖥️ Filtrer par Plateforme",
+        options=plateformes_disponibles,
+        index=0,
+        key="filtre_plateforme"
+    )
+
 # --- CONFIGURATION DES MOTS CLÉS ---
 MOTS_TERMINES = [
     "TRAITE", "TRAITEE", "EFFECTUE", "EFFECTUEE",
@@ -290,8 +301,18 @@ if not df.empty:
 
     df["Etat_Calculé"] = df["Status_Clean"].apply(categorize_status)
 
-    # Filtre semaine
+    # Filtre semaine courante
     df_week = df[(df["Date_Simple"] >= start_of_week) & (df["Date_Simple"] <= end_of_week)].copy()
+
+    # Semaine précédente (pour calcul évolution)
+    start_of_prev_week = start_of_week - timedelta(days=7)
+    end_of_prev_week = end_of_week - timedelta(days=7)
+    df_prev_week = df[(df["Date_Simple"] >= start_of_prev_week) & (df["Date_Simple"] <= end_of_prev_week)].copy()
+
+    # Application du filtre plateforme si sélectionné
+    if "LA PLATEFORME" in df.columns and plateforme_selectionnee != "TOUTES":
+        df_week = df_week[df_week["LA PLATEFORME"] == plateforme_selectionnee].copy()
+        df_prev_week = df_prev_week[df_prev_week["LA PLATEFORME"] == plateforme_selectionnee].copy()
 
     # Contrôle des états inattendus
     etats_attendus = {"non traite", "encours", "effectue"}
@@ -299,7 +320,7 @@ if not df.empty:
     if etats_inattendus:
         st.warning(f"Etats inattendus detectes: {sorted(etats_inattendus)}")
 
-    # KPI
+    # KPI Semaine Courante
     total_semaine = len(df_week)
     non_traites_semaine = (df_week["Etat_Calculé"] == "non traite").sum()
     en_cours_semaine = (df_week["Etat_Calculé"] == "encours").sum()
@@ -307,10 +328,30 @@ if not df.empty:
 
     taux_traitement = (effectue_semaine / total_semaine * 100) if total_semaine > 0 else 0
     taux_encours = (en_cours_semaine / total_semaine * 100) if total_semaine > 0 else 0
+
+    # KPI Semaine Précédente (pour évolution)
+    total_prev = len(df_prev_week)
+    effectue_prev = (df_prev_week["Etat_Calculé"] == "effectue").sum()
+    taux_traitement_prev = (effectue_prev / total_prev * 100) if total_prev > 0 else 0
+
+    # Calcul évolution
+    evolution_total = total_semaine - total_prev
+    evolution_taux = taux_traitement - taux_traitement_prev
+
     heure_actuelle = datetime.now().strftime("%H:%M")
 
+    # Fonction pour déterminer la couleur du taux
+    def get_taux_color(taux):
+        if taux >= 75:
+            return "#4caf50"  # Vert
+        elif taux >= 50:
+            return "#ff9800"  # Orange
+        else:
+            return "#f44336"  # Rouge
+
     # ============ SECTION EN-TÊTE ============
-    st.markdown(f"### 📅 Semaine du {start_of_week.strftime('%d/%m')} au {end_of_week.strftime('%d/%m/%Y')}")
+    filtre_info = f" - {plateforme_selectionnee}" if "LA PLATEFORME" in df.columns and plateforme_selectionnee != "TOUTES" else ""
+    st.markdown(f"### 📅 Semaine du {start_of_week.strftime('%d/%m')} au {end_of_week.strftime('%d/%m/%Y')}{filtre_info}")
 
     # ============ LIGNE 1 : KPI + PLATEFORMES ============
     col1, col2 = st.columns([1, 1], gap="small")
@@ -319,7 +360,7 @@ if not df.empty:
     with col1:
         kpi1, kpi2 = st.columns(2, gap="small")
         with kpi1:
-            st.metric("📅 TOTAL REQUÊTES", int(total_semaine))
+            st.metric("📅 TOTAL REQUÊTES", int(total_semaine), delta=f"{evolution_total:+d}" if total_prev > 0 else None)
         with kpi2:
             st.metric("⚠️ NON EFFECTUÉ", int(non_traites_semaine))
 
@@ -478,7 +519,27 @@ if not df.empty:
 
         stat1, stat2 = st.columns(2)
         with stat1:
-            st.metric("✅ Taux Traitement", f"{taux_traitement:.1f}%")
+            # Taux de traitement avec couleur conditionnelle
+            taux_color = get_taux_color(taux_traitement)
+            delta_display = f"{evolution_taux:+.1f}%" if total_prev > 0 else ""
+
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+                        padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15);
+                        box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3); text-align: center;">
+                <div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase;
+                            letter-spacing: 1px; margin-bottom: 8px;">✅ TAUX TRAITEMENT</div>
+                <div style="font-size: 4.5rem; font-weight: 800; color: {taux_color};
+                            text-shadow: 0 0 20px {taux_color}80; line-height: 1.1;">
+                    {taux_traitement:.1f}%
+                </div>
+                <div style="font-size: 1.2rem; color: {'#4caf50' if evolution_taux >= 0 else '#f44336'};
+                            font-weight: 600; margin-top: 5px;">
+                    {delta_display}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
         with stat2:
             st.metric("⏳ Taux En Cours", f"{taux_encours:.1f}%")
 
