@@ -345,19 +345,39 @@ if not df.empty:
     # ============ LIGNE 1 : KPI + PLATEFORMES ============
     col1, col2 = st.columns([1, 1], gap="small")
 
-    # GAUCHE : KPI 2x2
+    # GAUCHE : KPI 2x2 avec style homogène
     with col1:
         kpi1, kpi2 = st.columns(2, gap="small")
         with kpi1:
-            st.metric("📅 TOTAL REQUÊTES", int(total_semaine), delta=f"{evolution_total:+d}" if total_prev > 0 else None)
+            # Total Requêtes avec delta
+            delta_display = f"{evolution_total:+d}" if total_prev > 0 else ""
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">📅 TOTAL REQUÊTES</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: #00d4ff; line-height: 1.1;">{int(total_semaine)}</div>
+<div style="font-size: 1.2rem; color: {'#4caf50' if evolution_total >= 0 else '#f44336'}; font-weight: 600; margin-top: 5px;">{delta_display}</div>
+</div>""", unsafe_allow_html=True)
+
         with kpi2:
-            st.metric("⚠️ NON EFFECTUÉ", int(non_traites_semaine))
+            # Non Effectué
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">⚠️ NON EFFECTUÉ</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: #ff9800; line-height: 1.1;">{int(non_traites_semaine)}</div>
+</div>""", unsafe_allow_html=True)
 
         kpi3, kpi4 = st.columns(2, gap="small")
         with kpi3:
-            st.metric("⏳ EN COURS", int(en_cours_semaine))
+            # En Cours
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">⏳ EN COURS</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: #2196f3; line-height: 1.1;">{int(en_cours_semaine)}</div>
+</div>""", unsafe_allow_html=True)
+
         with kpi4:
-            st.metric("✅ EFFECTUÉ", int(effectue_semaine))
+            # Effectué
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
+<div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">✅ EFFECTUÉ</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: #4caf50; line-height: 1.1;">{int(effectue_semaine)}</div>
+</div>""", unsafe_allow_html=True)
 
     # DROITE : Répartition Plateformes (TREEMAP)
     with col2:
