@@ -28,31 +28,24 @@ st.markdown("""
         background: linear-gradient(135deg, #0E1117 0%, #1a1f2e 100%);
     }
 
-    /* Animation pulse pour les KPI */
-    @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3), 0 0 20px rgba(0, 212, 255, 0.2); }
-        50% { box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3), 0 0 30px rgba(0, 212, 255, 0.4); }
-    }
-
-    /* Style des cartes KPI - Optimisé TV */
+    /* Style des cartes KPI - Optimisé TV (sans effets lumineux) */
     div[data-testid="stMetric"] {
         background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
         padding: 20px 16px;
         border-radius: 12px;
-        border: 2px solid rgba(255,255,255,0.15);
-        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.4), 0 0 20px rgba(0, 212, 255, 0.15);
+        border: 2px solid rgba(255,255,255,0.2);
+        box-shadow: 0 4px 12px 0 rgba(0,0,0,0.5);
         backdrop-filter: blur(6px);
         text-align: center;
-        animation: pulse-glow 4s ease-in-out infinite;
         transition: all 0.3s ease;
     }
 
     div[data-testid="stMetric"]:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 40px 0 rgba(0,0,0,0.5), 0 0 40px rgba(0, 212, 255, 0.3);
+        box-shadow: 0 6px 16px 0 rgba(0,0,0,0.6);
     }
 
-    /* Valeurs KPI - Plus grandes pour TV */
+    /* Valeurs KPI - Plus grandes pour TV (sans effets lumineux) */
     div[data-testid="stMetricValue"] {
         font-size: 4.5rem !important;
         font-weight: 800 !important;
@@ -61,8 +54,7 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-align: center;
-        text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
         line-height: 1.1;
     }
 
@@ -92,7 +84,6 @@ st.markdown("""
         background: linear-gradient(120deg, #ff9800, #ffc107);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 30px rgba(255, 152, 0, 0.5);
     }
 
     [data-testid="column"]:nth-of-type(3) div[data-testid="stMetric"] {
@@ -103,7 +94,6 @@ st.markdown("""
         background: linear-gradient(120deg, #2196f3, #03a9f4);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 30px rgba(33, 150, 243, 0.5);
     }
 
     [data-testid="column"]:nth-of-type(4) div[data-testid="stMetric"] {
@@ -114,10 +104,9 @@ st.markdown("""
         background: linear-gradient(120deg, #4caf50, #8bc34a);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
     }
     
-    /* Titre principal - Optimisé TV */
+    /* Titre principal - Optimisé TV (sans effets lumineux) */
     h1 {
         color: #FFFFFF !important;
         text-align: center;
@@ -125,18 +114,18 @@ st.markdown("""
         margin-bottom: 0.4rem !important;
         margin-top: 0rem !important;
         font-size: 3.5rem !important;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 212, 255, 0.3);
+        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
         letter-spacing: 2px;
     }
 
-    /* Sous-titres - Plus visibles */
+    /* Sous-titres - Plus visibles (sans effets lumineux) */
     h3 {
         color: #00d4ff !important;
         font-weight: 700 !important;
         margin-top: 0.3rem !important;
         margin-bottom: 0.5rem !important;
         font-size: 2.2rem !important;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 212, 255, 0.3);
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
         letter-spacing: 1px;
     }
 
@@ -146,7 +135,7 @@ st.markdown("""
         margin-top: 0.3rem !important;
         margin-bottom: 0.4rem !important;
         font-size: 2.2rem !important;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 212, 255, 0.3);
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
         letter-spacing: 1px;
     }
 
@@ -606,9 +595,9 @@ if not df.empty:
             taux_color = get_taux_color(taux_traitement)
             delta_display = f"{evolution_taux:+.1f}%" if total_prev > 0 else ""
 
-            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 6px 24px 0 rgba(0,0,0,0.3); text-align: center;">
+            st.markdown(f"""<div style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); padding: 16px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 12px 0 rgba(0,0,0,0.4); text-align: center;">
 <div style="font-size: 1.5rem; color: #FFFFFF; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">✅ TAUX TRAITEMENT</div>
-<div style="font-size: 4.5rem; font-weight: 800; color: {taux_color}; text-shadow: 0 0 20px {taux_color}80; line-height: 1.1;">{taux_traitement:.1f}%</div>
+<div style="font-size: 4.5rem; font-weight: 800; color: {taux_color}; line-height: 1.1;">{taux_traitement:.1f}%</div>
 <div style="font-size: 1.2rem; color: {'#4caf50' if evolution_taux >= 0 else '#f44336'}; font-weight: 600; margin-top: 5px;">{delta_display}</div>
 </div>""", unsafe_allow_html=True)
 
