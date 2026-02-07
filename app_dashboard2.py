@@ -477,11 +477,48 @@ if not df.empty:
         if "CENTRE FISCAL" in df.columns:
             top_centres = df_week["CENTRE FISCAL"].value_counts().head(5).reset_index()
             top_centres.columns = ["Centre Fiscal", "Requêtes"]
-            top_centres.index = range(1, len(top_centres) + 1)
-            top_centres.index.name = "#"
 
             st.markdown("##### 🏢 Top 5 Centres Fiscaux")
-            st.dataframe(top_centres, use_container_width=True, height=245)
+
+            # Inverser l'ordre pour avoir le plus grand en haut
+            top_centres = top_centres.sort_values("Requêtes", ascending=True)
+
+            fig_centres = go.Figure()
+            fig_centres.add_trace(
+                go.Bar(
+                    x=top_centres["Requêtes"],
+                    y=top_centres["Centre Fiscal"],
+                    orientation="h",
+                    marker=dict(
+                        color=top_centres["Requêtes"],
+                        colorscale="Teal",
+                        line=dict(color="rgba(0, 212, 255, 0.8)", width=2),
+                    ),
+                    text=top_centres["Requêtes"],
+                    textposition="outside",
+                    textfont=dict(size=18, color="white", family="Arial Black"),
+                )
+            )
+
+            fig_centres.update_layout(
+                height=260,
+                margin=dict(l=10, r=40, t=10, b=40),
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font=dict(color="white", size=14, family="Arial"),
+                xaxis=dict(
+                    gridcolor="rgba(255,255,255,0.1)",
+                    showgrid=True,
+                    tickfont=dict(size=14, family="Arial")
+                ),
+                yaxis=dict(
+                    tickfont=dict(size=15, family="Arial Black"),
+                    automargin=True
+                ),
+                showlegend=False,
+            )
+
+            st.plotly_chart(fig_centres, use_container_width=True)
         else:
             st.info("Colonne 'CENTRE FISCAL' introuvable.")
 
@@ -507,12 +544,58 @@ if not df.empty:
             aggfunc="size",
             fill_value=0,
         )
-        summary["TOTAL"] = summary.sum(axis=1)
 
-        wanted_cols = ["TOTAL", "effectue"]
-        existing_cols = [c for c in wanted_cols if c in summary.columns]
+        # Créer graphique en barres groupées
+        fig_bilan = go.Figure()
 
-        st.dataframe(summary[existing_cols], use_container_width=True, height=150)
+        colors = {
+            "effectue": "#4caf50",
+            "encours": "#2196f3",
+            "non traite": "#ff9800"
+        }
+
+        for col in ["effectue", "encours", "non traite"]:
+            if col in summary.columns:
+                fig_bilan.add_trace(
+                    go.Bar(
+                        name=col.replace("_", " ").title(),
+                        x=summary.index,
+                        y=summary[col],
+                        marker_color=colors.get(col, "#00d4ff"),
+                        text=summary[col],
+                        textposition="auto",
+                        textfont=dict(size=16, color="white", family="Arial Black"),
+                    )
+                )
+
+        fig_bilan.update_layout(
+            barmode="group",
+            height=260,
+            margin=dict(l=20, r=20, t=10, b=40),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font=dict(color="white", size=14, family="Arial"),
+            xaxis=dict(
+                tickfont=dict(size=16, family="Arial Black"),
+                gridcolor="rgba(255,255,255,0.1)"
+            ),
+            yaxis=dict(
+                gridcolor="rgba(255,255,255,0.1)",
+                showgrid=True,
+                tickfont=dict(size=14, family="Arial")
+            ),
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="center",
+                x=0.5,
+                font=dict(size=14, family="Arial")
+            ),
+            showlegend=True,
+        )
+
+        st.plotly_chart(fig_bilan, use_container_width=True)
 
     with col_stats:
         st.markdown("##### 📈 Statistiques")
