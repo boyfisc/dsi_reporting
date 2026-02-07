@@ -306,7 +306,7 @@ if not df.empty:
                 labels=pie_data["Plateforme"], values=pie_data["Volume"],
                 hole=0.45,
                 textinfo="label+percent",
-                textfont=dict(size=13, color="white"),
+                textfont=dict(size=13, color="black"),
                 marker=dict(colors=colors_plat, line=dict(color="rgba(0,0,0,0.3)", width=1)),
                 hovertemplate="<b>%{label}</b><br>%{value} requêtes<br>%{percent}<extra></extra>",
             )])
