@@ -305,11 +305,21 @@ st.markdown("""
         border-radius: 12px !important;
         margin-bottom: 0.6rem;
         box-shadow: 0 1px 4px rgba(62,39,35,0.04);
+        overflow: hidden;
     }
-    div[data-testid="stExpander"] summary {
+    div[data-testid="stExpander"] > details > summary {
         font-family: 'Source Sans 3', sans-serif !important;
-        color: var(--brown-800) !important;
+        color: var(--white) !important;
         font-weight: 700 !important;
+        background: linear-gradient(135deg, var(--brown-800), var(--brown-700)) !important;
+        padding: 0.8rem 1.2rem !important;
+        border-radius: 0 !important;
+    }
+    div[data-testid="stExpander"] > details > summary:hover {
+        background: linear-gradient(135deg, var(--brown-700), var(--brown-600)) !important;
+    }
+    div[data-testid="stExpander"] > details > summary svg {
+        color: var(--gold-300) !important;
     }
 
     .stButton > button[kind="primary"] {
