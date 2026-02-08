@@ -354,9 +354,12 @@ st.markdown("""
         background: var(--gold-50) !important;
     }
 
-    .stCheckbox label span {
+    .stCheckbox label span,
+    .stCheckbox label span p {
         font-family: 'Source Sans 3', sans-serif !important;
-        color: var(--text-mid) !important;
+        color: var(--brown-800) !important;
+        font-weight: 600 !important;
+        font-size: 0.92rem !important;
     }
 
     /* alert boxes */
@@ -636,6 +639,15 @@ if step == 0:
     col_btn1, col_btn2 = st.columns([3, 1])
     with col_btn1:
         if st.button("Passer à la confirmation →", type="primary", use_container_width=True, disabled=not can_continue):
+            # Sauvegarder les données du formulaire dans des clés dédiées
+            st.session_state["data_legal_form"] = st.session_state.get("legal_form", "")
+            st.session_state["data_sector"] = st.session_state.get("sector", "")
+            st.session_state["data_naema"] = st.session_state.get("naema", "")
+            st.session_state["data_activity_desc"] = st.session_state.get("activity_desc", "")
+            st.session_state["data_employees"] = st.session_state.get("employees", 0)
+            st.session_state["data_capital"] = st.session_state.get("capital", 0)
+            st.session_state["data_phone"] = st.session_state.get("phone", "")
+            st.session_state["data_email"] = st.session_state.get("email", "")
             st.session_state["step"] = 1
             st.rerun()
     with col_btn2:
@@ -654,14 +666,15 @@ elif step == 1:
     st.markdown("#### ✅ Confirmation de vos informations")
     st.caption("Vérifiez attentivement avant validation définitive")
 
-    legal_form = st.session_state.get("legal_form", "")
-    sector = st.session_state.get("sector", "")
-    naema_choice = st.session_state.get("naema", "")
-    activity_desc = st.session_state.get("activity_desc", "")
-    employees = st.session_state.get("employees", 0)
-    capital = st.session_state.get("capital", 0)
-    phone = st.session_state.get("phone", "")
-    email = st.session_state.get("email", "")
+    # Lire depuis les clés sauvegardées (stables, pas liées aux widgets)
+    legal_form = st.session_state.get("data_legal_form", "")
+    sector = st.session_state.get("data_sector", "")
+    naema_choice = st.session_state.get("data_naema", "")
+    activity_desc = st.session_state.get("data_activity_desc", "")
+    employees = st.session_state.get("data_employees", 0)
+    capital = st.session_state.get("data_capital", 0)
+    phone = st.session_state.get("data_phone", "")
+    email = st.session_state.get("data_email", "")
 
     st.markdown(f"""
     <div class="confirm-card">
@@ -734,9 +747,9 @@ elif step == 1:
 elif step == 2:
     st.balloons()
 
-    legal_form = st.session_state.get("legal_form", "")
-    sector = st.session_state.get("sector", "")
-    employees = st.session_state.get("employees", 0)
+    legal_form = st.session_state.get("data_legal_form", "")
+    sector = st.session_state.get("data_sector", "")
+    employees = st.session_state.get("data_employees", 0)
 
     regime, description = determine_regime_fiscal(legal_form, employees, sector)
 
