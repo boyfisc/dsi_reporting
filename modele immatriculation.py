@@ -1,4 +1,5 @@
 import streamlit as st
+from naema_data import SECTIONS, DIVISIONS, GROUPS, get_divisions_for_section, get_groups_for_division
 
 st.set_page_config(page_title="DGID — Portail d'immatriculation fiscale", page_icon="🏛️", layout="centered")
 
@@ -492,7 +493,11 @@ def reset_form():
         del st.session_state[k]
 
 
-def determine_regime_fiscal(legal_form, employees, sector):
+def determine_regime_fiscal(legal_form, employees, naema_code=""):
+    """
+    Détermine le régime fiscal en fonction de la forme juridique,
+    du nombre d'employés et optionnellement du code NAEMA
+    """
     if legal_form == "Entreprise Individuelle":
         if employees <= 5:
             return "Régime Réel Simplifié d'Imposition (RSI)", "Adapté aux petites structures avec comptabilité simplifiée"
@@ -575,44 +580,90 @@ if step == 0:
         st.info("Veuillez choisir une forme juridique pour continuer.")
         st.stop()
 
-    allowed_sectors = LEGAL_FORM_TO_SECTORS.get(legal_form, [])
+    # Q2 - Navigation hiérarchique NAEMA
+    with st.expander("**② Classification NAEMA de votre activité**", expanded=True):
+        st.markdown("📂 **Navigation hiérarchique : Section → Division → Groupe**")
 
-    # Q2
-    with st.expander("**② Secteur d'activité principal**", expanded=True):
-        sector = st.selectbox(
-            "Sélectionnez votre secteur d'activité",
-            options=["— Sélectionner —"] + allowed_sectors,
-            key="sector",
+        # Étape 1 : Sélection de la Section
+        section_options = [f"{code} — {label}" for code, label in SECTIONS.items()]
+        section_choice = st.selectbox(
+            "Sélectionnez une section d'activité",
+            options=["— Sélectionner —"] + section_options + ["🔸 Autre (à préciser)"],
+            key="naema_section",
         )
-        if sector != "— Sélectionner —":
-            st.success(f"Secteur : **{sector}**")
 
-    if sector == "— Sélectionner —":
-        st.info("Veuillez choisir un secteur d'activité.")
+        if section_choice == "🔸 Autre (à préciser)":
+            autre_section = st.text_input(
+                "Précisez votre secteur d'activité",
+                placeholder="Ex: Activité spécifique non listée...",
+                key="autre_section"
+            )
+            if autre_section.strip():
+                st.success(f"✅ Activité personnalisée : **{autre_section}**")
+                # Sauvegarder directement comme code NAEMA
+                st.session_state["final_naema"] = f"AUTRE — {autre_section}"
+        elif section_choice != "— Sélectionner —":
+            section_code = section_choice.split(" — ")[0]
+            st.info(f"📍 Section sélectionnée : **{section_choice}**")
+
+            # Étape 2 : Sélection de la Division
+            divisions_dict = get_divisions_for_section(section_code)
+            if divisions_dict:
+                division_options = [f"{code} — {label}" for code, label in divisions_dict.items()]
+                division_choice = st.selectbox(
+                    "Sélectionnez une division",
+                    options=["— Sélectionner —"] + division_options + ["🔸 Autre (à préciser)"],
+                    key="naema_division",
+                )
+
+                if division_choice == "🔸 Autre (à préciser)":
+                    autre_division = st.text_input(
+                        "Précisez votre activité",
+                        placeholder="Ex: Activité spécifique dans cette section...",
+                        key="autre_division"
+                    )
+                    if autre_division.strip():
+                        st.success(f"✅ Activité personnalisée : **{autre_division}**")
+                        st.session_state["final_naema"] = f"{section_code}.AUTRE — {autre_division}"
+                elif division_choice != "— Sélectionner —":
+                    division_code = division_choice.split(" — ")[0]
+                    st.info(f"📍 Division sélectionnée : **{division_choice}**")
+
+                    # Étape 3 : Sélection du Groupe
+                    groups_dict = get_groups_for_division(division_code)
+                    if groups_dict:
+                        group_options = [f"{code} — {label}" for code, label in groups_dict.items()]
+                        group_choice = st.selectbox(
+                            "Sélectionnez un groupe (code détaillé)",
+                            options=["— Sélectionner —"] + group_options + ["🔸 Autre (à préciser)"],
+                            key="naema_group",
+                        )
+
+                        if group_choice == "🔸 Autre (à préciser)":
+                            autre_group = st.text_input(
+                                "Précisez votre activité",
+                                placeholder="Ex: Activité spécifique dans cette division...",
+                                key="autre_group"
+                            )
+                            if autre_group.strip():
+                                st.success(f"✅ Code NAEMA personnalisé : **{division_code}.AUTRE — {autre_group}**")
+                                st.session_state["final_naema"] = f"{division_code}.AUTRE — {autre_group}"
+                        elif group_choice != "— Sélectionner —":
+                            st.success(f"✅ Code NAEMA sélectionné : **{group_choice}**")
+                            st.session_state["final_naema"] = group_choice
+                    else:
+                        # Pas de groupes, utiliser la division directement
+                        st.success(f"✅ Code NAEMA sélectionné : **{division_choice}**")
+                        st.session_state["final_naema"] = division_choice
+
+    # Vérifier si un code NAEMA final a été sélectionné
+    naema_choice = st.session_state.get("final_naema", "")
+    if not naema_choice:
+        st.info("Veuillez sélectionner ou préciser votre catégorie d'activité NAEMA.")
         st.stop()
 
-    # Q3
-    naema_options = SECTOR_TO_NAEMA.get(sector, [])
-    if not naema_options:
-        st.error("Aucune option NAEMA configurée pour ce secteur.")
-        st.stop()
-
-    with st.expander("**③ Catégorie NAEMA**", expanded=True):
-        naema_label_list = [f"{code} — {label}" for (code, label) in naema_options]
-        naema_choice = st.selectbox(
-            "Sélectionnez la catégorie NAEMA la plus proche",
-            options=["— Sélectionner —"] + naema_label_list,
-            key="naema",
-        )
-        if naema_choice != "— Sélectionner —":
-            st.success(f"NAEMA : **{naema_choice}**")
-
-    if naema_choice == "— Sélectionner —":
-        st.info("Veuillez sélectionner une catégorie NAEMA.")
-        st.stop()
-
-    # Q4
-    with st.expander("**④ Détails de votre activité**", expanded=True):
+    # Q3 - Détails de l'activité
+    with st.expander("**③ Détails de votre activité**", expanded=True):
         activity_desc = st.text_area(
             "Décrivez brièvement votre activité",
             placeholder="Ex : Vente de vêtements prêts-à-porter via boutique et réseaux sociaux…",
@@ -641,8 +692,7 @@ if step == 0:
         if st.button("Passer à la confirmation →", type="primary", use_container_width=True, disabled=not can_continue):
             # Sauvegarder les données du formulaire dans des clés dédiées
             st.session_state["data_legal_form"] = st.session_state.get("legal_form", "")
-            st.session_state["data_sector"] = st.session_state.get("sector", "")
-            st.session_state["data_naema"] = st.session_state.get("naema", "")
+            st.session_state["data_naema"] = st.session_state.get("final_naema", "")
             st.session_state["data_activity_desc"] = st.session_state.get("activity_desc", "")
             st.session_state["data_employees"] = st.session_state.get("employees", 0)
             st.session_state["data_capital"] = st.session_state.get("capital", 0)
@@ -668,7 +718,6 @@ elif step == 1:
 
     # Lire depuis les clés sauvegardées (stables, pas liées aux widgets)
     legal_form = st.session_state.get("data_legal_form", "")
-    sector = st.session_state.get("data_sector", "")
     naema_choice = st.session_state.get("data_naema", "")
     activity_desc = st.session_state.get("data_activity_desc", "")
     employees = st.session_state.get("data_employees", 0)
@@ -683,15 +732,11 @@ elif step == 1:
             <div class="info-value">{legal_form}</div>
         </div>
         <div class="info-row">
-            <div class="info-label">Secteur d'activité</div>
-            <div class="info-value">{sector}</div>
-        </div>
-        <div class="info-row">
             <div class="info-label">Code NAEMA</div>
             <div class="info-value">{naema_choice}</div>
         </div>
         <div class="info-row">
-            <div class="info-label">Description</div>
+            <div class="info-label">Description de l'activité</div>
             <div class="info-value">{activity_desc}</div>
         </div>
         <div class="info-row">
@@ -748,10 +793,10 @@ elif step == 2:
     st.balloons()
 
     legal_form = st.session_state.get("data_legal_form", "")
-    sector = st.session_state.get("data_sector", "")
+    naema_code = st.session_state.get("data_naema", "")
     employees = st.session_state.get("data_employees", 0)
 
-    regime, description = determine_regime_fiscal(legal_form, employees, sector)
+    regime, description = determine_regime_fiscal(legal_form, employees, naema_code)
 
     st.markdown("""
     <div class="regime-header">
@@ -778,8 +823,8 @@ elif step == 2:
             <div class="info-value">{employees} employé(s)</div>
         </div>
         <div class="info-row">
-            <div class="info-label">Secteur</div>
-            <div class="info-value">{sector}</div>
+            <div class="info-label">Code NAEMA</div>
+            <div class="info-value">{naema_code}</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
