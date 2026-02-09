@@ -514,7 +514,12 @@ def determine_regime_fiscal(legal_form, employees, naema_code=""):
         return "Régime Transparent", "Les bénéfices sont imposés au niveau des membres"
     elif legal_form == "SCI":
         return "Régime de la Transparence Fiscale", "Imposition des associés sur leur quote-part"
-    return "Régime du Réel Normal", "Régime standard"
+    else:
+        # Forme juridique personnalisée - régime par défaut basé sur la taille
+        if employees < 10:
+            return "Régime du Réel Simplifié", f"Régime recommandé pour votre structure ({legal_form}) avec {employees} employé(s)"
+        else:
+            return "Régime du Réel Normal", f"Régime standard pour votre structure ({legal_form}) avec {employees} employé(s)"
 
 
 # ─── Init ───
@@ -570,14 +575,31 @@ if step == 0:
         legal_forms = list(LEGAL_FORM_TO_SECTORS.keys())
         legal_form = st.selectbox(
             "Sélectionnez la forme juridique",
-            options=["— Sélectionner —"] + legal_forms,
+            options=["— Sélectionner —"] + legal_forms + ["🔸 Autre (à préciser)"],
             key="legal_form",
         )
-        if legal_form != "— Sélectionner —":
-            st.success(f"Forme juridique : **{legal_form}**")
 
-    if legal_form == "— Sélectionner —":
-        st.info("Veuillez choisir une forme juridique pour continuer.")
+        if legal_form == "🔸 Autre (à préciser)":
+            autre_legal_form = st.text_input(
+                "Précisez votre forme juridique",
+                placeholder="Ex: Association, ONG, Coopérative, etc.",
+                key="autre_legal_form"
+            )
+            if autre_legal_form.strip():
+                st.success(f"✅ Forme juridique personnalisée : **{autre_legal_form}**")
+                st.session_state["final_legal_form"] = autre_legal_form
+            else:
+                st.session_state["final_legal_form"] = ""
+        elif legal_form != "— Sélectionner —":
+            st.success(f"Forme juridique : **{legal_form}**")
+            st.session_state["final_legal_form"] = legal_form
+        else:
+            st.session_state["final_legal_form"] = ""
+
+    # Vérifier si une forme juridique a été sélectionnée
+    final_legal_form = st.session_state.get("final_legal_form", "")
+    if not final_legal_form:
+        st.info("Veuillez choisir ou préciser une forme juridique pour continuer.")
         st.stop()
 
     # Q2 - Navigation hiérarchique NAEMA
@@ -691,7 +713,7 @@ if step == 0:
     with col_btn1:
         if st.button("Passer à la confirmation →", type="primary", use_container_width=True, disabled=not can_continue):
             # Sauvegarder les données du formulaire dans des clés dédiées
-            st.session_state["data_legal_form"] = st.session_state.get("legal_form", "")
+            st.session_state["data_legal_form"] = st.session_state.get("final_legal_form", "")
             st.session_state["data_naema"] = st.session_state.get("final_naema", "")
             st.session_state["data_activity_desc"] = st.session_state.get("activity_desc", "")
             st.session_state["data_employees"] = st.session_state.get("employees", 0)
