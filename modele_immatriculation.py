@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import json
 from pathlib import Path
 
@@ -34,19 +33,6 @@ def load_data():
 
 ALL_PRODUITS = load_data()
 
-@st.cache_data
-def get_js_data():
-    """Minified JSON for the JS autocomplete component."""
-    mini = []
-    for p in ALL_PRODUITS:
-        mini.append({
-            "s": p["sec_code"], "sl": p["sec_lib"],
-            "g": p["grp_lib"], "a": p["act_lib"],
-            "pc": p["prod_code"], "pl": p["prod_lib"],
-        })
-    return json.dumps(mini, ensure_ascii=False)
-
-JS_DATA = get_js_data()
 
 # ─────────────────────────────────────────────
 # CSS
@@ -75,6 +61,8 @@ st.markdown("""
     font-size:1.65rem!important;font-weight:700!important;margin:0 0 .25rem 0!important}
 .dgid-banner .subtitle{color:var(--gold-300);font-family:'Source Sans 3',sans-serif;
     font-size:.9rem;letter-spacing:1.5px;text-transform:uppercase}
+
+/* Step bar */
 .step-bar{display:flex;gap:6px;margin:.5rem 0 1.5rem;padding:.75rem;
     background:var(--white);border-radius:14px;border:1px solid var(--border);
     box-shadow:0 2px 8px rgba(62,39,35,.06)}
@@ -89,6 +77,8 @@ st.markdown("""
 .step-item.active .step-num{background:var(--brown-900);color:var(--gold-300)}
 .step-item.completed .step-num{background:var(--gold-500);color:var(--brown-900)}
 .step-item.pending .step-num{background:var(--brown-100);color:var(--brown-300)}
+
+/* Cards */
 .confirm-card{background:var(--white);padding:1.6rem 1.8rem;border-radius:14px;
     border:1px solid var(--border);border-left:5px solid var(--gold-500);
     margin:.8rem 0;box-shadow:0 2px 10px rgba(62,39,35,.05)}
@@ -97,6 +87,8 @@ st.markdown("""
 .info-label{font-family:'Source Sans 3',sans-serif;font-weight:700;color:var(--brown-700);
     width:200px;flex-shrink:0;font-size:.9rem}
 .info-value{font-family:'Source Sans 3',sans-serif;color:var(--text-dark);font-size:.92rem;flex:1}
+
+/* Activity validated card */
 .act-card{background:var(--gold-50);border:1px solid var(--gold-200);border-radius:10px;
     padding:.75rem 1rem;margin:.4rem 0;font-family:'Source Sans 3',sans-serif}
 .act-card .act-role{font-size:.7rem;font-weight:700;text-transform:uppercase;
@@ -107,6 +99,29 @@ st.markdown("""
     border-top:1px dashed var(--gold-200);font-size:.78rem}
 .act-card .act-auto span{color:var(--brown-300)}
 .act-card .act-auto strong{color:var(--brown-700)}
+
+/* Selection recap card (bigger, with check icon) */
+.recap-select{
+    background:linear-gradient(135deg,#FFFBF0,#FFF8E7);
+    border:2px solid var(--gold-400);border-radius:14px;
+    padding:1.2rem 1.4rem;margin:.8rem 0;
+    font-family:'Source Sans 3',sans-serif;
+    box-shadow:0 4px 16px rgba(218,165,32,.12);
+}
+.recap-select .rs-header{
+    display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;
+}
+.recap-select .rs-icon{font-size:1.5rem}
+.recap-select .rs-title{font-weight:700;color:var(--brown-900);font-size:1.05rem}
+.recap-select .rs-row{
+    display:flex;align-items:baseline;padding:.45rem 0;
+    border-bottom:1px solid rgba(218,165,32,.2);
+}
+.recap-select .rs-row:last-child{border-bottom:none}
+.recap-select .rs-label{font-weight:600;color:var(--brown-600);width:160px;flex-shrink:0;font-size:.85rem}
+.recap-select .rs-val{color:var(--brown-900);font-size:.88rem;font-weight:500}
+
+/* Next steps */
 .next-steps{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.6rem}
 .next-steps h4{font-family:'Playfair Display',serif!important;color:var(--brown-800)!important;
     font-size:1rem!important;margin:0 0 1rem 0!important}
@@ -115,6 +130,7 @@ st.markdown("""
     background:var(--gold-100);color:var(--brown-800);font-family:'Source Sans 3',sans-serif;
     font-weight:700;font-size:.8rem}
 .ns-text{font-family:'Source Sans 3',sans-serif;color:var(--text-mid);font-size:.9rem;line-height:1.45}
+
 /* Streamlit overrides */
 .stSelectbox label,.stTextInput label,.stTextArea label,.stNumberInput label{
     font-family:'Source Sans 3',sans-serif!important;color:var(--brown-700)!important;
@@ -155,6 +171,21 @@ def reset_form():
     for k in list(st.session_state.keys()):
         del st.session_state[k]
 
+
+def search_produits(query):
+    if not query or len(query) < 2:
+        return []
+    terms = query.lower().split()
+    results = []
+    for p in ALL_PRODUITS:
+        hay = f"{p['prod_lib']} {p['act_lib']} {p['grp_lib']} {p['sec_lib']}".lower()
+        if all(t in hay for t in terms):
+            results.append(p)
+            if len(results) >= 30:
+                break
+    return results
+
+
 def render_activity_card(act, role_label):
     return f"""
     <div class="act-card">
@@ -170,169 +201,32 @@ def render_activity_card(act, role_label):
     </div>
     """
 
-def build_autocomplete_html():
-    """Build the full HTML/CSS/JS for the live autocomplete component."""
+
+def render_selection_recap(act):
+    """Big recap card after user selects an activity."""
     return f"""
-    <div id="ac-root">
-        <div id="ac-wrap">
-            <div id="ac-icon">🔍</div>
-            <input id="ac-input" type="text" autocomplete="off"
-                   placeholder="Tapez ici : riz, taxi, poisson, ciment, hôtel, comptabilité…" />
-            <div id="ac-clear" onclick="clearInput()" title="Effacer">✕</div>
+    <div class="recap-select">
+        <div class="rs-header">
+            <div class="rs-icon">📌</div>
+            <div class="rs-title">{act['prod_lib']}</div>
         </div>
-        <div id="ac-count"></div>
-        <div id="ac-results"></div>
+        <div class="rs-row">
+            <div class="rs-label">Code produit</div>
+            <div class="rs-val">{act['prod_code']}</div>
+        </div>
+        <div class="rs-row">
+            <div class="rs-label">Activité</div>
+            <div class="rs-val">{act['act_lib']}</div>
+        </div>
+        <div class="rs-row">
+            <div class="rs-label">Secteur</div>
+            <div class="rs-val">{act['sec_code']} — {act['sec_lib']}</div>
+        </div>
+        <div class="rs-row">
+            <div class="rs-label">Groupe d'activité</div>
+            <div class="rs-val">{act['grp_lib']}</div>
+        </div>
     </div>
-
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap');
-    * {{ margin:0; padding:0; box-sizing:border-box; }}
-    body {{ background:transparent; font-family:'Source Sans 3',sans-serif; }}
-    #ac-root {{ padding:4px 0; }}
-    #ac-wrap {{
-        display:flex; align-items:center; gap:8px;
-        background:#fff; border:2px solid #D7CCC8; border-radius:12px;
-        padding:10px 14px; transition:border-color .2s;
-    }}
-    #ac-wrap:focus-within {{ border-color:#DAA520; box-shadow:0 0 0 3px rgba(218,165,32,.15); }}
-    #ac-icon {{ font-size:1.1rem; flex-shrink:0; }}
-    #ac-input {{
-        flex:1; border:none; outline:none; font-size:.95rem;
-        font-family:'Source Sans 3',sans-serif; color:#2C1810; background:transparent;
-    }}
-    #ac-input::placeholder {{ color:#BCAAA4; }}
-    #ac-clear {{
-        cursor:pointer; color:#A1887F; font-size:1.1rem; padding:2px 4px;
-        border-radius:4px; display:none;
-    }}
-    #ac-clear:hover {{ background:#EFEBE9; color:#5D4037; }}
-    #ac-count {{
-        font-size:.78rem; color:#8D6E63; padding:6px 4px 2px;
-        min-height:22px;
-    }}
-    #ac-results {{
-        max-height:350px; overflow-y:auto; padding:4px 0;
-    }}
-    #ac-results::-webkit-scrollbar {{ width:6px; }}
-    #ac-results::-webkit-scrollbar-thumb {{ background:#D7CCC8; border-radius:3px; }}
-    .ac-item {{
-        padding:10px 12px; margin:3px 0; border-radius:10px;
-        border:1px solid #E8DDD5; background:#fff;
-        cursor:pointer; transition:all .15s;
-    }}
-    .ac-item:hover {{ border-color:#DAA520; background:#FFFBF0; transform:translateX(3px); }}
-    .ac-item .ac-prod {{ font-weight:600; color:#3E2723; font-size:.9rem; }}
-    .ac-item .ac-act {{ font-size:.78rem; color:#8D6E63; margin-top:2px; }}
-    .ac-item .ac-tags {{
-        display:flex; flex-wrap:wrap; gap:4px; margin-top:5px;
-    }}
-    .ac-item .ac-tag {{
-        background:#EFEBE9; border:1px solid #D7CCC8; border-radius:5px;
-        padding:1px 7px; font-size:.7rem; color:#5D4037;
-    }}
-    .ac-item .ac-tag b {{ color:#3E2723; }}
-    .ac-empty {{
-        text-align:center; padding:20px; color:#A1887F; font-size:.88rem;
-    }}
-    </style>
-
-    <script>
-    const DATA = {JS_DATA};
-
-    const input = document.getElementById('ac-input');
-    const results = document.getElementById('ac-results');
-    const countEl = document.getElementById('ac-count');
-    const clearBtn = document.getElementById('ac-clear');
-
-    let debounceTimer;
-
-    input.addEventListener('input', function() {{
-        clearBtn.style.display = this.value ? 'block' : 'none';
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => search(this.value), 120);
-    }});
-
-    function clearInput() {{
-        input.value = '';
-        clearBtn.style.display = 'none';
-        results.innerHTML = '';
-        countEl.textContent = '';
-        input.focus();
-    }}
-
-    function search(query) {{
-        if (!query || query.length < 2) {{
-            results.innerHTML = '';
-            countEl.textContent = query.length === 1 ? 'Continuez à taper…' : '';
-            return;
-        }}
-
-        const terms = query.toLowerCase().trim().split(/\\s+/);
-        const matches = [];
-
-        for (let i = 0; i < DATA.length && matches.length < 30; i++) {{
-            const d = DATA[i];
-            const hay = (d.pl + ' ' + d.a + ' ' + d.g + ' ' + d.sl).toLowerCase();
-            if (terms.every(t => hay.includes(t))) {{
-                matches.push(d);
-            }}
-        }}
-
-        if (matches.length === 0) {{
-            countEl.textContent = '';
-            results.innerHTML = '<div class="ac-empty">Aucun résultat — essayez d\\'autres mots-clés</div>';
-            return;
-        }}
-
-        const suffix = matches.length >= 30 ? '+ (affinez pour réduire)' : '';
-        countEl.textContent = matches.length + ' résultat' + (matches.length > 1 ? 's' : '') + ' ' + suffix;
-
-        let html = '';
-        for (const m of matches) {{
-            const dataAttr = encodeURIComponent(JSON.stringify(m));
-            html += `
-            <div class="ac-item" onclick="selectItem(this)" data-item="${{dataAttr}}">
-                <div class="ac-prod">${{m.pl}}</div>
-                <div class="ac-act">${{m.a}}</div>
-                <div class="ac-tags">
-                    <div class="ac-tag"><b>Secteur</b> ${{m.s}} — ${{m.sl}}</div>
-                    <div class="ac-tag"><b>Groupe</b> ${{m.g}}</div>
-                    <div class="ac-tag"><b>Code</b> ${{m.pc}}</div>
-                </div>
-            </div>`;
-        }}
-        results.innerHTML = html;
-    }}
-
-    function selectItem(el) {{
-        const raw = decodeURIComponent(el.getAttribute('data-item'));
-        const item = JSON.parse(raw);
-
-        // Send data back to Streamlit
-        const payload = {{
-            prod_code: item.pc,
-            prod_lib: item.pl,
-            act_lib: item.a,
-            grp_lib: item.g,
-            sec_code: item.s,
-            sec_lib: item.sl
-        }};
-
-        // Use Streamlit's setComponentValue to send data back
-        window.parent.postMessage({{
-            type: 'streamlit:setComponentValue',
-            value: JSON.stringify(payload)
-        }}, '*');
-
-        // Visual feedback
-        el.style.background = '#FBF0D0';
-        el.style.borderColor = '#DAA520';
-        el.style.borderWidth = '2px';
-        setTimeout(() => {{
-            el.style.background = '#FFFBF0';
-        }}, 300);
-    }}
-    </script>
     """
 
 
@@ -343,6 +237,12 @@ if "step" not in st.session_state:
     st.session_state["step"] = 0
 if "activities" not in st.session_state:
     st.session_state["activities"] = []
+# Mode: "search" = searching, "selected" = showing recap of a pick
+if "search_mode" not in st.session_state:
+    st.session_state["search_mode"] = "search"
+# Holds the currently previewed (not yet validated) item
+if "pending_selection" not in st.session_state:
+    st.session_state["pending_selection"] = None
 
 step = st.session_state["step"]
 steps_names = ["Questionnaire", "Récapitulatif"]
@@ -383,148 +283,186 @@ if step == 0:
     st.markdown("#### 📋 Questionnaire d'immatriculation")
     st.caption("NAEMA Rév. 1 — Nomenclature d'Activités des États Membres d'AFRISTAT")
 
-    # ── Q1 : Live autocomplete search ──
-    with st.expander("**① Déterminez votre activité**", expanded=True):
-        st.markdown(
-            "*Commencez à taper et les suggestions apparaissent instantanément. "
-            "Cliquez sur l'activité qui correspond.*"
-        )
+    # ──────────────────────────────────────
+    # Show already validated activities
+    # ──────────────────────────────────────
+    activities = st.session_state["activities"]
 
-        # Render the live autocomplete
-        selected_json = components.html(build_autocomplete_html(), height=480, scrolling=False)
-
-        # Fallback: manual selectbox for adding (since postMessage is limited)
-        st.markdown("---")
-        st.markdown("**Ou recherchez manuellement :**")
-
-        search_q = st.text_input(
-            "Recherche",
-            placeholder="Tapez au moins 2 caractères…",
-            key="manual_search",
-            label_visibility="collapsed",
-        )
-
-        if search_q and len(search_q) >= 2:
-            terms = search_q.lower().split()
-            hits = []
-            for p in ALL_PRODUITS:
-                hay = f"{p['prod_lib']} {p['act_lib']} {p['grp_lib']} {p['sec_lib']}".lower()
-                if all(t in hay for t in terms):
-                    hits.append(p)
-                    if len(hits) >= 30:
-                        break
-
-            if hits:
-                nb = len(hits)
-                if nb >= 30:
-                    st.caption(f"**30+** résultats — *précisez pour réduire*")
-                else:
-                    st.caption(f"**{nb}** résultat(s)")
-
-                opts = {}
-                for p in hits:
-                    lbl = f"{p['prod_lib']}  ·  {p['act_lib']}  ({p['prod_code']})"
-                    opts[lbl] = p
-
-                choice = st.selectbox(
-                    "Choisir", ["— Sélectionner —"] + list(opts.keys()),
-                    key="sel_act", label_visibility="collapsed",
-                )
-                if choice != "— Sélectionner —":
-                    sel = opts[choice]
-                    # Preview card
-                    st.markdown(f"""
-                    <div style="background:#FFFBF0;border:1px solid #F5D77A;border-left:4px solid #DAA520;
-                        border-radius:10px;padding:.8rem 1rem;margin:.5rem 0;font-family:'Source Sans 3',sans-serif;">
-                        <div style="font-weight:700;color:#3E2723;font-size:.92rem;">📌 {sel['prod_lib']}</div>
-                        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
-                            <span style="background:#EFEBE9;border:1px solid #D7CCC8;border-radius:5px;
-                                padding:1px 7px;font-size:.72rem;color:#5D4037;">
-                                <b>Secteur</b> {sel['sec_code']} — {sel['sec_lib']}</span>
-                            <span style="background:#EFEBE9;border:1px solid #D7CCC8;border-radius:5px;
-                                padding:1px 7px;font-size:.72rem;color:#5D4037;">
-                                <b>Groupe</b> {sel['grp_lib']}</span>
-                            <span style="background:#EFEBE9;border:1px solid #D7CCC8;border-radius:5px;
-                                padding:1px 7px;font-size:.72rem;color:#5D4037;">
-                                <b>Code</b> {sel['prod_code']}</span>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
-
-                    existing = [a["prod_code"] for a in st.session_state["activities"]]
-                    if sel["prod_code"] not in existing:
-                        if st.button(f"✅ Ajouter « {sel['prod_lib']} »", type="primary"):
-                            st.session_state["activities"].append(sel)
-                            st.rerun()
-                    else:
-                        st.info("✓ Déjà dans votre liste.")
-            else:
-                st.warning("Aucun résultat. Essayez d'autres mots-clés.")
-
-        # ── Show selected activities ──
-        activities = st.session_state["activities"]
-        if activities:
-            st.divider()
-            st.markdown("**Vos activités sélectionnées :**")
+    if activities:
+        with st.expander(f"**✅ Activités validées ({len(activities)})**", expanded=True):
             for idx, act in enumerate(activities):
                 role = "Activité principale" if idx == 0 else f"Activité secondaire {idx}"
                 col_i, col_d = st.columns([6, 1])
                 with col_i:
                     st.markdown(render_activity_card(act, role), unsafe_allow_html=True)
                 with col_d:
-                    st.markdown("<div style='height:.8rem'></div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height:.5rem'></div>", unsafe_allow_html=True)
                     if st.button("🗑️", key=f"del_{act['prod_code']}_{idx}", help="Supprimer"):
                         st.session_state["activities"] = [a for i, a in enumerate(activities) if i != idx]
+                        if not st.session_state["activities"]:
+                            st.session_state["search_mode"] = "search"
                         st.rerun()
-            st.caption("💡 *Recherchez ci-dessus pour ajouter d'autres activités secondaires.*")
 
-    if not st.session_state["activities"]:
-        st.info("Veuillez rechercher et sélectionner au moins une activité pour continuer.")
-        st.stop()
+    # ──────────────────────────────────────
+    # SEARCH MODE : user is searching
+    # ──────────────────────────────────────
+    if st.session_state["search_mode"] == "search":
 
-    # ── Q2 : Détails complémentaires ──
-    with st.expander("**② Détails complémentaires**", expanded=True):
-        activity_desc = st.text_area(
-            "Décrivez brièvement votre activité",
-            placeholder="Ex : Vente de vêtements prêts-à-porter via boutique et réseaux sociaux…",
-            key="activity_desc", height=100,
-        )
-        col1, col2 = st.columns(2)
-        with col1:
-            employees = st.number_input("Nombre d'employés", min_value=0, max_value=100000, value=0, step=1, key="employees")
-        with col2:
-            capital = st.number_input("Capital social (FCFA)", min_value=0, value=0, step=100000, key="capital")
-        st.markdown("**Informations de contact**")
-        col3, col4 = st.columns(2)
-        with col3:
-            st.text_input("Téléphone", placeholder="+221 …", key="phone")
-        with col4:
-            st.text_input("Email", placeholder="contact@entreprise.sn", key="email")
+        label_num = len(activities) + 1
+        if not activities:
+            title = "**① Quelle est votre activité principale ?**"
+            instruction = "Commencez à taper pour voir les suggestions se réduire en temps réel."
+        else:
+            title = f"**➕ Ajouter une activité secondaire (n°{label_num})**"
+            instruction = "Recherchez et sélectionnez une activité supplémentaire."
 
+        with st.expander(title, expanded=True):
+            st.markdown(f"*{instruction}*")
+
+            search_q = st.text_input(
+                "🔍 Décrivez votre activité",
+                placeholder="Ex : riz, taxi, comptabilité, menuiserie, poisson, hôtel…",
+                key="search_q",
+                label_visibility="visible",
+            )
+
+            results = search_produits(search_q)
+
+            if search_q and len(search_q) >= 2:
+                if results:
+                    nb = len(results)
+                    if nb >= 30:
+                        st.caption(f"**30+** résultats — *précisez pour réduire la liste*")
+                    elif nb > 5:
+                        st.caption(f"**{nb}** résultats — *précisez pour affiner*")
+                    elif nb > 1:
+                        st.caption(f"**{nb}** résultats")
+                    else:
+                        st.caption("**1** résultat ✓")
+
+                    opts = {}
+                    for p in results:
+                        lbl = f"{p['prod_lib']}  ·  {p['act_lib']}  ({p['prod_code']})"
+                        opts[lbl] = p
+
+                    choice = st.selectbox(
+                        "Sélectionnez l'activité",
+                        ["— Choisir parmi les résultats —"] + list(opts.keys()),
+                        key="sel_act",
+                        label_visibility="collapsed",
+                    )
+
+                    if choice != "— Choisir parmi les résultats —":
+                        sel = opts[choice]
+
+                        # Show recap of selected item
+                        st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
+
+                        # Check duplicate
+                        existing = [a["prod_code"] for a in st.session_state["activities"]]
+                        if sel["prod_code"] in existing:
+                            st.info("✓ Cette activité est déjà dans votre liste.")
+                        else:
+                            st.markdown("")
+                            if st.button(f"✅ Valider « {sel['prod_lib']} »", type="primary", use_container_width=True):
+                                st.session_state["activities"].append(sel)
+                                st.session_state["search_mode"] = "validated"
+                                st.session_state["pending_selection"] = None
+                                st.rerun()
+                else:
+                    st.warning("Aucun résultat. Essayez d'autres mots-clés (riz, poisson, taxi, ciment, hôtel…)")
+
+            elif search_q and len(search_q) == 1:
+                st.caption("Continuez à taper…")
+
+    # ──────────────────────────────────────
+    # VALIDATED MODE : activity just added, show success + options
+    # ──────────────────────────────────────
+    elif st.session_state["search_mode"] == "validated":
+        last_act = st.session_state["activities"][-1] if st.session_state["activities"] else None
+
+        if last_act:
+            st.success(f"✅ **{last_act['prod_lib']}** ajoutée avec succès !")
+
+            st.markdown(render_selection_recap(last_act), unsafe_allow_html=True)
+
+            st.markdown("")
+            col_add, col_next = st.columns(2)
+            with col_add:
+                if st.button("➕ Ajouter une autre activité", use_container_width=True):
+                    st.session_state["search_mode"] = "search"
+                    # Clear search keys
+                    for k in ["search_q", "sel_act"]:
+                        if k in st.session_state:
+                            del st.session_state[k]
+                    st.rerun()
+            with col_next:
+                if st.button("Continuer →", type="primary", use_container_width=True):
+                    st.session_state["search_mode"] = "details"
+                    st.rerun()
+
+    # ──────────────────────────────────────
+    # DETAILS MODE : fill in complementary info
+    # ──────────────────────────────────────
+    elif st.session_state["search_mode"] == "details":
+
+        with st.expander("**② Détails complémentaires**", expanded=True):
+            activity_desc = st.text_area(
+                "Décrivez brièvement votre activité",
+                placeholder="Ex : Vente de vêtements prêts-à-porter via boutique et réseaux sociaux…",
+                key="activity_desc", height=100,
+            )
+            col1, col2 = st.columns(2)
+            with col1:
+                employees = st.number_input("Nombre d'employés", min_value=0, max_value=100000, value=0, step=1, key="employees")
+            with col2:
+                capital = st.number_input("Capital social (FCFA)", min_value=0, value=0, step=100000, key="capital")
+            st.markdown("**Informations de contact**")
+            col3, col4 = st.columns(2)
+            with col3:
+                st.text_input("Téléphone", placeholder="+221 …", key="phone")
+            with col4:
+                st.text_input("Email", placeholder="contact@entreprise.sn", key="email")
+
+        st.divider()
+
+        can_continue = bool(st.session_state.get("activity_desc", "").strip())
+
+        col_back, col_add, col_next = st.columns([1, 1, 2])
+        with col_back:
+            if st.button("← Activités", use_container_width=True):
+                st.session_state["search_mode"] = "validated"
+                st.rerun()
+        with col_add:
+            if st.button("➕ Autre activité", use_container_width=True):
+                st.session_state["search_mode"] = "search"
+                for k in ["search_q", "sel_act"]:
+                    if k in st.session_state:
+                        del st.session_state[k]
+                st.rerun()
+        with col_next:
+            if st.button("Passer au récapitulatif →", type="primary", use_container_width=True, disabled=not can_continue):
+                st.session_state["data_activities"] = list(st.session_state["activities"])
+                st.session_state["data_activity_desc"] = st.session_state.get("activity_desc", "")
+                st.session_state["data_employees"] = st.session_state.get("employees", 0)
+                st.session_state["data_capital"] = st.session_state.get("capital", 0)
+                st.session_state["data_phone"] = st.session_state.get("phone", "")
+                st.session_state["data_email"] = st.session_state.get("email", "")
+                st.session_state["step"] = 1
+                st.rerun()
+
+        if not can_continue:
+            st.warning("Veuillez compléter la description de votre activité.")
+
+    # Bottom reset (always visible on step 0)
     st.divider()
-    can_continue = bool(st.session_state.get("activity_desc", "").strip()) and len(st.session_state["activities"]) > 0
-
-    col_btn1, col_btn2 = st.columns([3, 1])
-    with col_btn1:
-        if st.button("Passer à la confirmation →", type="primary", use_container_width=True, disabled=not can_continue):
-            st.session_state["data_activities"] = list(st.session_state["activities"])
-            st.session_state["data_activity_desc"] = st.session_state.get("activity_desc", "")
-            st.session_state["data_employees"] = st.session_state.get("employees", 0)
-            st.session_state["data_capital"] = st.session_state.get("capital", 0)
-            st.session_state["data_phone"] = st.session_state.get("phone", "")
-            st.session_state["data_email"] = st.session_state.get("email", "")
-            st.session_state["step"] = 1
-            st.rerun()
-    with col_btn2:
-        if st.button("Réinitialiser", use_container_width=True):
-            reset_form()
-            st.rerun()
-    if not can_continue:
-        st.warning("Complétez la description et sélectionnez au moins une activité.")
+    if st.button("🔄 Réinitialiser tout", use_container_width=False):
+        reset_form()
+        st.rerun()
 
 
 # ═════════════════════════════════════════════
-# ÉTAPE 1 : RÉCAPITULATIF
+# ÉTAPE 1 : RÉCAPITULATIF FINAL
 # ═════════════════════════════════════════════
 elif step == 1:
     st.markdown("#### ✅ Récapitulatif de vos informations")
@@ -538,6 +476,7 @@ elif step == 1:
     email = st.session_state.get("data_email", "")
     principal = activities[0] if activities else {}
 
+    # Sector & Group (auto from principal)
     st.markdown(f"""
     <div class="confirm-card">
         <div class="info-row">
@@ -551,12 +490,14 @@ elif step == 1:
     </div>
     """, unsafe_allow_html=True)
 
+    # Activity cards
     act_html = ""
     for idx, act in enumerate(activities):
         role = "Activité principale" if idx == 0 else f"Activité secondaire {idx}"
         act_html += render_activity_card(act, role)
     st.markdown(act_html, unsafe_allow_html=True)
 
+    # Details
     st.markdown(f"""
     <div class="confirm-card">
         <div class="info-row"><div class="info-label">Description</div>
@@ -582,6 +523,7 @@ elif step == 1:
     with col1:
         if st.button("← Retour", use_container_width=True):
             st.session_state["step"] = 0
+            st.session_state["search_mode"] = "details"
             st.rerun()
     with col2:
         can_validate = confirm1 and confirm2
