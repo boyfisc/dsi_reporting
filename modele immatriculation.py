@@ -1,7 +1,258 @@
+
+
+import streamlit as st st.set_page_config(page_title="Portail d'immatriculation fiscale", page_icon="🧾", layout="centered") # CSS pour rendre l'interface plus interactive st.markdown(""" <style> .stApp { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+pasted
+
+revois l'aspect ux/ui avec un design marron, or, blanc comme la dgid senegal
+
+8 févr.
+I'll review the frontend design skill first, then redesign your app with DGID Senegal's brown, gold, and white color scheme.
+
+
+Read frontend design skill for best practices
+Now let me search for the DGID Senegal visual identity to ensure accuracy.
+
+
+Web recherché
+
+Good — the DGID's dominant colors are gold (representing wealth) and an earth/brown tone (referencing land domains and cadastre) 
+Sénégal Services
+. Now let me create the redesigned app.
+
+
+Fichier créé, a exécuté une commande, lu un fichier
+Voici le fichier redesigné aux couleurs de la DGID Sénégal. Les principaux changements :
+
+Palette — Marron foncé (
+#3E2723 → 
+#8D6E63), or DGID (
+#DAA520 / 
+#E6B422), et blanc cassé (
+#FAF8F5) fidèles à l'identité visuelle de la DGID.
+
+Typographie — Playfair Display (titres élégants institutionnels) + Source Sans 3 (corps lisible), remplaçant les polices génériques.
+
+UX améliorée :
+
+Bannière supérieure marron foncé avec liseré doré, évoquant le style officiel DGID
+Barre de progression redessinée avec pastilles numérotées (or = actif, marron = complété)
+Cartes de confirmation avec bordure dorée latérale
+Boutons primaires dorés sur fond marron au survol
+Étape résultat avec en-tête solennel marron/or et prochaines étapes numérotées proprement
+Suppression des emojis excessifs pour un ton plus institutionnel
+App
+PY 
+le titre des questions mets en blanc au lieu de noir
+
+8 févr.
+
+Fichier modifié, a exécuté une commande, lu un fichier
+Les titres des questions (expanders) ont maintenant un fond marron foncé dégradé avec le texte en blanc et l'icône flèche en or. Au survol, le fond s'éclaircit légèrement pour le feedback visuel.
+
+App
+PY 
+dans la partie confirmation revoir la couleur de police des coches et a chque coche les elements se suppriment
+
+8 févr.
+
+A consulté 2 fichiers
+Now I understand the issue. The checkboxes cause a rerun in Streamlit, and since the confirm1/confirm2 keys reset, it looks like elements disappear. I need to fix the checkbox styling and prevent the disappearing behavior by using proper session state management.
+
+
+2 fichiers modifiés
+Now fix the confirmation step so elements don't disappear when checkboxes are toggled. The problem is Streamlit reruns and session state for selectboxes on step 0 gets re-initialized. I need to store values before moving to step 1.
+
+
+Save form data into dedicated session keys before moving to step 1, so they persist independently of widget keys
+Now update the confirmation step to read from data_* keys instead of widget keys:
+
+
+Update confirmation step to use saved data keys and fix checkbox stability
+Also update the result step (step 2) to use the same saved keys:
+
+
+Fichier modifié, a exécuté une commande, lu un fichier
+Deux corrections appliquées :
+
+Couleur des checkboxes — Le texte des attestations est maintenant en marron foncé (
+#4E342E) avec une police plus grasse, bien lisible sur fond blanc.
+
+Éléments qui disparaissaient — Le problème venait du fait que Streamlit recrée les widgets à chaque rerun. Les données du formulaire sont maintenant sauvegardées dans des clés dédiées (data_legal_form, data_sector, etc.) au moment du clic "Passer à la confirmation". Ainsi, cocher/décocher les attestations ne provoque plus la perte des informations affichées.
+
+App
+PY 
+ajoute le nomenclature
+
+8 févr.
+Je veux clarifier ce que vous entendez par "la nomenclature" pour bien l'intégrer.
+
+En attendant votre réponse, je pourrai intégrer la bonne nomenclature de manière complète et structurée dans l'application.
+
+1
+
+8 févr.
+Je vais rechercher la nomenclature NAEMA complète du Sénégal pour l'intégrer.
+
+
+Web recherché
+
+
+J'ai maintenant la nomenclature NAEMA complète. Laissez-moi récupérer les classes détaillées (niveau 4).
+
+
+Fetched: https://afristat.org/wp-content/uploads/NAEMA_NOPEMArev1_def_vers_12mai11.pdf
+
+J'ai maintenant la NAEMA Rev1 complète. C'est une nomenclature très volumineuse (21 sections, 88 divisions, ~157 groupes, ~287 classes). Je vais intégrer la structure complète dans l'application en remplaçant le mini-catalogue fictif par la vraie nomenclature, avec une navigation hiérarchique : Section → Division → Groupe.
+
+
+Create the complete NAEMA Rev1 data file with all sections, divisions, and groups
+Now let me update the main app to use this complete nomenclature with a hierarchical Section → Division → Group navigation:
+
+
+A consulté 2 fichiers
+Now I'll replace the old data and questionnaire with the NAEMA-based hierarchical navigation:
+
+
+Replace mock data with NAEMA import and update questionnaire to use Section→Division→Group hierarchy
+Now replace the questionnaire step:
+
+
+Replace the questionnaire step with NAEMA hierarchical navigation (Section → Division → Group)
+Now update the confirmation step to show the new NAEMA fields (section, division, group):
+
+
+Update confirmation card to show Section, Division, Group NAEMA instead of old sector/naema
+Now update the result step (step 2) to use section instead of sector:
+
+
+Update step 2 to read section data and display NAEMA info properly
+Now update the result card display:
+
+
+Update regime result card to show NAEMA group instead of old sector
+Now let me verify the app runs correctly:
+
+
+Exécuté 3 commandes, lu un fichier
+La nomenclature NAEMA Rev1 complète est maintenant intégrée. Voici ce qui a changé :
+
+Nouveau fichier naema_data.py — Contient la nomenclature officielle AFRISTAT avec 21 sections, 88 divisions et 170 groupes, structurée hiérarchiquement.
+
+Navigation en cascade dans le questionnaire — L'ancien système (forme juridique → secteur prédéfini → code fictif) est remplacé par :
+
+① Forme juridique
+② Section NAEMA (21 sections : A à U)
+③ Division NAEMA (filtrée selon la section choisie)
+④ Groupe NAEMA (filtré selon la division choisie)
+⑤ Détails de l'activité
+Les deux fichiers doivent être dans le même dossier pour fonctionner (app.py importe naema_data.py).
+
+App
+PY 
+Naema data
+PY 
+
+Nomenclature_NAEMA_rev4_new.xlsx
+xlsx
+
+En respectant la hiérarchisation des niveaux, enlève la liste maema.py et mettre a jour le tout 
+je veux un questionnais sous forme de question 
+il détermine sur une barre de réponse son activité et plus il donne une description plus la liste de recommandation se réduit jusqu'au choix final
+
+lorsque qu'il cliquera sur l'activité alors la hiérarchisation se fait automatique
+Secteur d'Activité = Id_branche, Libelle Branche (déterminer automatiquement via la réponse de l'activité principale)
+Activite Principal = libelle_produit (a determiner par l'utilisateur du site)
+
+et a chaue besoin l'utilisateur peut ajouter d;autres activites
+
+11:37
+Let me first examine the uploaded Excel file to understand its structure.
+
+
+Exécuté 3 commandes, consulté un fichier
+Excellent. Now I have a clear picture. Let me build the complete solution — a JSON data file generated from the Excel, and a new app with a search-as-you-type interface.
+
+
+Generate JSON catalogue from the Excel file
+Now let me build the completely redesigned app:
+
+
+Exécuté 3 commandes, 2 fichiers créés, lu un fichier
+Voici l'application entièrement refaite. Les deux fichiers (app.py + naema_catalogue.json) doivent être dans le même dossier.
+
+Ce qui a changé fondamentalement :
+
+Recherche intelligente — L'utilisateur tape quelques mots (ex : "riz", "taxi", "comptabilité") et la liste se réduit en temps réel. Plus la description est précise, moins il y a de résultats → jusqu'au choix final.
+
+Hiérarchisation automatique — Quand l'utilisateur clique sur une activité, le secteur (Id_branche / Libellé Branche) et la sous-branche se déterminent automatiquement à partir de la NAPS Rév. 2024.
+
+Multi-activités — L'utilisateur peut ajouter autant d'activités qu'il veut. La première est marquée "Activité principale", les suivantes "Activité secondaire". Chaque activité est supprimable individuellement via 🗑️.
+
+Fichier naema_data.py supprimé — Remplacé par naema_catalogue.json généré directement depuis votre fichier Excel (36 branches, 119 sous-branches, 244 produits).
+
+App
+PY 
+Naema catalogue
+Code · JSON 
+dans le fichier app.py, on peut supprimer la forme juridique et aussi supprimer le regime
+
+11:45
+
+A consulté 4 fichiers, a exécuté une commande
+Now I'll make all the changes: remove forme juridique, remove regime fiscal, change to 2 steps (Questionnaire → Récapitulatif).
+
+
+2 fichiers modifiés
+Now remove the entire forme juridique Q1 section and renumber Q2→Q1, Q3→Q2:
+
+
+2 fichiers modifiés
+Remove data_legal_form from the save action:
+
+
+Remove legal_form from data save on step transition
+Now rewrite the confirmation step (step 1) without forme juridique, and make it the final step (no step 2):
+
+
+Rewrite step 1 as final Récapitulatif without forme juridique and without regime
+Now remove the unused LEGAL_FORMS constant and the regime CSS that's no longer needed:
+
+
+Find LEGAL_FORMS references
+Good, no more references. Let me verify syntax:
+
+
+Exécuté 2 commandes, lu un fichier
+C'est fait. Voici ce qui a été supprimé :
+
+Forme juridique — Plus de selectbox ①, plus de LEGAL_FORMS, plus de data_legal_form dans les sauvegardes ni les affichages (confirmation et résultat)
+Régime fiscal — Plus de fonction determine_regime_fiscal, plus d'étape 3 avec le bloc régime, plus de CSS .regime-header / .regime-detail-card
+Parcours simplifié en 2 étapes : Questionnaire (① Activité + ② Détails) → Récapitulatif avec validation directe et prochaines étapes intégrées dans la même page
+App
+PY 
+
+
+dans le fichier app.py, on peut supprimer la forme juridique
+
+Claude est une IA et peut faire des erreurs. Veuillez vérifier les réponses.
+App · PY
+Copier
+
 import streamlit as st
-from naema_data import SECTIONS, DIVISIONS, GROUPS, get_divisions_for_section, get_groups_for_division
+import json
+from pathlib import Path
 
 st.set_page_config(page_title="DGID — Portail d'immatriculation fiscale", page_icon="🏛️", layout="centered")
+
+# ─── Load NAEMA catalogue ───
+@st.cache_data
+def load_catalogue():
+    with open(Path(__file__).parent / "naema_catalogue.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+catalogue = load_catalogue()
+ALL_PRODUITS = catalogue["produits"]
 
 # ─── CSS DGID Sénégal : Marron / Or / Blanc ───
 st.markdown("""
@@ -9,483 +260,141 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
 
     :root {
-        --brown-900: #3E2723;
-        --brown-800: #4E342E;
-        --brown-700: #5D4037;
-        --brown-600: #6D4C41;
-        --brown-500: #795548;
-        --brown-400: #8D6E63;
-        --brown-300: #A1887F;
-        --brown-200: #BCAAA4;
-        --brown-100: #D7CCC8;
+        --brown-900: #3E2723; --brown-800: #4E342E; --brown-700: #5D4037;
+        --brown-600: #6D4C41; --brown-500: #795548; --brown-400: #8D6E63;
+        --brown-300: #A1887F; --brown-200: #BCAAA4; --brown-100: #D7CCC8;
         --brown-50:  #EFEBE9;
-        --gold-600:  #B8860B;
-        --gold-500:  #DAA520;
-        --gold-400:  #E6B422;
-        --gold-300:  #F0C850;
-        --gold-200:  #F5D77A;
-        --gold-100:  #FBF0D0;
+        --gold-600:  #B8860B; --gold-500:  #DAA520; --gold-400:  #E6B422;
+        --gold-300:  #F0C850; --gold-200:  #F5D77A; --gold-100:  #FBF0D0;
         --gold-50:   #FFFBF0;
-        --white:     #FFFFFF;
-        --off-white: #FAF8F5;
-        --text-dark: #2C1810;
-        --text-mid:  #5D4037;
-        --text-light:#8D6E63;
-        --border:    #E8DDD5;
-        --success:   #2E7D32;
-        --success-bg:#E8F5E9;
+        --white: #FFFFFF; --off-white: #FAF8F5;
+        --text-dark: #2C1810; --text-mid: #5D4037; --border: #E8DDD5;
     }
 
-    /* ── Global ── */
-    .stApp {
-        background: var(--off-white) !important;
-    }
+    .stApp { background: var(--off-white) !important; }
+    .stApp > header { background: transparent !important; }
 
-    .stApp > header {
-        background: transparent !important;
-    }
-
-    /* ── Top banner ── */
     .dgid-banner {
         background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 60%, var(--brown-600) 100%);
-        padding: 1.8rem 2rem 1.5rem;
-        border-radius: 0 0 20px 20px;
-        margin: -1rem -1rem 1.5rem -1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    .dgid-banner::before {
-        content: '';
-        position: absolute;
-        top: 0; right: 0;
-        width: 300px; height: 100%;
-        background: radial-gradient(ellipse at 80% 40%, rgba(218,165,32,0.15), transparent 70%);
+        padding: 1.8rem 2rem 1.5rem; border-radius: 0 0 20px 20px;
+        margin: -1rem -1rem 1.5rem -1rem; position: relative; overflow: hidden;
     }
     .dgid-banner::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0; right: 0;
-        height: 3px;
+        content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
         background: linear-gradient(90deg, var(--gold-500), var(--gold-300), var(--gold-500));
     }
     .dgid-banner h1 {
-        color: var(--white) !important;
-        font-family: 'Playfair Display', serif !important;
-        font-size: 1.65rem !important;
-        font-weight: 700 !important;
-        margin: 0 0 0.25rem 0 !important;
-        letter-spacing: 0.3px;
+        color: var(--white) !important; font-family: 'Playfair Display', serif !important;
+        font-size: 1.65rem !important; font-weight: 700 !important; margin: 0 0 0.25rem 0 !important;
     }
     .dgid-banner .subtitle {
-        color: var(--gold-300);
-        font-family: 'Source Sans 3', sans-serif;
-        font-size: 0.9rem;
-        font-weight: 400;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-    }
-    .dgid-banner .emblem {
-        font-size: 2rem;
-        margin-right: 0.8rem;
+        color: var(--gold-300); font-family: 'Source Sans 3', sans-serif;
+        font-size: 0.9rem; letter-spacing: 1.5px; text-transform: uppercase;
     }
 
-    /* ── Step bar ── */
-    .step-bar {
-        display: flex;
-        gap: 6px;
-        margin: 0.5rem 0 1.5rem;
-        padding: 0.75rem;
-        background: var(--white);
-        border-radius: 14px;
-        border: 1px solid var(--border);
-        box-shadow: 0 2px 8px rgba(62,39,35,0.06);
-    }
-    .step-item {
-        flex: 1;
-        text-align: center;
-        padding: 0.65rem 0.5rem;
-        border-radius: 10px;
-        font-family: 'Source Sans 3', sans-serif;
-        font-size: 0.82rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-    .step-item.active {
-        background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
-        color: var(--brown-900);
-        box-shadow: 0 4px 14px rgba(218,165,32,0.35);
-    }
-    .step-item.completed {
-        background: var(--brown-800);
-        color: var(--gold-300);
-    }
-    .step-item.pending {
-        background: var(--brown-50);
-        color: var(--brown-300);
-    }
-    .step-num {
-        display: inline-block;
-        width: 22px; height: 22px;
-        line-height: 22px;
-        border-radius: 50%;
-        font-size: 0.72rem;
-        font-weight: 700;
-        margin-right: 5px;
-        vertical-align: middle;
-    }
-    .step-item.active .step-num {
-        background: var(--brown-900);
-        color: var(--gold-300);
-    }
-    .step-item.completed .step-num {
-        background: var(--gold-500);
-        color: var(--brown-900);
-    }
-    .step-item.pending .step-num {
-        background: var(--brown-100);
-        color: var(--brown-300);
-    }
+    .step-bar { display: flex; gap: 6px; margin: 0.5rem 0 1.5rem; padding: 0.75rem;
+        background: var(--white); border-radius: 14px; border: 1px solid var(--border);
+        box-shadow: 0 2px 8px rgba(62,39,35,0.06); }
+    .step-item { flex: 1; text-align: center; padding: 0.65rem 0.5rem; border-radius: 10px;
+        font-family: 'Source Sans 3', sans-serif; font-size: 0.82rem; font-weight: 600; }
+    .step-item.active { background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+        color: var(--brown-900); box-shadow: 0 4px 14px rgba(218,165,32,0.35); }
+    .step-item.completed { background: var(--brown-800); color: var(--gold-300); }
+    .step-item.pending { background: var(--brown-50); color: var(--brown-300); }
+    .step-num { display: inline-block; width: 22px; height: 22px; line-height: 22px;
+        border-radius: 50%; font-size: 0.72rem; font-weight: 700; margin-right: 5px; vertical-align: middle; }
+    .step-item.active .step-num { background: var(--brown-900); color: var(--gold-300); }
+    .step-item.completed .step-num { background: var(--gold-500); color: var(--brown-900); }
+    .step-item.pending .step-num { background: var(--brown-100); color: var(--brown-300); }
 
-    /* ── Section card ── */
-    .section-card {
-        background: var(--white);
-        border-radius: 14px;
-        border: 1px solid var(--border);
-        padding: 1.6rem 1.8rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 2px 10px rgba(62,39,35,0.05);
-    }
-    .section-card h3 {
-        font-family: 'Playfair Display', serif !important;
-        color: var(--brown-800) !important;
-        font-size: 1.1rem !important;
-        margin: 0 0 1rem 0 !important;
-        padding-bottom: 0.6rem;
-        border-bottom: 2px solid var(--gold-200);
-    }
-
-    /* ── Confirmation card ── */
-    .confirm-card {
-        background: var(--white);
-        padding: 1.6rem 1.8rem;
-        border-radius: 14px;
-        border: 1px solid var(--border);
-        border-left: 5px solid var(--gold-500);
-        margin: 0.8rem 0;
-        box-shadow: 0 2px 10px rgba(62,39,35,0.05);
-    }
-    .info-row {
-        display: flex;
-        align-items: baseline;
-        padding: 0.7rem 0;
-        border-bottom: 1px solid var(--brown-50);
-    }
+    .confirm-card { background: var(--white); padding: 1.6rem 1.8rem; border-radius: 14px;
+        border: 1px solid var(--border); border-left: 5px solid var(--gold-500);
+        margin: 0.8rem 0; box-shadow: 0 2px 10px rgba(62,39,35,0.05); }
+    .info-row { display: flex; align-items: baseline; padding: 0.7rem 0; border-bottom: 1px solid var(--brown-50); }
     .info-row:last-child { border-bottom: none; }
-    .info-label {
-        font-family: 'Source Sans 3', sans-serif;
-        font-weight: 700;
-        color: var(--brown-700);
-        width: 200px;
-        flex-shrink: 0;
-        font-size: 0.9rem;
-    }
-    .info-value {
-        font-family: 'Source Sans 3', sans-serif;
-        color: var(--text-dark);
-        font-size: 0.92rem;
-        flex: 1;
-    }
+    .info-label { font-family: 'Source Sans 3', sans-serif; font-weight: 700;
+        color: var(--brown-700); width: 200px; flex-shrink: 0; font-size: 0.9rem; }
+    .info-value { font-family: 'Source Sans 3', sans-serif; color: var(--text-dark); font-size: 0.92rem; flex: 1; }
 
-    /* ── Regime result box ── */
+    .act-card {
+        background: var(--gold-50); border: 1px solid var(--gold-200); border-radius: 10px;
+        padding: 0.7rem 1rem; margin: 0.4rem 0;
+        font-family: 'Source Sans 3', sans-serif;
+    }
+    .act-card .act-role {
+        font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 1px; color: var(--gold-600); margin-bottom: 2px;
+    }
+    .act-card .act-name { font-weight: 600; color: var(--brown-900); font-size: 0.92rem; }
+    .act-card .act-code { color: var(--brown-400); font-size: 0.8rem; }
+    .act-card .act-branch { color: var(--brown-300); font-size: 0.78rem; margin-top: 2px; }
+
     .regime-header {
         background: linear-gradient(135deg, var(--brown-900) 0%, var(--brown-700) 100%);
-        padding: 1.8rem 2rem;
-        border-radius: 14px;
-        text-align: center;
-        margin: 1rem 0;
-        position: relative;
-        overflow: hidden;
+        padding: 1.8rem 2rem; border-radius: 14px; text-align: center; margin: 1rem 0;
     }
-    .regime-header::before {
-        content: '';
-        position: absolute;
-        top: -40%; left: -20%;
-        width: 140%; height: 180%;
-        background: radial-gradient(ellipse at center, rgba(218,165,32,0.08), transparent 60%);
-    }
-    .regime-header h2 {
-        color: var(--gold-400) !important;
-        font-family: 'Playfair Display', serif !important;
-        font-size: 1.55rem !important;
-        margin: 0 !important;
-        position: relative;
-    }
-    .regime-header .regime-icon {
-        font-size: 2.2rem;
-        margin-bottom: 0.3rem;
-    }
-    .regime-header .regime-label {
-        color: var(--brown-200);
-        font-family: 'Source Sans 3', sans-serif;
-        font-size: 0.8rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        position: relative;
-    }
+    .regime-header h2 { color: var(--gold-400) !important; font-family: 'Playfair Display', serif !important;
+        font-size: 1.55rem !important; margin: 0 !important; }
+    .regime-header .regime-label { color: var(--brown-200); font-family: 'Source Sans 3', sans-serif;
+        font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+    .regime-detail-card { background: var(--gold-50); border: 1px solid var(--gold-200);
+        border-radius: 14px; padding: 1.6rem 1.8rem; margin: 1rem 0; }
+    .regime-detail-card h3 { color: var(--brown-800) !important; font-family: 'Playfair Display', serif !important;
+        margin: 0 0 0.4rem 0 !important; font-size: 1.15rem !important; }
+    .regime-detail-card p { color: var(--brown-600); font-family: 'Source Sans 3', sans-serif;
+        font-size: 0.95rem; margin: 0; }
 
-    .regime-detail-card {
-        background: var(--gold-50);
-        border: 1px solid var(--gold-200);
-        border-radius: 14px;
-        padding: 1.6rem 1.8rem;
-        margin: 1rem 0;
-    }
-    .regime-detail-card h3 {
-        color: var(--brown-800) !important;
-        font-family: 'Playfair Display', serif !important;
-        margin: 0 0 0.4rem 0 !important;
-        font-size: 1.15rem !important;
-    }
-    .regime-detail-card p {
-        color: var(--brown-600);
-        font-family: 'Source Sans 3', sans-serif;
-        font-size: 0.95rem;
-        margin: 0;
-    }
+    .next-steps { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem 1.6rem; }
+    .next-steps h4 { font-family: 'Playfair Display', serif !important; color: var(--brown-800) !important;
+        font-size: 1rem !important; margin: 0 0 1rem 0 !important; }
+    .ns-item { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.6rem 0; }
+    .ns-num { flex-shrink: 0; width: 28px; height: 28px; line-height: 28px; text-align: center;
+        border-radius: 50%; background: var(--gold-100); color: var(--brown-800);
+        font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: 0.8rem; }
+    .ns-text { font-family: 'Source Sans 3', sans-serif; color: var(--text-mid); font-size: 0.9rem; line-height: 1.45; }
 
-    /* ── Next steps ── */
-    .next-steps {
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 1.4rem 1.6rem;
-    }
-    .next-steps h4 {
-        font-family: 'Playfair Display', serif !important;
-        color: var(--brown-800) !important;
-        font-size: 1rem !important;
-        margin: 0 0 1rem 0 !important;
-    }
-    .ns-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.8rem;
-        padding: 0.6rem 0;
-    }
-    .ns-num {
-        flex-shrink: 0;
-        width: 28px; height: 28px;
-        line-height: 28px;
-        text-align: center;
-        border-radius: 50%;
-        background: var(--gold-100);
-        color: var(--brown-800);
-        font-family: 'Source Sans 3', sans-serif;
-        font-weight: 700;
-        font-size: 0.8rem;
-    }
-    .ns-text {
-        font-family: 'Source Sans 3', sans-serif;
-        color: var(--text-mid);
-        font-size: 0.9rem;
-        line-height: 1.45;
-    }
-
-    /* ── Streamlit overrides ── */
+    /* Streamlit overrides */
     .stSelectbox label, .stTextInput label, .stTextArea label, .stNumberInput label {
-        font-family: 'Source Sans 3', sans-serif !important;
-        color: var(--brown-700) !important;
-        font-weight: 600 !important;
-        font-size: 0.88rem !important;
-    }
-
+        font-family: 'Source Sans 3', sans-serif !important; color: var(--brown-700) !important;
+        font-weight: 600 !important; font-size: 0.88rem !important; }
     div[data-testid="stExpander"] {
-        background: var(--white);
-        border: 1px solid var(--border) !important;
-        border-radius: 12px !important;
-        margin-bottom: 0.6rem;
-        box-shadow: 0 1px 4px rgba(62,39,35,0.04);
-        overflow: hidden;
-    }
+        background: var(--white); border: 1px solid var(--border) !important;
+        border-radius: 12px !important; margin-bottom: 0.6rem;
+        box-shadow: 0 1px 4px rgba(62,39,35,0.04); overflow: hidden; }
     div[data-testid="stExpander"] > details > summary {
-        font-family: 'Source Sans 3', sans-serif !important;
-        color: var(--white) !important;
+        font-family: 'Source Sans 3', sans-serif !important; color: var(--white) !important;
         font-weight: 700 !important;
         background: linear-gradient(135deg, var(--brown-800), var(--brown-700)) !important;
-        padding: 0.8rem 1.2rem !important;
-        border-radius: 0 !important;
-    }
+        padding: 0.8rem 1.2rem !important; }
     div[data-testid="stExpander"] > details > summary:hover {
-        background: linear-gradient(135deg, var(--brown-700), var(--brown-600)) !important;
-    }
-    div[data-testid="stExpander"] > details > summary svg {
-        color: var(--gold-300) !important;
-    }
+        background: linear-gradient(135deg, var(--brown-700), var(--brown-600)) !important; }
+    div[data-testid="stExpander"] > details > summary svg { color: var(--gold-300) !important; }
 
     .stButton > button[kind="primary"] {
         background: linear-gradient(135deg, var(--gold-500), var(--gold-400)) !important;
-        color: var(--brown-900) !important;
-        border: none !important;
-        font-family: 'Source Sans 3', sans-serif !important;
-        font-weight: 700 !important;
-        font-size: 0.92rem !important;
-        border-radius: 10px !important;
-        padding: 0.6rem 1.5rem !important;
-        box-shadow: 0 4px 14px rgba(218,165,32,0.3) !important;
-        transition: all 0.25s !important;
-    }
+        color: var(--brown-900) !important; border: none !important;
+        font-family: 'Source Sans 3', sans-serif !important; font-weight: 700 !important;
+        font-size: 0.92rem !important; border-radius: 10px !important;
+        box-shadow: 0 4px 14px rgba(218,165,32,0.3) !important; }
     .stButton > button[kind="primary"]:hover {
-        box-shadow: 0 6px 20px rgba(218,165,32,0.45) !important;
-        transform: translateY(-1px);
-    }
-
+        box-shadow: 0 6px 20px rgba(218,165,32,0.45) !important; }
     .stButton > button:not([kind="primary"]) {
-        background: var(--white) !important;
-        color: var(--brown-700) !important;
+        background: var(--white) !important; color: var(--brown-700) !important;
         border: 1.5px solid var(--brown-200) !important;
-        font-family: 'Source Sans 3', sans-serif !important;
-        font-weight: 600 !important;
-        border-radius: 10px !important;
-        transition: all 0.25s !important;
-    }
+        font-family: 'Source Sans 3', sans-serif !important; font-weight: 600 !important;
+        border-radius: 10px !important; }
     .stButton > button:not([kind="primary"]):hover {
-        border-color: var(--gold-500) !important;
-        color: var(--brown-900) !important;
-        background: var(--gold-50) !important;
-    }
+        border-color: var(--gold-500) !important; background: var(--gold-50) !important; }
 
-    .stCheckbox label span,
-    .stCheckbox label span p {
-        font-family: 'Source Sans 3', sans-serif !important;
-        color: var(--brown-800) !important;
-        font-weight: 600 !important;
-        font-size: 0.92rem !important;
-    }
+    .stCheckbox label span, .stCheckbox label span p {
+        font-family: 'Source Sans 3', sans-serif !important; color: var(--brown-800) !important;
+        font-weight: 600 !important; font-size: 0.92rem !important; }
 
-    /* alert boxes */
-    .stAlert > div[data-testid="stNotification"] {
-        font-family: 'Source Sans 3', sans-serif !important;
-        border-radius: 10px !important;
-    }
-
-    hr {
-        border-color: var(--border) !important;
-    }
-
-    h1, h2, h3 {
-        font-family: 'Playfair Display', serif !important;
-        color: var(--brown-800) !important;
-    }
-
-    /* scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--brown-50); }
-    ::-webkit-scrollbar-thumb { background: var(--brown-200); border-radius: 3px; }
+    hr { border-color: var(--border) !important; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif !important; color: var(--brown-800) !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# ─── Données NAEMA (inchangées) ───
-LEGAL_FORM_TO_SECTORS = {
-    "Entreprise Individuelle": ["Commerce de détail", "Artisanat", "Services de proximité"],
-    "GIE": ["Pêche", "Agriculture", "Groupements de promotion féminine"],
-    "SARL / SUARL": ["PME", "Import-Export", "Services aux entreprises", "Transport"],
-    "SCI": ["Gestion de patrimoine", "Location immobilière (résidentielle/bureaux)"],
-    "SAS / SASU": ["Startups Tech", "Conseil", "Projets à investissements multiples"],
-    "SA": ["Banques", "Assurances", "Industrie lourde", "Mines et Hydrocarbures"],
-}
-
-SECTOR_TO_NAEMA = {
-    "Commerce de détail": [
-        ("G47.11", "Commerce de détail en magasin non spécialisé (alimentation)"),
-        ("G47.19", "Autre commerce de détail en magasin non spécialisé"),
-        ("G47.91", "Vente à distance / e-commerce"),
-    ],
-    "Artisanat": [
-        ("C31.01", "Fabrication de meubles (artisanat)"),
-        ("C14.13", "Confection de vêtements (artisanat)"),
-        ("C25.11", "Fabrication de structures métalliques (atelier)"),
-    ],
-    "Services de proximité": [
-        ("S96.02", "Coiffure et soins de beauté"),
-        ("S95.29", "Réparation d'autres biens personnels et domestiques"),
-        ("I56.10", "Restauration (petite restauration / proximité)"),
-    ],
-    "Pêche": [
-        ("A03.11", "Pêche en mer"),
-        ("A03.12", "Pêche en eau douce"),
-        ("A03.22", "Aquaculture en eau douce"),
-    ],
-    "Agriculture": [
-        ("A01.11", "Culture de céréales (hors riz)"),
-        ("A01.13", "Culture de légumes"),
-        ("A01.25", "Culture de fruits tropicaux et subtropicaux"),
-    ],
-    "Groupements de promotion féminine": [
-        ("S94.11", "Activités d'organisations professionnelles"),
-        ("S94.99", "Autres organisations associatives n.c.a."),
-    ],
-    "PME": [
-        ("C10.89", "Autres industries alimentaires n.c.a."),
-        ("C13.20", "Tissage de textiles"),
-        ("C22.29", "Fabrication d'articles en plastique n.c.a."),
-    ],
-    "Import-Export": [
-        ("G46.19", "Intermédiaires du commerce en produits divers"),
-        ("G46.90", "Commerce de gros non spécialisé (import/export)"),
-        ("H52.29", "Autres services auxiliaires des transports"),
-    ],
-    "Services aux entreprises": [
-        ("N82.99", "Autres activités de soutien aux entreprises n.c.a."),
-        ("M69.20", "Comptabilité, audit, conseil fiscal"),
-        ("N80.10", "Activités de sécurité privée"),
-    ],
-    "Transport": [
-        ("H49.41", "Transport routier de fret"),
-        ("H49.31", "Transport urbain et suburbain de voyageurs"),
-        ("H52.10", "Entreposage et stockage"),
-    ],
-    "Gestion de patrimoine": [
-        ("L68.20", "Location et exploitation de biens immobiliers propres ou loués"),
-        ("K64.99", "Autres activités de services financiers (hors assurance) n.c.a."),
-    ],
-    "Location immobilière (résidentielle/bureaux)": [
-        ("L68.20", "Location et exploitation de biens immobiliers propres ou loués"),
-        ("L68.32", "Administration de biens immobiliers pour le compte de tiers"),
-    ],
-    "Startups Tech": [
-        ("J62.01", "Programmation informatique"),
-        ("J62.02", "Conseil en systèmes et logiciels informatiques"),
-        ("J63.11", "Traitement de données, hébergement, activités connexes"),
-    ],
-    "Conseil": [
-        ("M70.22", "Conseil pour les affaires et autres conseils de gestion"),
-        ("M74.90", "Autres activités spécialisées, scientifiques et techniques n.c.a."),
-    ],
-    "Projets à investissements multiples": [
-        ("K64.99", "Autres activités de services financiers n.c.a. (holding/projets)"),
-        ("M70.10", "Activités des sièges sociaux"),
-    ],
-    "Banques": [
-        ("K64.19", "Autres intermédiations monétaires"),
-        ("K64.11", "Banque centrale (si applicable)"),
-    ],
-    "Assurances": [
-        ("K65.12", "Assurance (vie)"),
-        ("K65.20", "Réassurance"),
-        ("K66.22", "Activités des agents et courtiers d'assurances"),
-    ],
-    "Industrie lourde": [
-        ("C24.10", "Sidérurgie (industrie lourde)"),
-        ("C23.51", "Fabrication de ciment"),
-        ("D35.11", "Production d'électricité"),
-    ],
-    "Mines et Hydrocarbures": [
-        ("B06.10", "Extraction de pétrole brut"),
-        ("B06.20", "Extraction de gaz naturel"),
-        ("B09.10", "Activités de soutien à l'extraction d'hydrocarbures"),
-    ],
-}
 
 # ─── Helpers ───
 def reset_form():
@@ -493,49 +402,46 @@ def reset_form():
         del st.session_state[k]
 
 
-def determine_regime_fiscal(legal_form, employees, naema_code=""):
+def search_produits(query):
+    """Search products by keywords in label, sub-branch and branch."""
+    if not query or len(query) < 2:
+        return []
+    terms = query.lower().split()
+    results = []
+    for p in ALL_PRODUITS:
+        text = f"{p['lib']} {p['sb_lib']} {p['br_lib']}".lower()
+        if all(t in text for t in terms):
+            results.append(p)
+    return results[:30]
+
+
+def render_activity_card(act, role_label):
+    return f"""
+    <div class="act-card">
+        <div class="act-role">{role_label}</div>
+        <div class="act-name">{act['lib']}</div>
+        <div class="act-code">{act['id']} · {act['sb_lib']}</div>
+        <div class="act-branch">Branche : {act['br_id']} — {act['br_lib']}</div>
+    </div>
     """
-    Détermine le régime fiscal en fonction de la forme juridique,
-    du nombre d'employés et optionnellement du code NAEMA
-    """
-    if legal_form == "Entreprise Individuelle":
-        if employees <= 5:
-            return "Régime Réel Simplifié d'Imposition (RSI)", "Adapté aux petites structures avec comptabilité simplifiée"
-        else:
-            return "Régime du Réel Normal", "Recommandé pour une structure en croissance"
-    elif legal_form in ["SARL / SUARL", "SAS / SASU"]:
-        if employees < 20:
-            return "Régime du Réel Simplifié", "Obligations comptables allégées pour PME"
-        else:
-            return "Régime du Réel Normal", "Avec obligations comptables complètes"
-    elif legal_form == "SA":
-        return "Régime du Réel Normal", "Obligatoire pour les sociétés anonymes"
-    elif legal_form == "GIE":
-        return "Régime Transparent", "Les bénéfices sont imposés au niveau des membres"
-    elif legal_form == "SCI":
-        return "Régime de la Transparence Fiscale", "Imposition des associés sur leur quote-part"
-    else:
-        # Forme juridique personnalisée - régime par défaut basé sur la taille
-        if employees < 10:
-            return "Régime du Réel Simplifié", f"Régime recommandé pour votre structure ({legal_form}) avec {employees} employé(s)"
-        else:
-            return "Régime du Réel Normal", f"Régime standard pour votre structure ({legal_form}) avec {employees} employé(s)"
 
 
 # ─── Init ───
 if "step" not in st.session_state:
     st.session_state["step"] = 0
+if "activities" not in st.session_state:
+    st.session_state["activities"] = []
 
 step = st.session_state["step"]
-steps_names = ["Questionnaire", "Confirmation", "Régime Fiscal"]
+steps_names = ["Questionnaire", "Récapitulatif"]
 
-# ═══════════════════════════════════════════════════════════
-# HEADER BANNER
-# ═══════════════════════════════════════════════════════════
+# ═══════════════════════════════════════
+# HEADER
+# ═══════════════════════════════════════
 st.markdown("""
 <div class="dgid-banner">
     <div style="display:flex; align-items:center;">
-        <span class="emblem">🏛️</span>
+        <span style="font-size:2rem; margin-right:0.8rem;">🏛️</span>
         <div>
             <h1>Portail d'Immatriculation Fiscale</h1>
             <div class="subtitle">Direction Générale des Impôts et des Domaines — Sénégal</div>
@@ -544,155 +450,116 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ═══════════════════════════════════════════════════════════
-# STEP BAR
-# ═══════════════════════════════════════════════════════════
 bar_html = '<div class="step-bar">'
 for i, name in enumerate(steps_names):
     if i < step:
-        cls = "completed"
-        icon = "✓"
+        cls, icon = "completed", "✓"
     elif i == step:
-        cls = "active"
-        icon = str(i + 1)
+        cls, icon = "active", str(i + 1)
     else:
-        cls = "pending"
-        icon = str(i + 1)
+        cls, icon = "pending", str(i + 1)
     bar_html += f'<div class="step-item {cls}"><span class="step-num">{icon}</span> {name}</div>'
 bar_html += '</div>'
 st.markdown(bar_html, unsafe_allow_html=True)
 
 
-# ═══════════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 # ÉTAPE 0 : QUESTIONNAIRE
-# ═══════════════════════════════════════════════════════════
+# ═══════════════════════════════════════
 if step == 0:
-    st.markdown("#### 📋 Questionnaire d'orientation NAEMA")
-    st.caption("Répondez aux questions pour déterminer votre catégorie d'activité")
+    st.markdown("#### 📋 Questionnaire d'immatriculation")
+    st.caption("Remplissez les informations de votre entreprise — NAPS Rév. 2024")
 
-    # Q1
-    with st.expander("**① Forme juridique de l'entreprise**", expanded=True):
-        legal_forms = list(LEGAL_FORM_TO_SECTORS.keys())
-        legal_form = st.selectbox(
-            "Sélectionnez la forme juridique",
-            options=["— Sélectionner —"] + legal_forms + ["🔸 Autre (à préciser)"],
-            key="legal_form",
+    # ── Q1 : Activité(s) — recherche intelligente ──
+    with st.expander("**① Quelle est votre activité principale ?**", expanded=True):
+        st.markdown(
+            "*Décrivez votre activité en quelques mots. "
+            "Plus vous êtes précis, plus les suggestions se réduisent jusqu'au choix final.*"
         )
 
-        if legal_form == "🔸 Autre (à préciser)":
-            autre_legal_form = st.text_input(
-                "Précisez votre forme juridique",
-                placeholder="Ex: Association, ONG, Coopérative, etc.",
-                key="autre_legal_form"
-            )
-            if autre_legal_form.strip():
-                st.success(f"✅ Forme juridique personnalisée : **{autre_legal_form}**")
-                st.session_state["final_legal_form"] = autre_legal_form
-            else:
-                st.session_state["final_legal_form"] = ""
-        elif legal_form != "— Sélectionner —":
-            st.success(f"Forme juridique : **{legal_form}**")
-            st.session_state["final_legal_form"] = legal_form
-        else:
-            st.session_state["final_legal_form"] = ""
-
-    # Vérifier si une forme juridique a été sélectionnée
-    final_legal_form = st.session_state.get("final_legal_form", "")
-    if not final_legal_form:
-        st.info("Veuillez choisir ou préciser une forme juridique pour continuer.")
-        st.stop()
-
-    # Q2 - Navigation hiérarchique NAEMA
-    with st.expander("**② Classification NAEMA de votre activité**", expanded=True):
-        st.markdown("📂 **Navigation hiérarchique : Section → Division → Groupe**")
-
-        # Étape 1 : Sélection de la Section
-        section_options = [f"{code} — {label}" for code, label in SECTIONS.items()]
-        section_choice = st.selectbox(
-            "Sélectionnez une section d'activité",
-            options=["— Sélectionner —"] + section_options + ["🔸 Autre (à préciser)"],
-            key="naema_section",
+        search_query = st.text_input(
+            "🔍 Rechercher une activité",
+            placeholder="Ex : riz, vêtement, taxi, comptabilité, boulangerie, poisson…",
+            key="search_query",
         )
 
-        if section_choice == "🔸 Autre (à préciser)":
-            autre_section = st.text_input(
-                "Précisez votre secteur d'activité",
-                placeholder="Ex: Activité spécifique non listée...",
-                key="autre_section"
-            )
-            if autre_section.strip():
-                st.success(f"✅ Activité personnalisée : **{autre_section}**")
-                # Sauvegarder directement comme code NAEMA
-                st.session_state["final_naema"] = f"AUTRE — {autre_section}"
-        elif section_choice != "— Sélectionner —":
-            section_code = section_choice.split(" — ")[0]
-            st.info(f"📍 Section sélectionnée : **{section_choice}**")
+        results = search_produits(search_query)
 
-            # Étape 2 : Sélection de la Division
-            divisions_dict = get_divisions_for_section(section_code)
-            if divisions_dict:
-                division_options = [f"{code} — {label}" for code, label in divisions_dict.items()]
-                division_choice = st.selectbox(
-                    "Sélectionnez une division",
-                    options=["— Sélectionner —"] + division_options + ["🔸 Autre (à préciser)"],
-                    key="naema_division",
+        if search_query and len(search_query) >= 2:
+            if results:
+                nb = len(results)
+                if nb > 10:
+                    st.caption(f"**{nb}** résultats — *affinez votre recherche pour réduire la liste*")
+                else:
+                    st.caption(f"**{nb}** résultat(s) trouvé(s)")
+
+                options_map = {}
+                for p in results:
+                    label = f"{p['lib']}  ·  {p['sb_lib']}"
+                    options_map[label] = p
+
+                choice = st.selectbox(
+                    "Sélectionnez l'activité correspondante",
+                    options=["— Choisir parmi les résultats —"] + list(options_map.keys()),
+                    key="activity_select",
+                    label_visibility="collapsed",
                 )
 
-                if division_choice == "🔸 Autre (à préciser)":
-                    autre_division = st.text_input(
-                        "Précisez votre activité",
-                        placeholder="Ex: Activité spécifique dans cette section...",
-                        key="autre_division"
-                    )
-                    if autre_division.strip():
-                        st.success(f"✅ Activité personnalisée : **{autre_division}**")
-                        st.session_state["final_naema"] = f"{section_code}.AUTRE — {autre_division}"
-                elif division_choice != "— Sélectionner —":
-                    division_code = division_choice.split(" — ")[0]
-                    st.info(f"📍 Division sélectionnée : **{division_choice}**")
+                if choice != "— Choisir parmi les résultats —":
+                    selected = options_map[choice]
+                    existing_ids = [a["id"] for a in st.session_state["activities"]]
 
-                    # Étape 3 : Sélection du Groupe
-                    groups_dict = get_groups_for_division(division_code)
-                    if groups_dict:
-                        group_options = [f"{code} — {label}" for code, label in groups_dict.items()]
-                        group_choice = st.selectbox(
-                            "Sélectionnez un groupe (code détaillé)",
-                            options=["— Sélectionner —"] + group_options + ["🔸 Autre (à préciser)"],
-                            key="naema_group",
-                        )
+                    # Show auto-determined hierarchy
+                    st.markdown(f"""
+                    <div class="act-card" style="border-left: 3px solid #DAA520;">
+                        <div class="act-role">Hiérarchie déterminée automatiquement</div>
+                        <div class="act-name">{selected['lib']}</div>
+                        <div class="act-code">Code : {selected['id']} · Sous-branche : {selected['sb_lib']}</div>
+                        <div class="act-branch">Secteur (Branche) : {selected['br_id']} — {selected['br_lib']}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
 
-                        if group_choice == "🔸 Autre (à préciser)":
-                            autre_group = st.text_input(
-                                "Précisez votre activité",
-                                placeholder="Ex: Activité spécifique dans cette division...",
-                                key="autre_group"
-                            )
-                            if autre_group.strip():
-                                st.success(f"✅ Code NAEMA personnalisé : **{division_code}.AUTRE — {autre_group}**")
-                                st.session_state["final_naema"] = f"{division_code}.AUTRE — {autre_group}"
-                        elif group_choice != "— Sélectionner —":
-                            st.success(f"✅ Code NAEMA sélectionné : **{group_choice}**")
-                            st.session_state["final_naema"] = group_choice
+                    if selected["id"] not in existing_ids:
+                        if st.button(f"✅ Ajouter « {selected['lib']} »", type="primary"):
+                            st.session_state["activities"].append(selected)
+                            st.rerun()
                     else:
-                        # Pas de groupes, utiliser la division directement
-                        st.success(f"✅ Code NAEMA sélectionné : **{division_choice}**")
-                        st.session_state["final_naema"] = division_choice
+                        st.info("✓ Cette activité est déjà dans votre liste.")
+            else:
+                st.warning("Aucun résultat. Essayez d'autres mots-clés (ex : riz, poisson, taxi, coiffure…)")
 
-    # Vérifier si un code NAEMA final a été sélectionné
-    naema_choice = st.session_state.get("final_naema", "")
-    if not naema_choice:
-        st.info("Veuillez sélectionner ou préciser votre catégorie d'activité NAEMA.")
+        # ── Display selected activities ──
+        activities = st.session_state["activities"]
+        if activities:
+            st.divider()
+            st.markdown("**Vos activités sélectionnées :**")
+
+            for idx, act in enumerate(activities):
+                role = "Activité principale" if idx == 0 else f"Activité secondaire {idx}"
+                col_info, col_del = st.columns([6, 1])
+                with col_info:
+                    st.markdown(render_activity_card(act, role), unsafe_allow_html=True)
+                with col_del:
+                    st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
+                    if st.button("🗑️", key=f"del_{act['id']}_{idx}", help="Supprimer"):
+                        st.session_state["activities"] = [
+                            a for i, a in enumerate(activities) if i != idx
+                        ]
+                        st.rerun()
+
+            st.caption("💡 *Recherchez ci-dessus pour ajouter des activités secondaires.*")
+
+    if not st.session_state["activities"]:
+        st.info("Veuillez rechercher et sélectionner au moins une activité pour continuer.")
         st.stop()
 
-    # Q3 - Détails de l'activité
-    with st.expander("**③ Détails de votre activité**", expanded=True):
+    # ── Q2 : Détails ──
+    with st.expander("**② Détails complémentaires**", expanded=True):
         activity_desc = st.text_area(
             "Décrivez brièvement votre activité",
             placeholder="Ex : Vente de vêtements prêts-à-porter via boutique et réseaux sociaux…",
-            key="activity_desc",
-            height=100,
+            key="activity_desc", height=100,
         )
-
         col1, col2 = st.columns(2)
         with col1:
             employees = st.number_input("Nombre d'employés", min_value=0, max_value=100000, value=0, step=1, key="employees")
@@ -707,14 +574,15 @@ if step == 0:
             st.text_input("Email", placeholder="contact@entreprise.sn", key="email")
 
     st.divider()
-    can_continue = bool(activity_desc.strip()) if 'activity_desc' in dir() else False
+    can_continue = (
+        bool(st.session_state.get("activity_desc", "").strip())
+        and len(st.session_state["activities"]) > 0
+    )
 
     col_btn1, col_btn2 = st.columns([3, 1])
     with col_btn1:
         if st.button("Passer à la confirmation →", type="primary", use_container_width=True, disabled=not can_continue):
-            # Sauvegarder les données du formulaire dans des clés dédiées
-            st.session_state["data_legal_form"] = st.session_state.get("final_legal_form", "")
-            st.session_state["data_naema"] = st.session_state.get("final_naema", "")
+            st.session_state["data_activities"] = list(st.session_state["activities"])
             st.session_state["data_activity_desc"] = st.session_state.get("activity_desc", "")
             st.session_state["data_employees"] = st.session_state.get("employees", 0)
             st.session_state["data_capital"] = st.session_state.get("capital", 0)
@@ -728,37 +596,46 @@ if step == 0:
             st.rerun()
 
     if not can_continue:
-        st.warning("Veuillez compléter la description de votre activité pour continuer.")
+        st.warning("Veuillez compléter la description et sélectionner au moins une activité.")
 
 
-# ═══════════════════════════════════════════════════════════
-# ÉTAPE 1 : CONFIRMATION
-# ═══════════════════════════════════════════════════════════
+# ═══════════════════════════════════════
+# ÉTAPE 1 : RÉCAPITULATIF
+# ═══════════════════════════════════════
 elif step == 1:
-    st.markdown("#### ✅ Confirmation de vos informations")
+    st.markdown("#### ✅ Récapitulatif de vos informations")
     st.caption("Vérifiez attentivement avant validation définitive")
 
-    # Lire depuis les clés sauvegardées (stables, pas liées aux widgets)
-    legal_form = st.session_state.get("data_legal_form", "")
-    naema_choice = st.session_state.get("data_naema", "")
+    activities = st.session_state.get("data_activities", [])
     activity_desc = st.session_state.get("data_activity_desc", "")
     employees = st.session_state.get("data_employees", 0)
     capital = st.session_state.get("data_capital", 0)
     phone = st.session_state.get("data_phone", "")
     email = st.session_state.get("data_email", "")
 
+    principal = activities[0] if activities else {}
+
+    # Activities cards
+    act_html = ""
+    for idx, act in enumerate(activities):
+        role = "Activité principale" if idx == 0 else f"Activité secondaire {idx}"
+        act_html += render_activity_card(act, role)
+
     st.markdown(f"""
     <div class="confirm-card">
         <div class="info-row">
-            <div class="info-label">Forme juridique</div>
-            <div class="info-value">{legal_form}</div>
+            <div class="info-label">Secteur d'activité</div>
+            <div class="info-value"><strong>{principal.get('br_id','')}</strong> — {principal.get('br_lib','')}</div>
         </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(act_html, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="confirm-card">
         <div class="info-row">
-            <div class="info-label">Code NAEMA</div>
-            <div class="info-value">{naema_choice}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Description de l'activité</div>
+            <div class="info-label">Description</div>
             <div class="info-value">{activity_desc}</div>
         </div>
         <div class="info-row">
@@ -781,11 +658,9 @@ elif step == 1:
     """, unsafe_allow_html=True)
 
     st.divider()
-
     st.markdown("##### Attestations")
     confirm1 = st.checkbox("Je certifie l'exactitude des informations fournies", key="confirm1")
     confirm2 = st.checkbox("J'accepte les conditions générales d'utilisation", key="confirm2")
-
     st.divider()
 
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -797,8 +672,33 @@ elif step == 1:
         can_validate = confirm1 and confirm2
         if st.button("Confirmer définitivement", type="primary", use_container_width=True, disabled=not can_validate):
             st.session_state["validated"] = True
-            st.session_state["step"] = 2
-            st.rerun()
+            st.balloons()
+            st.success("🎉 Votre dossier a été enregistré avec succès !")
+
+            st.markdown("""
+            <div class="next-steps">
+                <h4>Prochaines étapes</h4>
+                <div class="ns-item"><div class="ns-num">1</div>
+                    <div class="ns-text">Vous recevrez un email de confirmation avec votre numéro d'immatriculation</div></div>
+                <div class="ns-item"><div class="ns-num">2</div>
+                    <div class="ns-text">Téléchargez et complétez les formulaires requis</div></div>
+                <div class="ns-item"><div class="ns-num">3</div>
+                    <div class="ns-text">Soumettez vos pièces justificatives</div></div>
+                <div class="ns-item"><div class="ns-num">4</div>
+                    <div class="ns-text">Recevez votre certificat d'immatriculation fiscale</div></div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            st.divider()
+            col_a, col_b = st.columns(2)
+            with col_a:
+                if st.button("📥 Télécharger le récapitulatif", use_container_width=True):
+                    st.info("Fonctionnalité à implémenter : génération PDF")
+            with col_b:
+                if st.button("Nouvelle immatriculation", type="primary", use_container_width=True):
+                    reset_form()
+                    st.rerun()
+
     with col3:
         if st.button("Annuler", use_container_width=True):
             reset_form()
@@ -806,85 +706,3 @@ elif step == 1:
 
     if not can_validate:
         st.info("Veuillez cocher les deux attestations pour valider.")
-
-
-# ═══════════════════════════════════════════════════════════
-# ÉTAPE 2 : RÉSULTAT
-# ═══════════════════════════════════════════════════════════
-elif step == 2:
-    st.balloons()
-
-    legal_form = st.session_state.get("data_legal_form", "")
-    naema_code = st.session_state.get("data_naema", "")
-    employees = st.session_state.get("data_employees", 0)
-
-    regime, description = determine_regime_fiscal(legal_form, employees, naema_code)
-
-    st.markdown("""
-    <div class="regime-header">
-        <div class="regime-icon">🏛️</div>
-        <div class="regime-label">Votre régime fiscal</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div class="regime-detail-card">
-        <h3>📋 {regime}</h3>
-        <p>{description}</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div class="confirm-card">
-        <div class="info-row">
-            <div class="info-label">Forme juridique</div>
-            <div class="info-value">{legal_form}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Effectif</div>
-            <div class="info-value">{employees} employé(s)</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Code NAEMA</div>
-            <div class="info-value">{naema_code}</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.divider()
-
-    st.markdown("""
-    <div class="next-steps">
-        <h4>Prochaines étapes</h4>
-        <div class="ns-item">
-            <div class="ns-num">1</div>
-            <div class="ns-text">Vous recevrez un email de confirmation avec votre numéro d'immatriculation</div>
-        </div>
-        <div class="ns-item">
-            <div class="ns-num">2</div>
-            <div class="ns-text">Téléchargez et complétez les formulaires requis</div>
-        </div>
-        <div class="ns-item">
-            <div class="ns-num">3</div>
-            <div class="ns-text">Soumettez vos pièces justificatives</div>
-        </div>
-        <div class="ns-item">
-            <div class="ns-num">4</div>
-            <div class="ns-text">Recevez votre certificat d'immatriculation fiscale</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.divider()
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("📥 Télécharger le récapitulatif", use_container_width=True):
-            st.info("Fonctionnalité à implémenter : génération PDF")
-    with col2:
-        if st.button("📧 Envoyer par email", use_container_width=True):
-            st.success("Email envoyé avec succès ! (simulation)")
-    with col3:
-        if st.button("Nouvelle immatriculation", type="primary", use_container_width=True):
-            reset_form()
-            st.rerun()
