@@ -238,6 +238,11 @@ if not df.empty:
         min_date = df["Date_Simple"].min()
         max_date = df["Date_Simple"].max()
         
+        # Vérifier que les dates sont valides
+        if pd.isna(min_date) or pd.isna(max_date):
+            min_date = today - timedelta(days=30)
+            max_date = today
+        
         date_range = st.date_input(
             "Période",
             value=(today - timedelta(days=today.weekday()), today),
