@@ -1,0 +1,2472 @@
+{
+  "branches": {
+    "A01": "AGRICULTURE ET ACTIVITÉS ANNEXES",
+    "A02": "ELEVAGE, CHASSE ET SERVICES ANNEXES",
+    "A03": "SYLVICULTURE ET EXPLOITATION FORESTIÈRE",
+    "A04": "PÊCHE ET AQUACULTURE",
+    "B00": "ACTIVITÉS EXTRACTIVES",
+    "C01": "FABRICATION DE PRODUITS ALIMENTAIRES",
+    "C02": "FABRICATION DE BOISSONS",
+    "C03": "FABRICATION DE PRODUITS À BASE DE TABAC",
+    "C04": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES",
+    "C05": "TRAVAIL DE BOIS, FABRICATION DE PAPIER, IMPRIMERIE ET REPRODUCTION D'ENREGISTREMENT",
+    "C06": "COKÉFACTION ET RAFFINAGE",
+    "C07": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES",
+    "C08": "TRAVAIL DE CAOUTCHOUC ET DE PLASTIQUES",
+    "C09": "FABRICATION D'AUTRES PRODUITS MINÉRAUX NON MÉTALLIQUES",
+    "C10": "FABRICATION DE MATÉRIEAUX MINERAUX",
+    "C11": "FABRICATION DE MATÉRIELS ELECTRIQUES, ÉLECTRONIQUES",
+    "C12": "FABRICATION DE BIENS D'ÉQUIPEMENTS, MACHINES ET MATÉRIELS DE TRANSPORTS",
+    "C13": "FABRICATION D'AUTRES PRODUITS MANUFACTURIÈRES",
+    "D00": "PRODUCTION ET DISTRIBUTION D'ÉLECTRICITÉ, DE GAZ, DE VAPEUR ET D'AIR CONDITIONNÉ",
+    "E00": "PRODUCTION ET DISTRIBUTION D'EAU ; ASSAINISSEMENT, GESTION DES DÉCHETS ET DÉPOLLUTION",
+    "F00": "CONSTRUCTION",
+    "G00": "COMMERCE; RÉPARATION D'AUTOMOBILES ET DE MOTOCYCLES",
+    "H00": "TRANSPORTS ET ENTREPOSAGE",
+    "I00": "HÉBERGEMENT ET RESTAURATION",
+    "J00": "INFORMATION ET COMMUNICATION",
+    "K00": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE",
+    "L00": "ACTIVITÉS IMMOBILIÈRES",
+    "M00": "ACTIVITÉS SPÉCIALISÉES, SCIENTIFIQUES ET TECHNIQUES",
+    "N00": "ACTIVITÉS DE SERVICES ADMINISTRATIFS ET DE SOUTIEN",
+    "O00": "ADMINISTRATION PUBLIQUE",
+    "P00": "ENSEIGNEMENT",
+    "Q00": "SANTÉ HUMAINE ET ACTION SOCIALE",
+    "R00": "ARTS, SPECTACLES ET ACTIVITÉS RÉCRÉATIVES",
+    "S00": "AUTRES ACTIVITÉS DE SERVICES",
+    "T00": "ACTIVITÉS DES MÉNAGES EN TANT QU'EMPLOYEURS DE PERSONNEL DOMESTIQUE",
+    "U00": "ACTIVITÉS EXTRA-TERRITORIALES"
+  },
+  "sous_branches": {
+    "A01010": {
+      "lib": "Culture de céréales",
+      "branche_id": "A01"
+    },
+    "A01020": {
+      "lib": "Culture de tubercules et légumes à cosse sec",
+      "branche_id": "A01"
+    },
+    "A01030": {
+      "lib": "Légumes et épices",
+      "branche_id": "A01"
+    },
+    "A01040": {
+      "lib": "Fruits et agrumes",
+      "branche_id": "A01"
+    },
+    "A01050": {
+      "lib": "Plantes et  fleurs, pépinières, plantes pour boisson",
+      "branche_id": "A01"
+    },
+    "A01060": {
+      "lib": "Arachide et autres oléagineux (sauf graine de coton)",
+      "branche_id": "A01"
+    },
+    "A01070": {
+      "lib": "Culture du coton graine",
+      "branche_id": "A01"
+    },
+    "A01080": {
+      "lib": "Culture d'autres produits agricoles",
+      "branche_id": "A01"
+    },
+    "A01090": {
+      "lib": "Services de soutien à l'agriculture",
+      "branche_id": "A01"
+    },
+    "A02010": {
+      "lib": "Bovins, Ovins, Caprins",
+      "branche_id": "A02"
+    },
+    "A02020": {
+      "lib": "Volaille",
+      "branche_id": "A02"
+    },
+    "A02030": {
+      "lib": "Produits de l’élevage d'animaux NCA",
+      "branche_id": "A02"
+    },
+    "A02040": {
+      "lib": "Produits de la chasse et services annexes",
+      "branche_id": "A02"
+    },
+    "A02050": {
+      "lib": "Activités de soutien à l'élevage",
+      "branche_id": "A02"
+    },
+    "A03010": {
+      "lib": "Exploitation forestière",
+      "branche_id": "A03"
+    },
+    "A03020": {
+      "lib": "Cueillette et activités forestières",
+      "branche_id": "A03"
+    },
+    "A03030": {
+      "lib": "Services de soutien à la sylviculture",
+      "branche_id": "A03"
+    },
+    "A04010": {
+      "lib": "Pêche en mer",
+      "branche_id": "A04"
+    },
+    "A04020": {
+      "lib": "Pêche en eau douce",
+      "branche_id": "A04"
+    },
+    "A04030": {
+      "lib": "Aquaculture, pisciculture",
+      "branche_id": "A04"
+    },
+    "A04040": {
+      "lib": "Activités annexes de la pêche",
+      "branche_id": "A04"
+    },
+    "B00010": {
+      "lib": "Extraction de phosphates naturels",
+      "branche_id": "B00"
+    },
+    "B00020": {
+      "lib": "Extraction de pétrole brut",
+      "branche_id": "B00"
+    },
+    "B00030": {
+      "lib": "Extraction de gaz naturel",
+      "branche_id": "B00"
+    },
+    "B00040": {
+      "lib": "Extraction de minerais métalliques",
+      "branche_id": "B00"
+    },
+    "B00050": {
+      "lib": "Autres activités extractives",
+      "branche_id": "B00"
+    },
+    "B00060": {
+      "lib": "Activités de soutien aux industries extractives",
+      "branche_id": "B00"
+    },
+    "C01010": {
+      "lib": "Abattage, transformation, et conservation des viandes",
+      "branche_id": "C01"
+    },
+    "C01020": {
+      "lib": "Transformation et conservation des poissons, crustacés et mollusques",
+      "branche_id": "C01"
+    },
+    "C01030": {
+      "lib": "Fabrication de corps gras alimentaires",
+      "branche_id": "C01"
+    },
+    "C01040": {
+      "lib": "Travail des grains et fabrication de produits amylacés",
+      "branche_id": "C01"
+    },
+    "C01050": {
+      "lib": "Fabrication de pain et de pâtisseries",
+      "branche_id": "C01"
+    },
+    "C01060": {
+      "lib": "Fabrication de produits alimentaires à base de céréales n.c.a.",
+      "branche_id": "C01"
+    },
+    "C01070": {
+      "lib": "Traitement et conservation de fruits et légumes",
+      "branche_id": "C01"
+    },
+    "C01080": {
+      "lib": "Fabrication de produits laitiers et de glaces alimentaires",
+      "branche_id": "C01"
+    },
+    "C01090": {
+      "lib": "Fabrication de sucre",
+      "branche_id": "C01"
+    },
+    "C01100": {
+      "lib": "Fabrication de cacao, chocolat et confiserie",
+      "branche_id": "C01"
+    },
+    "C01110": {
+      "lib": "Fabrication d'autres produits alimentaires",
+      "branche_id": "C01"
+    },
+    "C01120": {
+      "lib": "Fabrication d'aliments pour animaux",
+      "branche_id": "C01"
+    },
+    "C02000": {
+      "lib": "Fabrication de boissons",
+      "branche_id": "C02"
+    },
+    "C03000": {
+      "lib": "Fabrication de produits à base de tabac",
+      "branche_id": "C03"
+    },
+    "C04010": {
+      "lib": "Production de l'égrenage du coton",
+      "branche_id": "C04"
+    },
+    "C04020": {
+      "lib": "Production de la filature, du tissage et de l'ennoblissement textile",
+      "branche_id": "C04"
+    },
+    "C04030": {
+      "lib": "Fabrication d'articles d'habillement",
+      "branche_id": "C04"
+    },
+    "C04040": {
+      "lib": "Fabrication de cuir et d’articles de cuir et chauusures",
+      "branche_id": "C04"
+    },
+    "C05010": {
+      "lib": "Sciage et rabottage du bois",
+      "branche_id": "C05"
+    },
+    "C05020": {
+      "lib": "Fabrication de papier et d’articles en papier",
+      "branche_id": "C05"
+    },
+    "C05030": {
+      "lib": "Imprimerie et activités annexes",
+      "branche_id": "C05"
+    },
+    "C05040": {
+      "lib": "Reproduction d'enregistrements",
+      "branche_id": "C05"
+    },
+    "C06000": {
+      "lib": "Fabrication de produits pétroliers raffinés et cokefaction",
+      "branche_id": "C06"
+    },
+    "C07010": {
+      "lib": "Fabrication de produits chimiques de base, d’engrais et de produits azotés",
+      "branche_id": "C07"
+    },
+    "C07020": {
+      "lib": "Fabrication de produits pharmaceutiques",
+      "branche_id": "C07"
+    },
+    "C07030": {
+      "lib": "Fabrication de savons, parfums et produits d'entretien",
+      "branche_id": "C07"
+    },
+    "C07040": {
+      "lib": "Fabrication d'autres produits chimiques",
+      "branche_id": "C07"
+    },
+    "C08000": {
+      "lib": "Fabrication de produits en caoutchouc et en plastique",
+      "branche_id": "C08"
+    },
+    "C09010": {
+      "lib": "Fabrication de verre et d’articles en verre et produits céramiques",
+      "branche_id": "C09"
+    },
+    "C09020": {
+      "lib": "Fabrication de Ciments et d'autres matériaux de constructions",
+      "branche_id": "C09"
+    },
+    "C10010": {
+      "lib": "Fabrication de produits métallurgiques",
+      "branche_id": "C10"
+    },
+    "C10020": {
+      "lib": "Fabrication d’ouvrages en métaux (sauf machines et matériel)",
+      "branche_id": "C10"
+    },
+    "C11010": {
+      "lib": "Fabrication de produits électroniques et informatiques et optiques",
+      "branche_id": "C11"
+    },
+    "C11020": {
+      "lib": "Fabrication de matériels électriques",
+      "branche_id": "C11"
+    },
+    "C12010": {
+      "lib": "Fabrication de machines et matériels divers à usage général",
+      "branche_id": "C12"
+    },
+    "C12020": {
+      "lib": "Fabrication de machines et matériels divers à usage spacfique",
+      "branche_id": "C12"
+    },
+    "C12030": {
+      "lib": "Fabrication de véhicules automobiles et composants",
+      "branche_id": "C12"
+    },
+    "C12040": {
+      "lib": "Fabrication d'autres matériels de transports",
+      "branche_id": "C12"
+    },
+    "C13010": {
+      "lib": "Fabrication de meubles",
+      "branche_id": "C13"
+    },
+    "C13020": {
+      "lib": "Autres industries manufacturières",
+      "branche_id": "C13"
+    },
+    "C13030": {
+      "lib": "Réparation et installation de machines et de matériel",
+      "branche_id": "C13"
+    },
+    "D00010": {
+      "lib": "Production et distribution d’électricité, de gaz et supports energetiques",
+      "branche_id": "D00"
+    },
+    "D00020": {
+      "lib": "Production et distribution de gaz",
+      "branche_id": "D00"
+    },
+    "E00010": {
+      "lib": "Captage, traitement et distribution d'eau",
+      "branche_id": "E00"
+    },
+    "E00020": {
+      "lib": "Eaux usées et déchets collectés et traités, produits de la récupération",
+      "branche_id": "E00"
+    },
+    "F00010": {
+      "lib": "Construction de bâtiments",
+      "branche_id": "F00"
+    },
+    "F00020": {
+      "lib": "Génie civil",
+      "branche_id": "F00"
+    },
+    "F00030": {
+      "lib": "Travaux de construction spécialisés",
+      "branche_id": "F00"
+    },
+    "G00010": {
+      "lib": "Commerce et réparation d'automobiles et de motocycles",
+      "branche_id": "G00"
+    },
+    "G00020": {
+      "lib": "Commerce de gros, à l'exception des automobiles et des motocycles",
+      "branche_id": "G00"
+    },
+    "G00030": {
+      "lib": "Commerce de détail, à l'exception des automobiles et des motocycles",
+      "branche_id": "G00"
+    },
+    "G00040": {
+      "lib": "Commerce de produits pharmaceutiques",
+      "branche_id": "G00"
+    },
+    "G00050": {
+      "lib": "Commerce de produits pétroliers",
+      "branche_id": "G00"
+    },
+    "H00010": {
+      "lib": "Transports ferroviaires",
+      "branche_id": "H00"
+    },
+    "H00020": {
+      "lib": "Transports routiers",
+      "branche_id": "H00"
+    },
+    "H00030": {
+      "lib": "Transport par conduites",
+      "branche_id": "H00"
+    },
+    "H00040": {
+      "lib": "Transports par eau",
+      "branche_id": "H00"
+    },
+    "H00050": {
+      "lib": "Transports aériens",
+      "branche_id": "H00"
+    },
+    "H00060": {
+      "lib": "Entreposage et activités des auxilliaires de transport",
+      "branche_id": "H00"
+    },
+    "H00070": {
+      "lib": "Activités de poste et de courrier",
+      "branche_id": "H00"
+    },
+    "I00010": {
+      "lib": "Hébergement",
+      "branche_id": "I00"
+    },
+    "I00020": {
+      "lib": "Restauration et debits de boisson",
+      "branche_id": "I00"
+    },
+    "J00010": {
+      "lib": "Édition",
+      "branche_id": "J00"
+    },
+    "J00020": {
+      "lib": "Activitées de production de films cinématographiques, de vidéo et de programmes de télévision ; enregistrement sonore et édition musicale",
+      "branche_id": "J00"
+    },
+    "J00030": {
+      "lib": "Activités de programmation et de diﬀusion",
+      "branche_id": "J00"
+    },
+    "J00040": {
+      "lib": "Télécommunications",
+      "branche_id": "J00"
+    },
+    "J00050": {
+      "lib": "Programmation, conseil et autres activités informatiques",
+      "branche_id": "J00"
+    },
+    "J00060": {
+      "lib": "Activités de services d’information",
+      "branche_id": "J00"
+    },
+    "K00010": {
+      "lib": "Activités des services financiers, hors assurance et caisses de retraite",
+      "branche_id": "K00"
+    },
+    "K00020": {
+      "lib": "Assurance",
+      "branche_id": "K00"
+    },
+    "K00030": {
+      "lib": "Activités auxiliaires des services financiers electroniques",
+      "branche_id": "K00"
+    },
+    "K00040": {
+      "lib": "Activités auxiliaires d'assurance et de caisses de retraite",
+      "branche_id": "K00"
+    },
+    "K00050": {
+      "lib": "Activités auxiliaires d'autres services financiers",
+      "branche_id": "K00"
+    },
+    "L00000": {
+      "lib": "Activités immobilières",
+      "branche_id": "L00"
+    },
+    "M00010": {
+      "lib": "Recherche scientifque et développement",
+      "branche_id": "M00"
+    },
+    "M00020": {
+      "lib": "Activités de services vétérinaires",
+      "branche_id": "M00"
+    },
+    "M00030": {
+      "lib": "Autres activités spécialisées scientifiques et techniques",
+      "branche_id": "M00"
+    },
+    "N00010": {
+      "lib": "Activités de location et location-bail",
+      "branche_id": "N00"
+    },
+    "N00020": {
+      "lib": "Activités des agences de reservation et voyagistes",
+      "branche_id": "N00"
+    },
+    "N00030": {
+      "lib": "Activités d’enquêtes et de sécurité",
+      "branche_id": "N00"
+    },
+    "N00040": {
+      "lib": "Autres activités de soutien aux entreprises; activités de bureau",
+      "branche_id": "N00"
+    },
+    "O00010": {
+      "lib": "Activités d'administration générale; administration de la politique économique et sociale",
+      "branche_id": "O00"
+    },
+    "O00020": {
+      "lib": "Activités de sécurité sociale obligatoire",
+      "branche_id": "O00"
+    },
+    "P00000": {
+      "lib": "Enseignement",
+      "branche_id": "P00"
+    },
+    "Q00010": {
+      "lib": "Activités relatives à la santé",
+      "branche_id": "Q00"
+    },
+    "Q00020": {
+      "lib": "Action sociale",
+      "branche_id": "Q00"
+    },
+    "R00010": {
+      "lib": "Activités de jeux de hasard et de pari",
+      "branche_id": "R00"
+    },
+    "R00020": {
+      "lib": "Activités sportives, récréatives, artistiques et de spectacles",
+      "branche_id": "R00"
+    },
+    "S00010": {
+      "lib": "Activités des organisations associatives, religieuses, syndicales, plolitiques et autres",
+      "branche_id": "S00"
+    },
+    "S00020": {
+      "lib": "Autres activités de services personnels",
+      "branche_id": "S00"
+    },
+    "T00000": {
+      "lib": "Activités des ménages privés employant de personnel domestique",
+      "branche_id": "T00"
+    },
+    "U00000": {
+      "lib": "Activités des organisations et organismes extraterritoriaux",
+      "branche_id": "U00"
+    }
+  },
+  "produits": [
+    {
+      "id": "A01010001",
+      "lib": "Blé",
+      "sb_id": "A01010",
+      "sb_lib": "Culture de céréales",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01010002",
+      "lib": "Mil-Sorgho",
+      "sb_id": "A01010",
+      "sb_lib": "Culture de céréales",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01010003",
+      "lib": "Mais",
+      "sb_id": "A01010",
+      "sb_lib": "Culture de céréales",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01010004",
+      "lib": "Riz paddy",
+      "sb_id": "A01010",
+      "sb_lib": "Culture de céréales",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01010005",
+      "lib": "Autres céréales",
+      "sb_id": "A01010",
+      "sb_lib": "Culture de céréales",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01020001",
+      "lib": "Pomme de terre",
+      "sb_id": "A01020",
+      "sb_lib": "Culture de tubercules et légumes à cosse sec",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01020002",
+      "lib": "Manioc",
+      "sb_id": "A01020",
+      "sb_lib": "Culture de tubercules et légumes à cosse sec",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01020003",
+      "lib": "Niébé",
+      "sb_id": "A01020",
+      "sb_lib": "Culture de tubercules et légumes à cosse sec",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01020004",
+      "lib": "Patate douce",
+      "sb_id": "A01020",
+      "sb_lib": "Culture de tubercules et légumes à cosse sec",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01020005",
+      "lib": "Autres tubercules et légumes à cosse sec",
+      "sb_id": "A01020",
+      "sb_lib": "Culture de tubercules et légumes à cosse sec",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01030001",
+      "lib": "Oignons",
+      "sb_id": "A01030",
+      "sb_lib": "Légumes et épices",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01030002",
+      "lib": "Tomates",
+      "sb_id": "A01030",
+      "sb_lib": "Légumes et épices",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01030003",
+      "lib": "Pastèques et melons",
+      "sb_id": "A01030",
+      "sb_lib": "Légumes et épices",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01030004",
+      "lib": "Autres légumes",
+      "sb_id": "A01030",
+      "sb_lib": "Légumes et épices",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01030005",
+      "lib": "Epices",
+      "sb_id": "A01030",
+      "sb_lib": "Légumes et épices",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01040001",
+      "lib": "Mangues",
+      "sb_id": "A01040",
+      "sb_lib": "Fruits et agrumes",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01040002",
+      "lib": "Bananes",
+      "sb_id": "A01040",
+      "sb_lib": "Fruits et agrumes",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01040003",
+      "lib": "Agrumes",
+      "sb_id": "A01040",
+      "sb_lib": "Fruits et agrumes",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01040004",
+      "lib": "Autres fruits",
+      "sb_id": "A01040",
+      "sb_lib": "Fruits et agrumes",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01050000",
+      "lib": "Plante et fleurs, pépinière, plantes pour boisson",
+      "sb_id": "A01050",
+      "sb_lib": "Plantes et  fleurs, pépinières, plantes pour boisson",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01060001",
+      "lib": "Arachide coque",
+      "sb_id": "A01060",
+      "sb_lib": "Arachide et autres oléagineux (sauf graine de coton)",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01060002",
+      "lib": "Fane d'arachide",
+      "sb_id": "A01060",
+      "sb_lib": "Arachide et autres oléagineux (sauf graine de coton)",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01060003",
+      "lib": "Autres oléagineux (sauf graine de coton)",
+      "sb_id": "A01060",
+      "sb_lib": "Arachide et autres oléagineux (sauf graine de coton)",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01070000",
+      "lib": "Coton graine",
+      "sb_id": "A01070",
+      "sb_lib": "Culture du coton graine",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01080001",
+      "lib": "Canne à sucre",
+      "sb_id": "A01080",
+      "sb_lib": "Culture d'autres produits agricoles",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01080002",
+      "lib": "Anacarde : Noix et pomme de cajou",
+      "sb_id": "A01080",
+      "sb_lib": "Culture d'autres produits agricoles",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01080003",
+      "lib": "Autres produits agricoles",
+      "sb_id": "A01080",
+      "sb_lib": "Culture d'autres produits agricoles",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A01090000",
+      "lib": "Services de soutien",
+      "sb_id": "A01090",
+      "sb_lib": "Services de soutien à l'agriculture",
+      "br_id": "A01",
+      "br_lib": "AGRICULTURE ET ACTIVITÉS ANNEXES"
+    },
+    {
+      "id": "A02010001",
+      "lib": "Bovins",
+      "sb_id": "A02010",
+      "sb_lib": "Bovins, Ovins, Caprins",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02010002",
+      "lib": "Ovins",
+      "sb_id": "A02010",
+      "sb_lib": "Bovins, Ovins, Caprins",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02010003",
+      "lib": "Caprins",
+      "sb_id": "A02010",
+      "sb_lib": "Bovins, Ovins, Caprins",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02010004",
+      "lib": "Lait brut de vaches, de brebis, chèvres",
+      "sb_id": "A02010",
+      "sb_lib": "Bovins, Ovins, Caprins",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02010005",
+      "lib": "Fumure de bovins, caprins et ovins",
+      "sb_id": "A02010",
+      "sb_lib": "Bovins, Ovins, Caprins",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02020001",
+      "lib": "Poussins",
+      "sb_id": "A02020",
+      "sb_lib": "Volaille",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02020002",
+      "lib": "Volaille",
+      "sb_id": "A02020",
+      "sb_lib": "Volaille",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02020003",
+      "lib": "Œufs",
+      "sb_id": "A02020",
+      "sb_lib": "Volaille",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02030001",
+      "lib": "Miel",
+      "sb_id": "A02030",
+      "sb_lib": "Produits de l’élevage d'animaux NCA",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02030002",
+      "lib": "Animaux sur pied n.c.a",
+      "sb_id": "A02030",
+      "sb_lib": "Produits de l’élevage d'animaux NCA",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02030003",
+      "lib": "Produits divers d’origine animale n.c.a.",
+      "sb_id": "A02030",
+      "sb_lib": "Produits de l’élevage d'animaux NCA",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02040001",
+      "lib": "Viande de chasse",
+      "sb_id": "A02040",
+      "sb_lib": "Produits de la chasse et services annexes",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02040002",
+      "lib": "Services annexes à la chasse",
+      "sb_id": "A02040",
+      "sb_lib": "Produits de la chasse et services annexes",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A02050000",
+      "lib": "Services de soutien à l'élevage",
+      "sb_id": "A02050",
+      "sb_lib": "Activités de soutien à l'élevage",
+      "br_id": "A02",
+      "br_lib": "ELEVAGE, CHASSE ET SERVICES ANNEXES"
+    },
+    {
+      "id": "A03010001",
+      "lib": "Charbon de bois",
+      "sb_id": "A03010",
+      "sb_lib": "Exploitation forestière",
+      "br_id": "A03",
+      "br_lib": "SYLVICULTURE ET EXPLOITATION FORESTIÈRE"
+    },
+    {
+      "id": "A03010002",
+      "lib": "Bois de chauffe",
+      "sb_id": "A03010",
+      "sb_lib": "Exploitation forestière",
+      "br_id": "A03",
+      "br_lib": "SYLVICULTURE ET EXPLOITATION FORESTIÈRE"
+    },
+    {
+      "id": "A03010003",
+      "lib": "Autres bois",
+      "sb_id": "A03010",
+      "sb_lib": "Exploitation forestière",
+      "br_id": "A03",
+      "br_lib": "SYLVICULTURE ET EXPLOITATION FORESTIÈRE"
+    },
+    {
+      "id": "A03020001",
+      "lib": "Gommes naturelles",
+      "sb_id": "A03020",
+      "sb_lib": "Cueillette et activités forestières",
+      "br_id": "A03",
+      "br_lib": "SYLVICULTURE ET EXPLOITATION FORESTIÈRE"
+    },
+    {
+      "id": "A03020002",
+      "lib": "Autres produits forestiers",
+      "sb_id": "A03020",
+      "sb_lib": "Cueillette et activités forestières",
+      "br_id": "A03",
+      "br_lib": "SYLVICULTURE ET EXPLOITATION FORESTIÈRE"
+    },
+    {
+      "id": "A03030000",
+      "lib": "Services forestiers de soutien",
+      "sb_id": "A03030",
+      "sb_lib": "Services de soutien à la sylviculture",
+      "br_id": "A03",
+      "br_lib": "SYLVICULTURE ET EXPLOITATION FORESTIÈRE"
+    },
+    {
+      "id": "A04010001",
+      "lib": "Poissons sauf d'élevage",
+      "sb_id": "A04010",
+      "sb_lib": "Pêche en mer",
+      "br_id": "A04",
+      "br_lib": "PÊCHE ET AQUACULTURE"
+    },
+    {
+      "id": "A04010002",
+      "lib": "Crustacés et mollusques sauf d'élevage",
+      "sb_id": "A04010",
+      "sb_lib": "Pêche en mer",
+      "br_id": "A04",
+      "br_lib": "PÊCHE ET AQUACULTURE"
+    },
+    {
+      "id": "A04010003",
+      "lib": "Autres produits de la pêche et activités annexes",
+      "sb_id": "A04010",
+      "sb_lib": "Pêche en mer",
+      "br_id": "A04",
+      "br_lib": "PÊCHE ET AQUACULTURE"
+    },
+    {
+      "id": "A04020001",
+      "lib": "Poissons sauf d'élevage",
+      "sb_id": "A04020",
+      "sb_lib": "Pêche en eau douce",
+      "br_id": "A04",
+      "br_lib": "PÊCHE ET AQUACULTURE"
+    },
+    {
+      "id": "A04020002",
+      "lib": "Crustacés et mollusques sauf d'élevage",
+      "sb_id": "A04020",
+      "sb_lib": "Pêche en eau douce",
+      "br_id": "A04",
+      "br_lib": "PÊCHE ET AQUACULTURE"
+    },
+    {
+      "id": "A04030000",
+      "lib": "Produits de l'aquaculture (y c pisciculture)",
+      "sb_id": "A04030",
+      "sb_lib": "Aquaculture, pisciculture",
+      "br_id": "A04",
+      "br_lib": "PÊCHE ET AQUACULTURE"
+    },
+    {
+      "id": "A04040000",
+      "lib": "Service annexe de la pêche",
+      "sb_id": "A04040",
+      "sb_lib": "Activités annexes de la pêche",
+      "br_id": "A04",
+      "br_lib": "PÊCHE ET AQUACULTURE"
+    },
+    {
+      "id": "B00010000",
+      "lib": "Phosphates naturels",
+      "sb_id": "B00010",
+      "sb_lib": "Extraction de phosphates naturels",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00020000",
+      "lib": "Pétrole brut",
+      "sb_id": "B00020",
+      "sb_lib": "Extraction de pétrole brut",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00030000",
+      "lib": "Gaz naturel",
+      "sb_id": "B00030",
+      "sb_lib": "Extraction de gaz naturel",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00040001",
+      "lib": "Minerais d'or",
+      "sb_id": "B00040",
+      "sb_lib": "Extraction de minerais métalliques",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00040002",
+      "lib": "Titane (Ilménite, Rutile et Leucoxene)",
+      "sb_id": "B00040",
+      "sb_lib": "Extraction de minerais métalliques",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00040003",
+      "lib": "Autres minerais métalliques.",
+      "sb_id": "B00040",
+      "sb_lib": "Extraction de minerais métalliques",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00050001",
+      "lib": "Sable",
+      "sb_id": "B00050",
+      "sb_lib": "Autres activités extractives",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00050002",
+      "lib": "Gravillon",
+      "sb_id": "B00050",
+      "sb_lib": "Autres activités extractives",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00050003",
+      "lib": "Sel et natron",
+      "sb_id": "B00050",
+      "sb_lib": "Autres activités extractives",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00050004",
+      "lib": "Zircon",
+      "sb_id": "B00050",
+      "sb_lib": "Autres activités extractives",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00050005",
+      "lib": "Pierres et autres produits de l'extraction",
+      "sb_id": "B00050",
+      "sb_lib": "Autres activités extractives",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00060001",
+      "lib": "Prospection minière",
+      "sb_id": "B00060",
+      "sb_lib": "Activités de soutien aux industries extractives",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "B00060002",
+      "lib": "Services de soutien aux industries extractives",
+      "sb_id": "B00060",
+      "sb_lib": "Activités de soutien aux industries extractives",
+      "br_id": "B00",
+      "br_lib": "ACTIVITÉS EXTRACTIVES"
+    },
+    {
+      "id": "C01010001",
+      "lib": "Viandes bovines",
+      "sb_id": "C01010",
+      "sb_lib": "Abattage, transformation, et conservation des viandes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01010002",
+      "lib": "Viandes ovines et caprines",
+      "sb_id": "C01010",
+      "sb_lib": "Abattage, transformation, et conservation des viandes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01010003",
+      "lib": "Viandes de volailles",
+      "sb_id": "C01010",
+      "sb_lib": "Abattage, transformation, et conservation des viandes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01010004",
+      "lib": "Autres viandes",
+      "sb_id": "C01010",
+      "sb_lib": "Abattage, transformation, et conservation des viandes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01010005",
+      "lib": "Peaux brutes",
+      "sb_id": "C01010",
+      "sb_lib": "Abattage, transformation, et conservation des viandes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01010006",
+      "lib": "Autres produits de l'abattage",
+      "sb_id": "C01010",
+      "sb_lib": "Abattage, transformation, et conservation des viandes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01020001",
+      "lib": "Poisson crustacés et mollusques séché, salé et fumé",
+      "sb_id": "C01020",
+      "sb_lib": "Transformation et conservation des poissons, crustacés et mollusques",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01020002",
+      "lib": "Poisson crustacés et mollusques congelé",
+      "sb_id": "C01020",
+      "sb_lib": "Transformation et conservation des poissons, crustacés et mollusques",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01020003",
+      "lib": "Autre produits de la transformation et conservation de poissons, crustacés et mollusques",
+      "sb_id": "C01020",
+      "sb_lib": "Transformation et conservation des poissons, crustacés et mollusques",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01030001",
+      "lib": "Huile brute d'arachide",
+      "sb_id": "C01030",
+      "sb_lib": "Fabrication de corps gras alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01030002",
+      "lib": "Autres huiles brutes",
+      "sb_id": "C01030",
+      "sb_lib": "Fabrication de corps gras alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01030003",
+      "lib": "Huile raffinée végétale",
+      "sb_id": "C01030",
+      "sb_lib": "Fabrication de corps gras alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01030004",
+      "lib": "Autres corps gras alimentaires",
+      "sb_id": "C01030",
+      "sb_lib": "Fabrication de corps gras alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01040001",
+      "lib": "Riz décortiqué",
+      "sb_id": "C01040",
+      "sb_lib": "Travail des grains et fabrication de produits amylacés",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01040002",
+      "lib": "Farines de blé",
+      "sb_id": "C01040",
+      "sb_lib": "Travail des grains et fabrication de produits amylacés",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01040003",
+      "lib": "Autres farines, céréales transformées, sons, résidus de meunerie",
+      "sb_id": "C01040",
+      "sb_lib": "Travail des grains et fabrication de produits amylacés",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01040004",
+      "lib": "Arachide décortiqué",
+      "sb_id": "C01040",
+      "sb_lib": "Travail des grains et fabrication de produits amylacés",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01040005",
+      "lib": "Service annexe de travail de grain",
+      "sb_id": "C01040",
+      "sb_lib": "Travail des grains et fabrication de produits amylacés",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01050000",
+      "lib": "Pain et pâtisseries",
+      "sb_id": "C01050",
+      "sb_lib": "Fabrication de pain et de pâtisseries",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01060001",
+      "lib": "Pâtes alimentaires",
+      "sb_id": "C01060",
+      "sb_lib": "Fabrication de produits alimentaires à base de céréales n.c.a.",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01060002",
+      "lib": "Couscous et produits farineux similaire",
+      "sb_id": "C01060",
+      "sb_lib": "Fabrication de produits alimentaires à base de céréales n.c.a.",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01060003",
+      "lib": "Autres produits alimentaires à base de céréales n.c.a",
+      "sb_id": "C01060",
+      "sb_lib": "Fabrication de produits alimentaires à base de céréales n.c.a.",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01070001",
+      "lib": "Conserves de tomate",
+      "sb_id": "C01070",
+      "sb_lib": "Traitement et conservation de fruits et légumes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01070002",
+      "lib": "Jus et conserves  de fruits et légume (hors tomate)",
+      "sb_id": "C01070",
+      "sb_lib": "Traitement et conservation de fruits et légumes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01070003",
+      "lib": "Pâte d'arachide",
+      "sb_id": "C01070",
+      "sb_lib": "Traitement et conservation de fruits et légumes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01070004",
+      "lib": "Autres produits à base de fruits et légumes",
+      "sb_id": "C01070",
+      "sb_lib": "Traitement et conservation de fruits et légumes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01070005",
+      "lib": "Noix de cajou grillé ou séché",
+      "sb_id": "C01070",
+      "sb_lib": "Traitement et conservation de fruits et légumes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01070006",
+      "lib": "Services annexes à la transformation des produits à base de fruits et légumes",
+      "sb_id": "C01070",
+      "sb_lib": "Traitement et conservation de fruits et légumes",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01080001",
+      "lib": "Laits et assimilés",
+      "sb_id": "C01080",
+      "sb_lib": "Fabrication de produits laitiers et de glaces alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01080002",
+      "lib": "Produits glacés",
+      "sb_id": "C01080",
+      "sb_lib": "Fabrication de produits laitiers et de glaces alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01080003",
+      "lib": "Autres produits laitiers et assimilés",
+      "sb_id": "C01080",
+      "sb_lib": "Fabrication de produits laitiers et de glaces alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01090001",
+      "lib": "Sucre",
+      "sb_id": "C01090",
+      "sb_lib": "Fabrication de sucre",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01090002",
+      "lib": "Melasse",
+      "sb_id": "C01090",
+      "sb_lib": "Fabrication de sucre",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01100000",
+      "lib": "Chocolats et confiserie",
+      "sb_id": "C01100",
+      "sb_lib": "Fabrication de cacao, chocolat et confiserie",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01110000",
+      "lib": "Autres produits alimentaires",
+      "sb_id": "C01110",
+      "sb_lib": "Fabrication d'autres produits alimentaires",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C01120000",
+      "lib": "Aliments composés pour animaux",
+      "sb_id": "C01120",
+      "sb_lib": "Fabrication d'aliments pour animaux",
+      "br_id": "C01",
+      "br_lib": "FABRICATION DE PRODUITS ALIMENTAIRES"
+    },
+    {
+      "id": "C02000001",
+      "lib": "Eau de table (y compris sachet d'eau)",
+      "sb_id": "C02000",
+      "sb_lib": "Fabrication de boissons",
+      "br_id": "C02",
+      "br_lib": "FABRICATION DE BOISSONS"
+    },
+    {
+      "id": "C02000002",
+      "lib": "Boissons non alcoolisées diverses",
+      "sb_id": "C02000",
+      "sb_lib": "Fabrication de boissons",
+      "br_id": "C02",
+      "br_lib": "FABRICATION DE BOISSONS"
+    },
+    {
+      "id": "C02000003",
+      "lib": "Boissons alcoolisées",
+      "sb_id": "C02000",
+      "sb_lib": "Fabrication de boissons",
+      "br_id": "C02",
+      "br_lib": "FABRICATION DE BOISSONS"
+    },
+    {
+      "id": "C02000004",
+      "lib": "Boissons traditionnelles non alcoolisées",
+      "sb_id": "C02000",
+      "sb_lib": "Fabrication de boissons",
+      "br_id": "C02",
+      "br_lib": "FABRICATION DE BOISSONS"
+    },
+    {
+      "id": "C02000005",
+      "lib": "Boissons traditionnelles alcoolisées",
+      "sb_id": "C02000",
+      "sb_lib": "Fabrication de boissons",
+      "br_id": "C02",
+      "br_lib": "FABRICATION DE BOISSONS"
+    },
+    {
+      "id": "C03000000",
+      "lib": "Cigarettes et autres tabacs manufacturés",
+      "sb_id": "C03000",
+      "sb_lib": "Fabrication de produits à base de tabac",
+      "br_id": "C03",
+      "br_lib": "FABRICATION DE PRODUITS À BASE DE TABAC"
+    },
+    {
+      "id": "C04010001",
+      "lib": "Graine de coton",
+      "sb_id": "C04010",
+      "sb_lib": "Production de l'égrenage du coton",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04010002",
+      "lib": "Coton fibre",
+      "sb_id": "C04010",
+      "sb_lib": "Production de l'égrenage du coton",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04020001",
+      "lib": "Fils",
+      "sb_id": "C04020",
+      "sb_lib": "Production de la filature, du tissage et de l'ennoblissement textile",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04020002",
+      "lib": "Tissus",
+      "sb_id": "C04020",
+      "sb_lib": "Production de la filature, du tissage et de l'ennoblissement textile",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04020003",
+      "lib": "Article textiles divers nca",
+      "sb_id": "C04020",
+      "sb_lib": "Production de la filature, du tissage et de l'ennoblissement textile",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04020004",
+      "lib": "Service d'ennoblissement textile",
+      "sb_id": "C04020",
+      "sb_lib": "Production de la filature, du tissage et de l'ennoblissement textile",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04030001",
+      "lib": "Article d'habillement",
+      "sb_id": "C04030",
+      "sb_lib": "Fabrication d'articles d'habillement",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04030002",
+      "lib": "Services des tailleurs",
+      "sb_id": "C04030",
+      "sb_lib": "Fabrication d'articles d'habillement",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04040001",
+      "lib": "Travail de cuir",
+      "sb_id": "C04040",
+      "sb_lib": "Fabrication de cuir et d’articles de cuir et chauusures",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04040002",
+      "lib": "Article de voyages, de maroquinerie; produits de selleries; bourrellerie",
+      "sb_id": "C04040",
+      "sb_lib": "Fabrication de cuir et d’articles de cuir et chauusures",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C04040003",
+      "lib": "Chaussures",
+      "sb_id": "C04040",
+      "sb_lib": "Fabrication de cuir et d’articles de cuir et chauusures",
+      "br_id": "C04",
+      "br_lib": "FABRICATION DE PRODUITS TEXTILES, CUIRS, ARTICLES D'HABILLEMENT, DE VOYAGES ET DE CHAUSSURES"
+    },
+    {
+      "id": "C05010001",
+      "lib": "Produits du sciage et du rabotage de bois",
+      "sb_id": "C05010",
+      "sb_lib": "Sciage et rabottage du bois",
+      "br_id": "C05",
+      "br_lib": "TRAVAIL DE BOIS, FABRICATION DE PAPIER, IMPRIMERIE ET REPRODUCTION D'ENREGISTREMENT"
+    },
+    {
+      "id": "C05010002",
+      "lib": "Article divers en bois; en liège, vanneries ou sparterie",
+      "sb_id": "C05010",
+      "sb_lib": "Sciage et rabottage du bois",
+      "br_id": "C05",
+      "br_lib": "TRAVAIL DE BOIS, FABRICATION DE PAPIER, IMPRIMERIE ET REPRODUCTION D'ENREGISTREMENT"
+    },
+    {
+      "id": "C05020000",
+      "lib": "Pate à papier, article en papier et en carton",
+      "sb_id": "C05020",
+      "sb_lib": "Fabrication de papier et d’articles en papier",
+      "br_id": "C05",
+      "br_lib": "TRAVAIL DE BOIS, FABRICATION DE PAPIER, IMPRIMERIE ET REPRODUCTION D'ENREGISTREMENT"
+    },
+    {
+      "id": "C05030000",
+      "lib": "Impression des journaux et travaux d'impression",
+      "sb_id": "C05030",
+      "sb_lib": "Imprimerie et activités annexes",
+      "br_id": "C05",
+      "br_lib": "TRAVAIL DE BOIS, FABRICATION DE PAPIER, IMPRIMERIE ET REPRODUCTION D'ENREGISTREMENT"
+    },
+    {
+      "id": "C05040000",
+      "lib": "Reproduction d'enregistrements sonores, vidéos et information",
+      "sb_id": "C05040",
+      "sb_lib": "Reproduction d'enregistrements",
+      "br_id": "C05",
+      "br_lib": "TRAVAIL DE BOIS, FABRICATION DE PAPIER, IMPRIMERIE ET REPRODUCTION D'ENREGISTREMENT"
+    },
+    {
+      "id": "C06000001",
+      "lib": "Essence ordinaire et supercarburant",
+      "sb_id": "C06000",
+      "sb_lib": "Fabrication de produits pétroliers raffinés et cokefaction",
+      "br_id": "C06",
+      "br_lib": "COKÉFACTION ET RAFFINAGE"
+    },
+    {
+      "id": "C06000002",
+      "lib": "Carbureacteur",
+      "sb_id": "C06000",
+      "sb_lib": "Fabrication de produits pétroliers raffinés et cokefaction",
+      "br_id": "C06",
+      "br_lib": "COKÉFACTION ET RAFFINAGE"
+    },
+    {
+      "id": "C06000003",
+      "lib": "Gaz-oil et diesel-oil",
+      "sb_id": "C06000",
+      "sb_lib": "Fabrication de produits pétroliers raffinés et cokefaction",
+      "br_id": "C06",
+      "br_lib": "COKÉFACTION ET RAFFINAGE"
+    },
+    {
+      "id": "C06000004",
+      "lib": "Fuel oil",
+      "sb_id": "C06000",
+      "sb_lib": "Fabrication de produits pétroliers raffinés et cokefaction",
+      "br_id": "C06",
+      "br_lib": "COKÉFACTION ET RAFFINAGE"
+    },
+    {
+      "id": "C06000005",
+      "lib": "Butane",
+      "sb_id": "C06000",
+      "sb_lib": "Fabrication de produits pétroliers raffinés et cokefaction",
+      "br_id": "C06",
+      "br_lib": "COKÉFACTION ET RAFFINAGE"
+    },
+    {
+      "id": "C06000006",
+      "lib": "Autres produits pétroliers et processing",
+      "sb_id": "C06000",
+      "sb_lib": "Fabrication de produits pétroliers raffinés et cokefaction",
+      "br_id": "C06",
+      "br_lib": "COKÉFACTION ET RAFFINAGE"
+    },
+    {
+      "id": "C07010001",
+      "lib": "Acide phosphorique",
+      "sb_id": "C07010",
+      "sb_lib": "Fabrication de produits chimiques de base, d’engrais et de produits azotés",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07010002",
+      "lib": "Produits azotés et engrais",
+      "sb_id": "C07010",
+      "sb_lib": "Fabrication de produits chimiques de base, d’engrais et de produits azotés",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07010003",
+      "lib": "Autres produits chimiques de base",
+      "sb_id": "C07010",
+      "sb_lib": "Fabrication de produits chimiques de base, d’engrais et de produits azotés",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07020001",
+      "lib": "Produits de l'industrie pharmaceutique",
+      "sb_id": "C07020",
+      "sb_lib": "Fabrication de produits pharmaceutiques",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07020002",
+      "lib": "Médicaments traditionnels",
+      "sb_id": "C07020",
+      "sb_lib": "Fabrication de produits pharmaceutiques",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07030001",
+      "lib": "Savons détergents et produits d'entretien",
+      "sb_id": "C07030",
+      "sb_lib": "Fabrication de savons, parfums et produits d'entretien",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07030002",
+      "lib": "Parfums et produits de toilette",
+      "sb_id": "C07030",
+      "sb_lib": "Fabrication de savons, parfums et produits d'entretien",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07040001",
+      "lib": "Produits agrochimiques",
+      "sb_id": "C07040",
+      "sb_lib": "Fabrication d'autres produits chimiques",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C07040002",
+      "lib": "Produits chimiques divers nca",
+      "sb_id": "C07040",
+      "sb_lib": "Fabrication d'autres produits chimiques",
+      "br_id": "C07",
+      "br_lib": "FABRICATION DE PRODUITS CHIMIQUES ET PHARMACEUTIQUES"
+    },
+    {
+      "id": "C08000001",
+      "lib": "Produits en caoutchouc",
+      "sb_id": "C08000",
+      "sb_lib": "Fabrication de produits en caoutchouc et en plastique",
+      "br_id": "C08",
+      "br_lib": "TRAVAIL DE CAOUTCHOUC ET DE PLASTIQUES"
+    },
+    {
+      "id": "C08000002",
+      "lib": "Produits en plastique",
+      "sb_id": "C08000",
+      "sb_lib": "Fabrication de produits en caoutchouc et en plastique",
+      "br_id": "C08",
+      "br_lib": "TRAVAIL DE CAOUTCHOUC ET DE PLASTIQUES"
+    },
+    {
+      "id": "C09010000",
+      "lib": "Verres et articles en verre et produits céramiques",
+      "sb_id": "C09010",
+      "sb_lib": "Fabrication de verre et d’articles en verre et produits céramiques",
+      "br_id": "C09",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MINÉRAUX NON MÉTALLIQUES"
+    },
+    {
+      "id": "C09020001",
+      "lib": "Ciment",
+      "sb_id": "C09020",
+      "sb_lib": "Fabrication de Ciments et d'autres matériaux de constructions",
+      "br_id": "C09",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MINÉRAUX NON MÉTALLIQUES"
+    },
+    {
+      "id": "C09020002",
+      "lib": "Autres materiaux de construction nca",
+      "sb_id": "C09020",
+      "sb_lib": "Fabrication de Ciments et d'autres matériaux de constructions",
+      "br_id": "C09",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MINÉRAUX NON MÉTALLIQUES"
+    },
+    {
+      "id": "C09020003",
+      "lib": "Service annexe de matériaux de construction",
+      "sb_id": "C09020",
+      "sb_lib": "Fabrication de Ciments et d'autres matériaux de constructions",
+      "br_id": "C09",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MINÉRAUX NON MÉTALLIQUES"
+    },
+    {
+      "id": "C10010001",
+      "lib": "Fer à béton",
+      "sb_id": "C10010",
+      "sb_lib": "Fabrication de produits métallurgiques",
+      "br_id": "C10",
+      "br_lib": "FABRICATION DE MATÉRIEAUX MINERAUX"
+    },
+    {
+      "id": "C10010002",
+      "lib": "Or (lingots)",
+      "sb_id": "C10010",
+      "sb_lib": "Fabrication de produits métallurgiques",
+      "br_id": "C10",
+      "br_lib": "FABRICATION DE MATÉRIEAUX MINERAUX"
+    },
+    {
+      "id": "C10010003",
+      "lib": "Autres produits métallurgiques",
+      "sb_id": "C10010",
+      "sb_lib": "Fabrication de produits métallurgiques",
+      "br_id": "C10",
+      "br_lib": "FABRICATION DE MATÉRIEAUX MINERAUX"
+    },
+    {
+      "id": "C10020000",
+      "lib": "Ouvrages en métaux",
+      "sb_id": "C10020",
+      "sb_lib": "Fabrication d’ouvrages en métaux (sauf machines et matériel)",
+      "br_id": "C10",
+      "br_lib": "FABRICATION DE MATÉRIEAUX MINERAUX"
+    },
+    {
+      "id": "C11010001",
+      "lib": "Equipements d'imagerie médicale, de précision, d'optique et d'horlogérie",
+      "sb_id": "C11010",
+      "sb_lib": "Fabrication de produits électroniques et informatiques et optiques",
+      "br_id": "C11",
+      "br_lib": "FABRICATION DE MATÉRIELS ELECTRIQUES, ÉLECTRONIQUES"
+    },
+    {
+      "id": "C11010002",
+      "lib": "Matériel informatique",
+      "sb_id": "C11010",
+      "sb_lib": "Fabrication de produits électroniques et informatiques et optiques",
+      "br_id": "C11",
+      "br_lib": "FABRICATION DE MATÉRIELS ELECTRIQUES, ÉLECTRONIQUES"
+    },
+    {
+      "id": "C11010003",
+      "lib": "Pièces et composants électroniques ; autres produits électroniques",
+      "sb_id": "C11010",
+      "sb_lib": "Fabrication de produits électroniques et informatiques et optiques",
+      "br_id": "C11",
+      "br_lib": "FABRICATION DE MATÉRIELS ELECTRIQUES, ÉLECTRONIQUES"
+    },
+    {
+      "id": "C11020001",
+      "lib": "Machines et matériels électrotechniques",
+      "sb_id": "C11020",
+      "sb_lib": "Fabrication de matériels électriques",
+      "br_id": "C11",
+      "br_lib": "FABRICATION DE MATÉRIELS ELECTRIQUES, ÉLECTRONIQUES"
+    },
+    {
+      "id": "C11020002",
+      "lib": "Appareils domestiques",
+      "sb_id": "C11020",
+      "sb_lib": "Fabrication de matériels électriques",
+      "br_id": "C11",
+      "br_lib": "FABRICATION DE MATÉRIELS ELECTRIQUES, ÉLECTRONIQUES"
+    },
+    {
+      "id": "C12010000",
+      "lib": "Machines et materiels divers à usage général",
+      "sb_id": "C12010",
+      "sb_lib": "Fabrication de machines et matériels divers à usage général",
+      "br_id": "C12",
+      "br_lib": "FABRICATION DE BIENS D'ÉQUIPEMENTS, MACHINES ET MATÉRIELS DE TRANSPORTS"
+    },
+    {
+      "id": "C12020000",
+      "lib": "Machines et materiels divers à usage spécifique",
+      "sb_id": "C12020",
+      "sb_lib": "Fabrication de machines et matériels divers à usage spacfique",
+      "br_id": "C12",
+      "br_lib": "FABRICATION DE BIENS D'ÉQUIPEMENTS, MACHINES ET MATÉRIELS DE TRANSPORTS"
+    },
+    {
+      "id": "C12030001",
+      "lib": "Véhicules automobiles",
+      "sb_id": "C12030",
+      "sb_lib": "Fabrication de véhicules automobiles et composants",
+      "br_id": "C12",
+      "br_lib": "FABRICATION DE BIENS D'ÉQUIPEMENTS, MACHINES ET MATÉRIELS DE TRANSPORTS"
+    },
+    {
+      "id": "C12030002",
+      "lib": "Pièces et accessoires automobiles",
+      "sb_id": "C12030",
+      "sb_lib": "Fabrication de véhicules automobiles et composants",
+      "br_id": "C12",
+      "br_lib": "FABRICATION DE BIENS D'ÉQUIPEMENTS, MACHINES ET MATÉRIELS DE TRANSPORTS"
+    },
+    {
+      "id": "C12040001",
+      "lib": "Produits de la construction navale",
+      "sb_id": "C12040",
+      "sb_lib": "Fabrication d'autres matériels de transports",
+      "br_id": "C12",
+      "br_lib": "FABRICATION DE BIENS D'ÉQUIPEMENTS, MACHINES ET MATÉRIELS DE TRANSPORTS"
+    },
+    {
+      "id": "C12040002",
+      "lib": "Autres équipements de transport",
+      "sb_id": "C12040",
+      "sb_lib": "Fabrication d'autres matériels de transports",
+      "br_id": "C12",
+      "br_lib": "FABRICATION DE BIENS D'ÉQUIPEMENTS, MACHINES ET MATÉRIELS DE TRANSPORTS"
+    },
+    {
+      "id": "C13010001",
+      "lib": "Matelas et sommiers",
+      "sb_id": "C13010",
+      "sb_lib": "Fabrication de meubles",
+      "br_id": "C13",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MANUFACTURIÈRES"
+    },
+    {
+      "id": "C13010002",
+      "lib": "Meubles divers",
+      "sb_id": "C13010",
+      "sb_lib": "Fabrication de meubles",
+      "br_id": "C13",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MANUFACTURIÈRES"
+    },
+    {
+      "id": "C13020001",
+      "lib": "Bijoux et pierres précieuses",
+      "sb_id": "C13020",
+      "sb_lib": "Autres industries manufacturières",
+      "br_id": "C13",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MANUFACTURIÈRES"
+    },
+    {
+      "id": "C13020002",
+      "lib": "Autres produits manufacturés n c a",
+      "sb_id": "C13020",
+      "sb_lib": "Autres industries manufacturières",
+      "br_id": "C13",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MANUFACTURIÈRES"
+    },
+    {
+      "id": "C13030000",
+      "lib": "réparation et installation de machines et matériel",
+      "sb_id": "C13030",
+      "sb_lib": "Réparation et installation de machines et de matériel",
+      "br_id": "C13",
+      "br_lib": "FABRICATION D'AUTRES PRODUITS MANUFACTURIÈRES"
+    },
+    {
+      "id": "D00010001",
+      "lib": "Production d'électricité",
+      "sb_id": "D00010",
+      "sb_lib": "Production et distribution d’électricité, de gaz et supports energetiques",
+      "br_id": "D00",
+      "br_lib": "PRODUCTION ET DISTRIBUTION D'ÉLECTRICITÉ, DE GAZ, DE VAPEUR ET D'AIR CONDITIONNÉ"
+    },
+    {
+      "id": "D00010002",
+      "lib": "Transport et distribution d'électricité",
+      "sb_id": "D00010",
+      "sb_lib": "Production et distribution d’électricité, de gaz et supports energetiques",
+      "br_id": "D00",
+      "br_lib": "PRODUCTION ET DISTRIBUTION D'ÉLECTRICITÉ, DE GAZ, DE VAPEUR ET D'AIR CONDITIONNÉ"
+    },
+    {
+      "id": "D00010003",
+      "lib": "Supports energetiques",
+      "sb_id": "D00010",
+      "sb_lib": "Production et distribution d’électricité, de gaz et supports energetiques",
+      "br_id": "D00",
+      "br_lib": "PRODUCTION ET DISTRIBUTION D'ÉLECTRICITÉ, DE GAZ, DE VAPEUR ET D'AIR CONDITIONNÉ"
+    },
+    {
+      "id": "D00020000",
+      "lib": "Production et distribution de gaz",
+      "sb_id": "D00020",
+      "sb_lib": "Production et distribution de gaz",
+      "br_id": "D00",
+      "br_lib": "PRODUCTION ET DISTRIBUTION D'ÉLECTRICITÉ, DE GAZ, DE VAPEUR ET D'AIR CONDITIONNÉ"
+    },
+    {
+      "id": "E00010000",
+      "lib": "Eau captée, traitée et distribuée",
+      "sb_id": "E00010",
+      "sb_lib": "Captage, traitement et distribution d'eau",
+      "br_id": "E00",
+      "br_lib": "PRODUCTION ET DISTRIBUTION D'EAU ; ASSAINISSEMENT, GESTION DES DÉCHETS ET DÉPOLLUTION"
+    },
+    {
+      "id": "E00020001",
+      "lib": "Eaux usées collectées et traitées",
+      "sb_id": "E00020",
+      "sb_lib": "Eaux usées et déchets collectés et traités, produits de la récupération",
+      "br_id": "E00",
+      "br_lib": "PRODUCTION ET DISTRIBUTION D'EAU ; ASSAINISSEMENT, GESTION DES DÉCHETS ET DÉPOLLUTION"
+    },
+    {
+      "id": "E00020002",
+      "lib": "Déchets collectés et traités, produits de la récupération",
+      "sb_id": "E00020",
+      "sb_lib": "Eaux usées et déchets collectés et traités, produits de la récupération",
+      "br_id": "E00",
+      "br_lib": "PRODUCTION ET DISTRIBUTION D'EAU ; ASSAINISSEMENT, GESTION DES DÉCHETS ET DÉPOLLUTION"
+    },
+    {
+      "id": "F00010000",
+      "lib": "Batiments et travaux de construction",
+      "sb_id": "F00010",
+      "sb_lib": "Construction de bâtiments",
+      "br_id": "F00",
+      "br_lib": "CONSTRUCTION"
+    },
+    {
+      "id": "F00020000",
+      "lib": "Travaux de génie civil",
+      "sb_id": "F00020",
+      "sb_lib": "Génie civil",
+      "br_id": "F00",
+      "br_lib": "CONSTRUCTION"
+    },
+    {
+      "id": "F00030000",
+      "lib": "Travaux spécialisés de construction",
+      "sb_id": "F00030",
+      "sb_lib": "Travaux de construction spécialisés",
+      "br_id": "F00",
+      "br_lib": "CONSTRUCTION"
+    },
+    {
+      "id": "G00010001",
+      "lib": "Vente de vehicules, de motocycles et de pieces detachees",
+      "sb_id": "G00010",
+      "sb_lib": "Commerce et réparation d'automobiles et de motocycles",
+      "br_id": "G00",
+      "br_lib": "COMMERCE; RÉPARATION D'AUTOMOBILES ET DE MOTOCYCLES"
+    },
+    {
+      "id": "G00010002",
+      "lib": "Entretien et reparation de vehicules automobiles et motocycles",
+      "sb_id": "G00010",
+      "sb_lib": "Commerce et réparation d'automobiles et de motocycles",
+      "br_id": "G00",
+      "br_lib": "COMMERCE; RÉPARATION D'AUTOMOBILES ET DE MOTOCYCLES"
+    },
+    {
+      "id": "G00020000",
+      "lib": "Vente en gros de produits divers",
+      "sb_id": "G00020",
+      "sb_lib": "Commerce de gros, à l'exception des automobiles et des motocycles",
+      "br_id": "G00",
+      "br_lib": "COMMERCE; RÉPARATION D'AUTOMOBILES ET DE MOTOCYCLES"
+    },
+    {
+      "id": "G00030000",
+      "lib": "Vente en details de produits divers",
+      "sb_id": "G00030",
+      "sb_lib": "Commerce de détail, à l'exception des automobiles et des motocycles",
+      "br_id": "G00",
+      "br_lib": "COMMERCE; RÉPARATION D'AUTOMOBILES ET DE MOTOCYCLES"
+    },
+    {
+      "id": "G00040000",
+      "lib": "Vente de produits phamaceutiques",
+      "sb_id": "G00040",
+      "sb_lib": "Commerce de produits pharmaceutiques",
+      "br_id": "G00",
+      "br_lib": "COMMERCE; RÉPARATION D'AUTOMOBILES ET DE MOTOCYCLES"
+    },
+    {
+      "id": "G00050000",
+      "lib": "Vente de produits pétroliers",
+      "sb_id": "G00050",
+      "sb_lib": "Commerce de produits pétroliers",
+      "br_id": "G00",
+      "br_lib": "COMMERCE; RÉPARATION D'AUTOMOBILES ET DE MOTOCYCLES"
+    },
+    {
+      "id": "H00010001",
+      "lib": "Services de transport ferroviaire de marchandises",
+      "sb_id": "H00010",
+      "sb_lib": "Transports ferroviaires",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00010002",
+      "lib": "Services de transport ferroviaire de passagers",
+      "sb_id": "H00010",
+      "sb_lib": "Transports ferroviaires",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00020001",
+      "lib": "Services de transport  routier de marchandises",
+      "sb_id": "H00020",
+      "sb_lib": "Transports routiers",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00020002",
+      "lib": "Services de transport  routier de passagers",
+      "sb_id": "H00020",
+      "sb_lib": "Transports routiers",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00030000",
+      "lib": "Services de transport par conduite",
+      "sb_id": "H00030",
+      "sb_lib": "Transport par conduites",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00040001",
+      "lib": "Services de transport  par eau de marchandises",
+      "sb_id": "H00040",
+      "sb_lib": "Transports par eau",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00040002",
+      "lib": "Services de transport  par eau de passagers",
+      "sb_id": "H00040",
+      "sb_lib": "Transports par eau",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00050000",
+      "lib": "Services de transport aeriens",
+      "sb_id": "H00050",
+      "sb_lib": "Transports aériens",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00060001",
+      "lib": "Entreposage et services de manutention",
+      "sb_id": "H00060",
+      "sb_lib": "Entreposage et activités des auxilliaires de transport",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00060002",
+      "lib": "Autres services des auxiliaires de transport",
+      "sb_id": "H00060",
+      "sb_lib": "Entreposage et activités des auxilliaires de transport",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "H00070000",
+      "lib": "Services de poste et de courrier",
+      "sb_id": "H00070",
+      "sb_lib": "Activités de poste et de courrier",
+      "br_id": "H00",
+      "br_lib": "TRANSPORTS ET ENTREPOSAGE"
+    },
+    {
+      "id": "I00010000",
+      "lib": "Services d'hôtel et hébergement",
+      "sb_id": "I00010",
+      "sb_lib": "Hébergement",
+      "br_id": "I00",
+      "br_lib": "HÉBERGEMENT ET RESTAURATION"
+    },
+    {
+      "id": "I00020000",
+      "lib": "Services de restauration et de débits de boissons",
+      "sb_id": "I00020",
+      "sb_lib": "Restauration et debits de boisson",
+      "br_id": "I00",
+      "br_lib": "HÉBERGEMENT ET RESTAURATION"
+    },
+    {
+      "id": "J00010000",
+      "lib": "Produit de l'édition",
+      "sb_id": "J00010",
+      "sb_lib": "Édition",
+      "br_id": "J00",
+      "br_lib": "INFORMATION ET COMMUNICATION"
+    },
+    {
+      "id": "J00020000",
+      "lib": "Produits audio et video, television, cinema, son",
+      "sb_id": "J00020",
+      "sb_lib": "Activitées de production de films cinématographiques, de vidéo et de programmes de télévision ; enregistrement sonore et édition musicale",
+      "br_id": "J00",
+      "br_lib": "INFORMATION ET COMMUNICATION"
+    },
+    {
+      "id": "J00030000",
+      "lib": "Programmation televisuelle ; radiodiffusion",
+      "sb_id": "J00030",
+      "sb_lib": "Activités de programmation et de diﬀusion",
+      "br_id": "J00",
+      "br_lib": "INFORMATION ET COMMUNICATION"
+    },
+    {
+      "id": "J00040000",
+      "lib": "Services de télécommunications",
+      "sb_id": "J00040",
+      "sb_lib": "Télécommunications",
+      "br_id": "J00",
+      "br_lib": "INFORMATION ET COMMUNICATION"
+    },
+    {
+      "id": "J00050000",
+      "lib": "Services informatiques, conseil, programmation",
+      "sb_id": "J00050",
+      "sb_lib": "Programmation, conseil et autres activités informatiques",
+      "br_id": "J00",
+      "br_lib": "INFORMATION ET COMMUNICATION"
+    },
+    {
+      "id": "J00060000",
+      "lib": "Services liés à l'information",
+      "sb_id": "J00060",
+      "sb_lib": "Activités de services d’information",
+      "br_id": "J00",
+      "br_lib": "INFORMATION ET COMMUNICATION"
+    },
+    {
+      "id": "K00010001",
+      "lib": "Services de banque centrale hors SIFIM",
+      "sb_id": "K00010",
+      "sb_lib": "Activités des services financiers, hors assurance et caisses de retraite",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00010002",
+      "lib": "Autres services d'intermédiation monétaires hors SIFIM",
+      "sb_id": "K00010",
+      "sb_lib": "Activités des services financiers, hors assurance et caisses de retraite",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00010003",
+      "lib": "Microfinance hors SIFIM",
+      "sb_id": "K00010",
+      "sb_lib": "Activités des services financiers, hors assurance et caisses de retraite",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00010004",
+      "lib": "SIFIM",
+      "sb_id": "K00010",
+      "sb_lib": "Activités des services financiers, hors assurance et caisses de retraite",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00010005",
+      "lib": "Autres services financiers n c a",
+      "sb_id": "K00010",
+      "sb_lib": "Activités des services financiers, hors assurance et caisses de retraite",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00020001",
+      "lib": "Services d'assurance vie et caisses de retraite",
+      "sb_id": "K00020",
+      "sb_lib": "Assurance",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00020002",
+      "lib": "Services d'assurance-dommages et de réassurance",
+      "sb_id": "K00020",
+      "sb_lib": "Assurance",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00030000",
+      "lib": "Services des auxiliaires  financiers electroniques",
+      "sb_id": "K00030",
+      "sb_lib": "Activités auxiliaires des services financiers electroniques",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00040000",
+      "lib": "Services des auxiliaires financiers et d'assurance",
+      "sb_id": "K00040",
+      "sb_lib": "Activités auxiliaires d'assurance et de caisses de retraite",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "K00050000",
+      "lib": "Services des auxiliaires d'autres services financiers",
+      "sb_id": "K00050",
+      "sb_lib": "Activités auxiliaires d'autres services financiers",
+      "br_id": "K00",
+      "br_lib": "ACTIVITÉS FINANCIÈRES ET D'ASSURANCE"
+    },
+    {
+      "id": "L00000001",
+      "lib": "Location immobilière",
+      "sb_id": "L00000",
+      "sb_lib": "Activités immobilières",
+      "br_id": "L00",
+      "br_lib": "ACTIVITÉS IMMOBILIÈRES"
+    },
+    {
+      "id": "L00000002",
+      "lib": "Loyers imputés",
+      "sb_id": "L00000",
+      "sb_lib": "Activités immobilières",
+      "br_id": "L00",
+      "br_lib": "ACTIVITÉS IMMOBILIÈRES"
+    },
+    {
+      "id": "L00000003",
+      "lib": "Services des agences immobilières",
+      "sb_id": "L00000",
+      "sb_lib": "Activités immobilières",
+      "br_id": "L00",
+      "br_lib": "ACTIVITÉS IMMOBILIÈRES"
+    },
+    {
+      "id": "M00010000",
+      "lib": "Services de recherche-developpement",
+      "sb_id": "M00010",
+      "sb_lib": "Recherche scientifque et développement",
+      "br_id": "M00",
+      "br_lib": "ACTIVITÉS SPÉCIALISÉES, SCIENTIFIQUES ET TECHNIQUES"
+    },
+    {
+      "id": "M00020000",
+      "lib": "Services vétérinaires",
+      "sb_id": "M00020",
+      "sb_lib": "Activités de services vétérinaires",
+      "br_id": "M00",
+      "br_lib": "ACTIVITÉS SPÉCIALISÉES, SCIENTIFIQUES ET TECHNIQUES"
+    },
+    {
+      "id": "M00030001",
+      "lib": "Services juridiques;  comptables et de conseils",
+      "sb_id": "M00030",
+      "sb_lib": "Autres activités spécialisées scientifiques et techniques",
+      "br_id": "M00",
+      "br_lib": "ACTIVITÉS SPÉCIALISÉES, SCIENTIFIQUES ET TECHNIQUES"
+    },
+    {
+      "id": "M00030002",
+      "lib": "Services d'architecture, d'ingenierie et techniques",
+      "sb_id": "M00030",
+      "sb_lib": "Autres activités spécialisées scientifiques et techniques",
+      "br_id": "M00",
+      "br_lib": "ACTIVITÉS SPÉCIALISÉES, SCIENTIFIQUES ET TECHNIQUES"
+    },
+    {
+      "id": "M00030003",
+      "lib": "Service de publicité et d'études de marché",
+      "sb_id": "M00030",
+      "sb_lib": "Autres activités spécialisées scientifiques et techniques",
+      "br_id": "M00",
+      "br_lib": "ACTIVITÉS SPÉCIALISÉES, SCIENTIFIQUES ET TECHNIQUES"
+    },
+    {
+      "id": "M00030004",
+      "lib": "Autres services professionnels spécialisés scientifiques et techniques",
+      "sb_id": "M00030",
+      "sb_lib": "Autres activités spécialisées scientifiques et techniques",
+      "br_id": "M00",
+      "br_lib": "ACTIVITÉS SPÉCIALISÉES, SCIENTIFIQUES ET TECHNIQUES"
+    },
+    {
+      "id": "N00010000",
+      "lib": "Location et location de longue durée (location bail)",
+      "sb_id": "N00010",
+      "sb_lib": "Activités de location et location-bail",
+      "br_id": "N00",
+      "br_lib": "ACTIVITÉS DE SERVICES ADMINISTRATIFS ET DE SOUTIEN"
+    },
+    {
+      "id": "N00020000",
+      "lib": "Services des agences de réservation et voyagistes",
+      "sb_id": "N00020",
+      "sb_lib": "Activités des agences de reservation et voyagistes",
+      "br_id": "N00",
+      "br_lib": "ACTIVITÉS DE SERVICES ADMINISTRATIFS ET DE SOUTIEN"
+    },
+    {
+      "id": "N00030000",
+      "lib": "Enquêtes et sécurite",
+      "sb_id": "N00030",
+      "sb_lib": "Activités d’enquêtes et de sécurité",
+      "br_id": "N00",
+      "br_lib": "ACTIVITÉS DE SERVICES ADMINISTRATIFS ET DE SOUTIEN"
+    },
+    {
+      "id": "N00040001",
+      "lib": "Service de placement de personnel",
+      "sb_id": "N00040",
+      "sb_lib": "Autres activités de soutien aux entreprises; activités de bureau",
+      "br_id": "N00",
+      "br_lib": "ACTIVITÉS DE SERVICES ADMINISTRATIFS ET DE SOUTIEN"
+    },
+    {
+      "id": "N00040002",
+      "lib": "Autres services de soutien aux entreprises ; activites de bureau",
+      "sb_id": "N00040",
+      "sb_lib": "Autres activités de soutien aux entreprises; activités de bureau",
+      "br_id": "N00",
+      "br_lib": "ACTIVITÉS DE SERVICES ADMINISTRATIFS ET DE SOUTIEN"
+    },
+    {
+      "id": "O00010000",
+      "lib": "Service d'administration générale",
+      "sb_id": "O00010",
+      "sb_lib": "Activités d'administration générale; administration de la politique économique et sociale",
+      "br_id": "O00",
+      "br_lib": "ADMINISTRATION PUBLIQUE"
+    },
+    {
+      "id": "O00020000",
+      "lib": "Services fournis à l’ensemble de la collectivité",
+      "sb_id": "O00020",
+      "sb_lib": "Services fournis à l’ensemble de la collectivité",
+      "br_id": "O00",
+      "br_lib": "ADMINISTRATION PUBLIQUE"
+    },
+    {
+      "id": "O00030000",
+      "lib": "Service de sécurité sociale obligatoire",
+      "sb_id": "O00020",
+      "sb_lib": "Activités de sécurité sociale obligatoire",
+      "br_id": "O00",
+      "br_lib": "ADMINISTRATION PUBLIQUE"
+    },
+    {
+      "id": "P00000000",
+      "lib": "Enseignement",
+      "sb_id": "P00000",
+      "sb_lib": "Enseignement",
+      "br_id": "P00",
+      "br_lib": "ENSEIGNEMENT"
+    },
+    {
+      "id": "Q00010000",
+      "lib": "Sante humaine",
+      "sb_id": "Q00010",
+      "sb_lib": "Activités relatives à la santé",
+      "br_id": "Q00",
+      "br_lib": "SANTÉ HUMAINE ET ACTION SOCIALE"
+    },
+    {
+      "id": "Q00020000",
+      "lib": "Action sociale",
+      "sb_id": "Q00020",
+      "sb_lib": "Action sociale",
+      "br_id": "Q00",
+      "br_lib": "SANTÉ HUMAINE ET ACTION SOCIALE"
+    },
+    {
+      "id": "R00010000",
+      "lib": "Jeux de hasard",
+      "sb_id": "R00010",
+      "sb_lib": "Activités de jeux de hasard et de pari",
+      "br_id": "R00",
+      "br_lib": "ARTS, SPECTACLES ET ACTIVITÉS RÉCRÉATIVES"
+    },
+    {
+      "id": "R00020001",
+      "lib": "Services artistiques, sportifs, récréatifs, de spectacles et de loisir",
+      "sb_id": "R00020",
+      "sb_lib": "Activités sportives, récréatives, artistiques et de spectacles",
+      "br_id": "R00",
+      "br_lib": "ARTS, SPECTACLES ET ACTIVITÉS RÉCRÉATIVES"
+    },
+    {
+      "id": "R00020002",
+      "lib": "Autres services artistiques, culturels, sportifs et récréatifs",
+      "sb_id": "R00020",
+      "sb_lib": "Activités sportives, récréatives, artistiques et de spectacles",
+      "br_id": "R00",
+      "br_lib": "ARTS, SPECTACLES ET ACTIVITÉS RÉCRÉATIVES"
+    },
+    {
+      "id": "S00010000",
+      "lib": "Services des organisations associatives, religieuses, syndicales, plolitiques et autres",
+      "sb_id": "S00010",
+      "sb_lib": "Activités des organisations associatives, religieuses, syndicales, plolitiques et autres",
+      "br_id": "S00",
+      "br_lib": "AUTRES ACTIVITÉS DE SERVICES"
+    },
+    {
+      "id": "S00020001",
+      "lib": "Réparation d'ordinateur de biens personnels domestiques",
+      "sb_id": "S00020",
+      "sb_lib": "Autres activités de services personnels",
+      "br_id": "S00",
+      "br_lib": "AUTRES ACTIVITÉS DE SERVICES"
+    },
+    {
+      "id": "S00020002",
+      "lib": "Lavage et nettoyage de textile",
+      "sb_id": "S00020",
+      "sb_lib": "Autres activités de services personnels",
+      "br_id": "S00",
+      "br_lib": "AUTRES ACTIVITÉS DE SERVICES"
+    },
+    {
+      "id": "S00020003",
+      "lib": "Service de coiffure et autres soins de beauté",
+      "sb_id": "S00020",
+      "sb_lib": "Autres activités de services personnels",
+      "br_id": "S00",
+      "br_lib": "AUTRES ACTIVITÉS DE SERVICES"
+    },
+    {
+      "id": "S00020004",
+      "lib": "Autres services nca",
+      "sb_id": "S00020",
+      "sb_lib": "Autres activités de services personnels",
+      "br_id": "S00",
+      "br_lib": "AUTRES ACTIVITÉS DE SERVICES"
+    },
+    {
+      "id": "T00000000",
+      "lib": "Services domestiques",
+      "sb_id": "T00000",
+      "sb_lib": "Activités des ménages privés employant de personnel domestique",
+      "br_id": "T00",
+      "br_lib": "ACTIVITÉS DES MÉNAGES EN TANT QU'EMPLOYEURS DE PERSONNEL DOMESTIQUE"
+    },
+    {
+      "id": "U00000001",
+      "lib": "Correction territoriale",
+      "sb_id": "U00000",
+      "sb_lib": "Activités des organisations et organismes extraterritoriaux",
+      "br_id": "U00",
+      "br_lib": "ACTIVITÉS EXTRA-TERRITORIALES"
+    },
+    {
+      "id": "U00000002",
+      "lib": "Services des organisations extraterritoriales",
+      "sb_id": "U00000",
+      "sb_lib": "Activités des organisations et organismes extraterritoriaux",
+      "br_id": "U00",
+      "br_lib": "ACTIVITÉS EXTRA-TERRITORIALES"
+    },
+    {
+      "id": "U00000003",
+      "lib": "Correction CAF-FAB",
+      "sb_id": "U00000",
+      "sb_lib": "Activités des organisations et organismes extraterritoriaux",
+      "br_id": "U00",
+      "br_lib": "ACTIVITÉS EXTRA-TERRITORIALES"
+    }
+  ]
+}
