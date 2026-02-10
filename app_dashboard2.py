@@ -94,10 +94,11 @@ st.markdown("""
     /* === CACHE LES ÉLÉMENTS STREAMLIT INUTILES === */
     div[data-testid="stMetric"] { display: none; }
     .stSelectbox label { color: rgba(255,255,255,0.7) !important; font-size: 0.85rem !important; }
+    .stDateInput label { color: rgba(255,255,255,0.7) !important; font-size: 0.85rem !important; }
     
-    /* === SELECTBOX COMPACT === */
-    .stSelectbox { max-width: 280px; }
-    .stSelectbox > div > div { 
+    /* === SELECTBOX & DATE INPUT COMPACT === */
+    .stSelectbox, .stDateInput { max-width: 280px; }
+    .stSelectbox > div > div, .stDateInput > div > div { 
         background: rgba(255,255,255,0.06) !important; 
         border-color: rgba(255,255,255,0.15) !important;
     }
@@ -113,6 +114,20 @@ st.markdown("""
     
     /* Empêcher les colonnes de déborder */
     [data-testid="column"] { overflow: hidden; }
+    
+    /* === TABLE STYLING === */
+    .dataframe-container {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius);
+        padding: 10px;
+        overflow-x: auto;
+    }
+    
+    /* Style pour le dataframe */
+    div[data-testid="stDataFrame"] {
+        background: transparent;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -201,43 +216,78 @@ def base_layout(height=240, t=40, b=30, l=30, r=20):
 # === MAIN ===
 if not df.empty:
     today = datetime.now().date()
-    start_of_week = today - timedelta(days=today.weekday())
-    end_of_week = start_of_week + timedelta(days=6)
-    start_of_prev_week = start_of_week - timedelta(days=7)
-    end_of_prev_week = end_of_week - timedelta(days=7)
-
+    
+    # Catégorisation des statuts
     df["Etat_Calculé"] = df["Status_Clean"].apply(categorize_status)
-    df_week = df[(df["Date_Simple"] >= start_of_week) & (df["Date_Simple"] <= end_of_week)].copy()
-    df_prev_week = df[(df["Date_Simple"] >= start_of_prev_week) & (df["Date_Simple"] <= end_of_prev_week)].copy()
+    
+    # Calcul du TYPE (Incident vs Demande)
+    if "OBJET" in df.columns:
+        df["TYPE"] = df["OBJET"].apply(
+            lambda x: "Incident" if isinstance(x, str)
+            and any(w in x.lower() for w in ["panne", "bug", "erreur", "incident", "problème", "dysfonction"])
+            else "Demande"
+        )
+    else:
+        df["TYPE"] = "Demande"
 
-    # --- HEADER : titre + filtre sur même ligne ---
+    # --- HEADER : filtre date + titre + filtre plateforme ---
     h_left, h_center, h_right = st.columns([1, 3, 1])
+    
+    with h_left:
+        # Filtre de dates
+        min_date = df["Date_Simple"].min()
+        max_date = df["Date_Simple"].max()
+        
+        date_range = st.date_input(
+            "Période",
+            value=(today - timedelta(days=today.weekday()), today),
+            min_value=min_date,
+            max_value=max_date,
+            label_visibility="collapsed"
+        )
+        
+        # Gérer le cas où l'utilisateur sélectionne une seule date
+        if isinstance(date_range, tuple) and len(date_range) == 2:
+            start_date, end_date = date_range
+        else:
+            start_date = end_date = date_range if not isinstance(date_range, tuple) else date_range[0]
+    
     with h_center:
         st.markdown('<div class="main-title">📊 DGID/DSI — GESTION HEBDO DES REQUÊTES</div>', unsafe_allow_html=True)
         st.markdown(
-            f'<div class="sub-title">Semaine du {start_of_week.strftime("%d/%m")} au {end_of_week.strftime("%d/%m/%Y")} · MAJ {datetime.now().strftime("%H:%M")}</div>',
+            f'<div class="sub-title">Période du {start_date.strftime("%d/%m")} au {end_date.strftime("%d/%m/%Y")} · MAJ {datetime.now().strftime("%H:%M")}</div>',
             unsafe_allow_html=True
         )
+    
     with h_right:
         plateforme_selectionnee = "TOUTES"
         if "LA PLATEFORME" in df.columns:
             opts = ["TOUTES"] + sorted(df["LA PLATEFORME"].dropna().unique().tolist())
             plateforme_selectionnee = st.selectbox("Plateforme", options=opts, index=0, label_visibility="collapsed")
 
+    # Filtrage des données selon la période sélectionnée
+    df_period = df[(df["Date_Simple"] >= start_date) & (df["Date_Simple"] <= end_date)].copy()
+    
+    # Calcul de la période précédente (même durée)
+    period_duration = (end_date - start_date).days
+    start_of_prev_period = start_date - timedelta(days=period_duration + 1)
+    end_of_prev_period = start_date - timedelta(days=1)
+    df_prev_period = df[(df["Date_Simple"] >= start_of_prev_period) & (df["Date_Simple"] <= end_of_prev_period)].copy()
+
     # Filtre plateforme
     if "LA PLATEFORME" in df.columns and plateforme_selectionnee != "TOUTES":
-        df_week = df_week[df_week["LA PLATEFORME"] == plateforme_selectionnee].copy()
-        df_prev_week = df_prev_week[df_prev_week["LA PLATEFORME"] == plateforme_selectionnee].copy()
+        df_period = df_period[df_period["LA PLATEFORME"] == plateforme_selectionnee].copy()
+        df_prev_period = df_prev_period[df_prev_period["LA PLATEFORME"] == plateforme_selectionnee].copy()
 
     # --- CALCULS KPI ---
-    total = len(df_week)
-    non_traites = (df_week["Etat_Calculé"] == "non traite").sum()
-    en_cours = (df_week["Etat_Calculé"] == "encours").sum()
-    effectue = (df_week["Etat_Calculé"] == "effectue").sum()
+    total = len(df_period)
+    non_traites = (df_period["Etat_Calculé"] == "non traite").sum()
+    en_cours = (df_period["Etat_Calculé"] == "encours").sum()
+    effectue = (df_period["Etat_Calculé"] == "effectue").sum()
     taux = (effectue / total * 100) if total > 0 else 0
 
-    total_prev = len(df_prev_week)
-    effectue_prev = (df_prev_week["Etat_Calculé"] == "effectue").sum()
+    total_prev = len(df_prev_period)
+    effectue_prev = (df_prev_period["Etat_Calculé"] == "effectue").sum()
     taux_prev = (effectue_prev / total_prev * 100) if total_prev > 0 else 0
 
     delta_total = total - total_prev if total_prev > 0 else None
@@ -266,72 +316,16 @@ if not df.empty:
     st.markdown("<hr>", unsafe_allow_html=True)
 
     # =============================================
-    # LIGNE 2 : Activité jour + Plateformes
+    # LIGNE 2 : Top Centres Fiscaux + Pyramide Plateformes + Bilan Global
     # =============================================
-    c_left, c_right = st.columns([1, 1], gap="medium")
+    c1, c2, c3 = st.columns([1.2, 1, 1.2], gap="medium")
 
-    with c_left:
-        st.markdown('<div class="section-title">📈 Activité par Jour</div>', unsafe_allow_html=True)
-
-        daily = df_week.groupby(df_week["Date_Obj"].dt.day_name()).size().reset_index(name="Requetes")
-        days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-        days_fr = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
-        daily["Order"] = daily["Date_Obj"].apply(lambda x: days_order.index(x) if x in days_order else 7)
-        daily = daily.sort_values("Order")
-        daily["Jour"] = daily["Date_Obj"].map(dict(zip(days_order, days_fr)))
-
-        fig_act = go.Figure()
-        fig_act.add_trace(go.Bar(
-            x=daily["Jour"], y=daily["Requetes"],
-            marker=dict(color=daily["Requetes"], colorscale=[[0, "#1a3a5c"], [1, "#00d4ff"]],
-                        line=dict(color="rgba(0,212,255,0.5)", width=1)),
-            text=daily["Requetes"], textposition="outside",
-            textfont=dict(size=14, color="white", family="Arial"),
-        ))
-        layout = base_layout(height=230, t=10, b=40)
-        layout["xaxis"]["tickfont"] = dict(size=13, family="Arial", color="white")
-        fig_act.update_layout(**layout)
-        st.plotly_chart(fig_act, use_container_width=True, config={"displayModeBar": False})
-
-    with c_right:
-        st.markdown('<div class="section-title">🖥️ Répartition Plateformes</div>', unsafe_allow_html=True)
-
-        if "LA PLATEFORME" in df.columns:
-            plat = df_week["LA PLATEFORME"].fillna("INCONNU").astype(str).str.strip()
-            pie_data = plat.value_counts().reset_index()
-            pie_data.columns = ["Plateforme", "Volume"]
-
-            colors_plat = px.colors.qualitative.Set3[:len(pie_data)]
-            fig_pie = go.Figure(data=[go.Pie(
-                labels=pie_data["Plateforme"], values=pie_data["Volume"],
-                hole=0.45,
-                textinfo="label+percent",
-                textfont=dict(size=13, color="black"),
-                marker=dict(colors=colors_plat, line=dict(color="rgba(0,0,0,0.3)", width=1)),
-                hovertemplate="<b>%{label}</b><br>%{value} requêtes<br>%{percent}<extra></extra>",
-            )])
-            fig_pie.update_layout(
-                height=230, margin=dict(l=10, r=10, t=10, b=10),
-                paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                font=dict(color="white", size=12),
-                showlegend=False,
-                annotations=[dict(text=f"<b>{total}</b><br>total", x=0.5, y=0.5,
-                                  font=dict(size=18, color="white"), showarrow=False)]
-            )
-            st.plotly_chart(fig_pie, use_container_width=True, config={"displayModeBar": False})
-        else:
-            st.info("Colonne 'LA PLATEFORME' introuvable.")
-
-    # =============================================
-    # LIGNE 3 : Top Centres + Bilan Global
-    # =============================================
-    c_left2, c_right2 = st.columns([1, 1], gap="medium")
-
-    with c_left2:
+    # --- Top 5 Centres Fiscaux ---
+    with c1:
         st.markdown('<div class="section-title">🏢 Top 5 Centres Fiscaux</div>', unsafe_allow_html=True)
 
         if "CENTRE FISCAL" in df.columns:
-            top_c = df_week["CENTRE FISCAL"].value_counts().head(5).reset_index()
+            top_c = df_period["CENTRE FISCAL"].value_counts().head(5).reset_index()
             top_c.columns = ["Centre", "Requêtes"]
             top_c = top_c.sort_values("Requêtes", ascending=True)
 
@@ -344,25 +338,56 @@ if not df.empty:
                 text=top_c["Requêtes"], textposition="outside",
                 textfont=dict(size=14, color="white"),
             ))
-            layout_h = base_layout(height=220, t=5, b=20, l=10, r=40)
-            layout_h["yaxis"]["tickfont"] = dict(size=12, color="white")
+            layout_h = base_layout(height=280, t=5, b=20, l=10, r=40)
+            layout_h["yaxis"]["tickfont"] = dict(size=11, color="white")
             layout_h["yaxis"]["automargin"] = True
             fig_top.update_layout(**layout_h)
             st.plotly_chart(fig_top, use_container_width=True, config={"displayModeBar": False})
         else:
             st.info("Colonne 'CENTRE FISCAL' introuvable.")
 
-    with c_right2:
-        st.markdown('<div class="section-title">📊 Bilan Global (Toutes Périodes)</div>', unsafe_allow_html=True)
+    # --- Pyramide Plateformes ---
+    with c2:
+        st.markdown('<div class="section-title">🖥️ Plateformes</div>', unsafe_allow_html=True)
 
-        if "OBJET" in df.columns:
-            df["TYPE"] = df["OBJET"].apply(
-                lambda x: "Incident" if isinstance(x, str)
-                and any(w in x.lower() for w in ["panne", "bug", "erreur", "incident", "problème", "dysfonction"])
-                else "Demande"
+        if "LA PLATEFORME" in df.columns:
+            plat = df_period["LA PLATEFORME"].fillna("INCONNU").astype(str).str.strip()
+            pyramid_data = plat.value_counts().reset_index()
+            pyramid_data.columns = ["Plateforme", "Volume"]
+            pyramid_data = pyramid_data.sort_values("Volume", ascending=False)
+
+            # Création du diagramme en pyramide (funnel chart)
+            fig_pyramid = go.Figure()
+            
+            colors_pyramid = ['#00d4ff', '#2196f3', '#4caf50', '#ff9800', '#f44336', '#9c27b0']
+            
+            fig_pyramid.add_trace(go.Funnel(
+                y=pyramid_data["Plateforme"],
+                x=pyramid_data["Volume"],
+                textposition="inside",
+                textinfo="value+percent initial",
+                marker=dict(
+                    color=colors_pyramid[:len(pyramid_data)],
+                    line=dict(color="rgba(255,255,255,0.3)", width=1)
+                ),
+                connector=dict(line=dict(color="rgba(255,255,255,0.2)", width=2)),
+            ))
+            
+            fig_pyramid.update_layout(
+                height=280,
+                margin=dict(l=10, r=10, t=10, b=10),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                font=dict(color="white", size=11),
+                showlegend=False,
             )
+            st.plotly_chart(fig_pyramid, use_container_width=True, config={"displayModeBar": False})
         else:
-            df["TYPE"] = "Demande"
+            st.info("Colonne 'LA PLATEFORME' introuvable.")
+
+    # --- Bilan Global (Toutes Périodes) ---
+    with c3:
+        st.markdown('<div class="section-title">📊 Bilan Global (Toutes Périodes)</div>', unsafe_allow_html=True)
 
         summary = df.pivot_table(index="TYPE", columns="Etat_Calculé", aggfunc="size", fill_value=0)
 
@@ -379,22 +404,112 @@ if not df.empty:
                     textfont=dict(size=13, color="white"),
                 ))
 
-        layout_b = base_layout(height=220, t=5, b=30)
+        layout_b = base_layout(height=280, t=5, b=30)
         layout_b["barmode"] = "group"
         layout_b["showlegend"] = True
         layout_b["legend"] = dict(
             orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5,
-            font=dict(size=12, color="white")
+            font=dict(size=11, color="white")
         )
-        layout_b["xaxis"]["tickfont"] = dict(size=14, family="Arial", color="white")
+        layout_b["xaxis"]["tickfont"] = dict(size=13, family="Arial", color="white")
         fig_bilan.update_layout(**layout_b)
         st.plotly_chart(fig_bilan, use_container_width=True, config={"displayModeBar": False})
+
+    st.markdown("<hr>", unsafe_allow_html=True)
+
+    # =============================================
+    # LIGNE 3 : Liste des requêtes non effectuées avec waiting time
+    # =============================================
+    st.markdown('<div class="section-title">⚠️ Requêtes Non Effectuées (Toutes Périodes)</div>', unsafe_allow_html=True)
+
+    # Filtrer les requêtes non effectuées
+    df_non_effectue = df[df["Etat_Calculé"] == "non traite"].copy()
+    
+    if len(df_non_effectue) > 0:
+        # Calculer le temps d'attente (waiting time)
+        df_non_effectue["Waiting_Time_Days"] = (pd.Timestamp.now() - df_non_effectue["Date_Obj"]).dt.days
+        df_non_effectue["Waiting_Time_Hours"] = (pd.Timestamp.now() - df_non_effectue["Date_Obj"]).dt.total_seconds() / 3600
+        
+        # Formater le waiting time
+        def format_waiting_time(hours):
+            if hours < 24:
+                return f"{int(hours)}h"
+            else:
+                days = int(hours // 24)
+                remaining_hours = int(hours % 24)
+                return f"{days}j {remaining_hours}h"
+        
+        df_non_effectue["Temps d'attente"] = df_non_effectue["Waiting_Time_Hours"].apply(format_waiting_time)
+        
+        # Sélectionner et renommer les colonnes à afficher
+        colonnes_display = []
+        renommage = {}
+        
+        if "Date_Obj" in df_non_effectue.columns:
+            colonnes_display.append("Date_Obj")
+            renommage["Date_Obj"] = "Date"
+        if "CENTRE FISCAL" in df_non_effectue.columns:
+            colonnes_display.append("CENTRE FISCAL")
+            renommage["CENTRE FISCAL"] = "Centre Fiscal"
+        if "LA PLATEFORME" in df_non_effectue.columns:
+            colonnes_display.append("LA PLATEFORME")
+            renommage["LA PLATEFORME"] = "Plateforme"
+        if "OBJET" in df_non_effectue.columns:
+            colonnes_display.append("OBJET")
+            renommage["OBJET"] = "Objet"
+        if "TYPE" in df_non_effectue.columns:
+            colonnes_display.append("TYPE")
+            renommage["TYPE"] = "Type"
+        
+        colonnes_display.append("Temps d'attente")
+        
+        # Créer le DataFrame à afficher
+        df_display = df_non_effectue[colonnes_display].copy()
+        df_display = df_display.rename(columns=renommage)
+        
+        # Formater la date
+        if "Date" in df_display.columns:
+            df_display["Date"] = pd.to_datetime(df_display["Date"]).dt.strftime("%d/%m/%Y %H:%M")
+        
+        # Trier par temps d'attente (décroissant)
+        df_display = df_display.sort_values("Temps d'attente", ascending=False)
+        
+        # Afficher le dataframe avec style
+        st.markdown('<div class="dataframe-container">', unsafe_allow_html=True)
+        st.dataframe(
+            df_display,
+            use_container_width=True,
+            hide_index=True,
+            height=400,
+            column_config={
+                "Date": st.column_config.TextColumn("Date", width="medium"),
+                "Centre Fiscal": st.column_config.TextColumn("Centre Fiscal", width="medium"),
+                "Plateforme": st.column_config.TextColumn("Plateforme", width="small"),
+                "Objet": st.column_config.TextColumn("Objet", width="large"),
+                "Type": st.column_config.TextColumn("Type", width="small"),
+                "Temps d'attente": st.column_config.TextColumn("Temps d'attente", width="small"),
+            }
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Statistique rapide
+        avg_waiting = df_non_effectue["Waiting_Time_Days"].mean()
+        max_waiting = df_non_effectue["Waiting_Time_Days"].max()
+        
+        stat_col1, stat_col2, stat_col3 = st.columns(3)
+        with stat_col1:
+            st.markdown(f'<div class="kpi-card"><div class="kpi-label">Total Non Effectué</div><div class="kpi-value" style="color:#ff9800;font-size:1.8rem;">{len(df_non_effectue)}</div></div>', unsafe_allow_html=True)
+        with stat_col2:
+            st.markdown(f'<div class="kpi-card"><div class="kpi-label">Attente Moyenne</div><div class="kpi-value" style="color:#2196f3;font-size:1.8rem;">{avg_waiting:.1f}j</div></div>', unsafe_allow_html=True)
+        with stat_col3:
+            st.markdown(f'<div class="kpi-card"><div class="kpi-label">Attente Maximale</div><div class="kpi-value" style="color:#f44336;font-size:1.8rem;">{max_waiting:.0f}j</div></div>', unsafe_allow_html=True)
+    else:
+        st.success("✅ Aucune requête non effectuée ! Excellent travail !")
 
 else:
     st.info("⏳ Chargement des données...")
 
 # --- AUTO-REFRESH via st.rerun (5 min) ---
-# Utilise st.empty pour ne pas bloquer l'UI
 import time
 time.sleep(300)
 st.rerun()
