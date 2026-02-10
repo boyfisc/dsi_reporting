@@ -102,6 +102,15 @@ st.markdown("""
         background: rgba(255,255,255,0.06) !important; 
         border-color: rgba(255,255,255,0.15) !important;
     }
+    
+    /* Style pour les selectbox de dates */
+    div[data-testid="column"] .stSelectbox {
+        max-width: 100%;
+    }
+    div[data-testid="column"] .stSelectbox label {
+        font-size: 0.75rem !important;
+        color: rgba(255,255,255,0.6) !important;
+    }
 
     /* === SCROLLBAR CACHÉE === */
     ::-webkit-scrollbar { display: none; }
@@ -234,42 +243,43 @@ if not df.empty:
     h_left, h_center, h_right = st.columns([1, 3, 1])
     
     with h_left:
-        # Filtre de dates avec gestion robuste des types
-        try:
-            min_date = pd.to_datetime(df["Date_Simple"].min()).date()
-            max_date = pd.to_datetime(df["Date_Simple"].max()).date()
-        except:
-            min_date = today - timedelta(days=30)
-            max_date = today
+        # Filtre de dates avec selectbox pour plus de flexibilité
+        dates_disponibles = sorted(df["Date_Simple"].dropna().unique())
         
-        # S'assurer que les dates sont valides
-        if pd.isna(min_date) or pd.isna(max_date) or min_date > max_date:
-            min_date = today - timedelta(days=30)
-            max_date = today
-        
-        # Valeur par défaut : semaine en cours
-        default_start = today - timedelta(days=today.weekday())
-        default_end = today
-        
-        # S'assurer que les valeurs par défaut sont dans la plage
-        if default_start < min_date:
-            default_start = min_date
-        if default_end > max_date:
-            default_end = max_date
-        
-        date_range = st.date_input(
-            "Période",
-            value=(default_start, default_end),
-            min_value=min_date,
-            max_value=max_date,
-            label_visibility="collapsed"
-        )
-        
-        # Gérer le cas où l'utilisateur sélectionne une seule date
-        if isinstance(date_range, tuple) and len(date_range) == 2:
-            start_date, end_date = date_range
+        if len(dates_disponibles) > 0:
+            # Date de début par défaut : début de semaine
+            default_start_idx = 0
+            semaine_debut = today - timedelta(days=today.weekday())
+            for i, d in enumerate(dates_disponibles):
+                if d >= semaine_debut:
+                    default_start_idx = i
+                    break
+            
+            # Date de fin par défaut : aujourd'hui ou dernière date disponible
+            default_end_idx = len(dates_disponibles) - 1
+            
+            col_date1, col_date2 = st.columns(2)
+            with col_date1:
+                start_date = st.selectbox(
+                    "Du",
+                    options=dates_disponibles,
+                    index=default_start_idx,
+                    format_func=lambda x: x.strftime("%d/%m/%Y"),
+                    key="start_date"
+                )
+            with col_date2:
+                # Filtrer les dates de fin pour qu'elles soient >= date de début
+                dates_fin_possibles = [d for d in dates_disponibles if d >= start_date]
+                end_date = st.selectbox(
+                    "Au",
+                    options=dates_fin_possibles,
+                    index=len(dates_fin_possibles) - 1 if dates_fin_possibles else 0,
+                    format_func=lambda x: x.strftime("%d/%m/%Y"),
+                    key="end_date"
+                )
         else:
-            start_date = end_date = date_range if not isinstance(date_range, tuple) else date_range[0]
+            start_date = today - timedelta(days=7)
+            end_date = today
     
     with h_center:
         st.markdown('<div class="main-title">📊 DGID/DSI — GESTION HEBDO DES REQUÊTES</div>', unsafe_allow_html=True)
