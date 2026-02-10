@@ -13,8 +13,12 @@ st.set_page_config(
 # ─────────────────────────────────────────────
 @st.cache_data
 def load_data():
-    with open(Path(__file__).parent / "naema_catalogue.json", "r", encoding="utf-8") as f:
+    # ✅ Par défaut : le JSON est à côté de ce script
+    # Si besoin, remplace par un chemin absolu (ex: Path("naema_catalogue.json"))
+    json_path = Path(__file__).parent / "naema_catalogue.json"
+    with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
+
     items = []
     for section in data["sections"]:
         for division in section.get("divisions", []):
@@ -31,8 +35,20 @@ def load_data():
                         })
     return items
 
-ALL_PRODUITS = load_data()
 
+@st.cache_data
+def build_select_options(items):
+    labels = []
+    label_to_item = {}
+    for p in items:
+        lbl = f"{p['prod_lib']}  ·  {p['act_lib']}  ({p['prod_code']})"
+        labels.append(lbl)
+        label_to_item[lbl] = p
+    return labels, label_to_item
+
+
+ALL_PRODUITS = load_data()
+ALL_LABELS, LABEL_TO_ITEM = build_select_options(ALL_PRODUITS)
 
 # ─────────────────────────────────────────────
 # CSS
@@ -163,27 +179,12 @@ h1,h2,h3{font-family:'Playfair Display',serif!important;color:var(--brown-800)!i
 </style>
 """, unsafe_allow_html=True)
 
-
 # ─────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────
 def reset_form():
     for k in list(st.session_state.keys()):
         del st.session_state[k]
-
-
-def search_produits(query):
-    if not query or len(query) < 2:
-        return []
-    terms = query.lower().split()
-    results = []
-    for p in ALL_PRODUITS:
-        hay = f"{p['prod_lib']} {p['act_lib']} {p['grp_lib']} {p['sec_lib']}".lower()
-        if all(t in hay for t in terms):
-            results.append(p)
-            if len(results) >= 30:
-                break
-    return results
 
 
 def render_activity_card(act, role_label):
@@ -230,23 +231,31 @@ def render_selection_recap(act):
     """
 
 
+def clear_picker_keys():
+    # Nettoyage “soft” des anciennes clés de selectbox (au cas où)
+    for k in list(st.session_state.keys()):
+        if str(k).startswith("sel_act_"):
+            del st.session_state[k]
+
+
 # ─────────────────────────────────────────────
 # SESSION STATE
 # ─────────────────────────────────────────────
 if "step" not in st.session_state:
     st.session_state["step"] = 0
+
 if "activities" not in st.session_state:
     st.session_state["activities"] = []
-# Mode: "search" = searching, "selected" = showing recap of a pick
+
+# Modes:
+# - "pick": choisir dans la liste (autocomplétion)
+# - "validated": montrer succès + boutons
+# - "details": infos complémentaires
 if "search_mode" not in st.session_state:
-    st.session_state["search_mode"] = "search"
-# Holds the currently previewed (not yet validated) item
-if "pending_selection" not in st.session_state:
-    st.session_state["pending_selection"] = None
+    st.session_state["search_mode"] = "pick"
 
 step = st.session_state["step"]
 steps_names = ["Questionnaire", "Récapitulatif"]
-
 
 # ═════════════════════════════════════════════
 # HEADER + STEP BAR
@@ -275,7 +284,6 @@ for i, name in enumerate(steps_names):
 bar_html += '</div>'
 st.markdown(bar_html, unsafe_allow_html=True)
 
-
 # ═════════════════════════════════════════════
 # ÉTAPE 0 : QUESTIONNAIRE
 # ═════════════════════════════════════════════
@@ -283,11 +291,11 @@ if step == 0:
     st.markdown("#### 📋 Questionnaire d'immatriculation")
     st.caption("NAEMA Rév. 1 — Nomenclature d'Activités des États Membres d'AFRISTAT")
 
+    activities = st.session_state["activities"]
+
     # ──────────────────────────────────────
     # Show already validated activities
     # ──────────────────────────────────────
-    activities = st.session_state["activities"]
-
     if activities:
         with st.expander(f"**✅ Activités validées ({len(activities)})**", expanded=True):
             for idx, act in enumerate(activities):
@@ -299,103 +307,68 @@ if step == 0:
                     st.markdown("<div style='height:.5rem'></div>", unsafe_allow_html=True)
                     if st.button("🗑️", key=f"del_{act['prod_code']}_{idx}", help="Supprimer"):
                         st.session_state["activities"] = [a for i, a in enumerate(activities) if i != idx]
+                        # si on supprime tout, on revient au pick
                         if not st.session_state["activities"]:
-                            st.session_state["search_mode"] = "search"
+                            st.session_state["search_mode"] = "pick"
                         st.rerun()
 
     # ──────────────────────────────────────
-    # SEARCH MODE : user is searching
+    # PICK MODE : no search bar, selectbox autocompletion/filtering
     # ──────────────────────────────────────
-    if st.session_state["search_mode"] == "search":
-
+    if st.session_state["search_mode"] == "pick":
         label_num = len(activities) + 1
+
         if not activities:
             title = "**① Quelle est votre activité principale ?**"
-            instruction = "Commencez à taper pour voir les suggestions se réduire en temps réel."
         else:
             title = f"**➕ Ajouter une activité secondaire (n°{label_num})**"
-            instruction = "Recherchez et sélectionnez une activité supplémentaire."
 
         with st.expander(title, expanded=True):
-            st.markdown(f"*{instruction}*")
+            st.markdown("*Cliquez puis tapez pour filtrer (autocomplétion).*")
 
-            search_q = st.text_input(
-                "🔍 Décrivez votre activité",
-                placeholder="Ex : riz, taxi, comptabilité, menuiserie, poisson, hôtel…",
-                key="search_q",
+            pick_key = f"sel_act_{label_num}"
+            choice = st.selectbox(
+                "Sélectionnez l'activité (tapez pour filtrer)",
+                ["— Choisir parmi la liste —"] + ALL_LABELS,
+                key=pick_key,
                 label_visibility="visible",
             )
 
-            results = search_produits(search_q)
+            if choice != "— Choisir parmi la liste —":
+                sel = LABEL_TO_ITEM[choice]
 
-            if search_q and len(search_q) >= 2:
-                if results:
-                    nb = len(results)
-                    if nb >= 30:
-                        st.caption(f"**30+** résultats — *précisez pour réduire la liste*")
-                    elif nb > 5:
-                        st.caption(f"**{nb}** résultats — *précisez pour affiner*")
-                    elif nb > 1:
-                        st.caption(f"**{nb}** résultats")
-                    else:
-                        st.caption("**1** résultat ✓")
+                # recap
+                st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
 
-                    opts = {}
-                    for p in results:
-                        lbl = f"{p['prod_lib']}  ·  {p['act_lib']}  ({p['prod_code']})"
-                        opts[lbl] = p
-
-                    choice = st.selectbox(
-                        "Sélectionnez l'activité",
-                        ["— Choisir parmi les résultats —"] + list(opts.keys()),
-                        key="sel_act",
-                        label_visibility="collapsed",
-                    )
-
-                    if choice != "— Choisir parmi les résultats —":
-                        sel = opts[choice]
-
-                        # Show recap of selected item
-                        st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
-
-                        # Check duplicate
-                        existing = [a["prod_code"] for a in st.session_state["activities"]]
-                        if sel["prod_code"] in existing:
-                            st.info("✓ Cette activité est déjà dans votre liste.")
-                        else:
-                            st.markdown("")
-                            if st.button(f"✅ Valider « {sel['prod_lib']} »", type="primary", use_container_width=True):
-                                st.session_state["activities"].append(sel)
-                                st.session_state["search_mode"] = "validated"
-                                st.session_state["pending_selection"] = None
-                                st.rerun()
+                # duplicate check
+                existing = [a["prod_code"] for a in st.session_state["activities"]]
+                if sel["prod_code"] in existing:
+                    st.info("✓ Cette activité est déjà dans votre liste.")
                 else:
-                    st.warning("Aucun résultat. Essayez d'autres mots-clés (riz, poisson, taxi, ciment, hôtel…)")
-
-            elif search_q and len(search_q) == 1:
-                st.caption("Continuez à taper…")
+                    if st.button(f"✅ Valider « {sel['prod_lib']} »", type="primary", use_container_width=True):
+                        st.session_state["activities"].append(sel)
+                        st.session_state["search_mode"] = "validated"
+                        st.rerun()
 
     # ──────────────────────────────────────
-    # VALIDATED MODE : activity just added, show success + options
+    # VALIDATED MODE : show success + options
     # ──────────────────────────────────────
     elif st.session_state["search_mode"] == "validated":
         last_act = st.session_state["activities"][-1] if st.session_state["activities"] else None
 
         if last_act:
             st.success(f"✅ **{last_act['prod_lib']}** ajoutée avec succès !")
-
             st.markdown(render_selection_recap(last_act), unsafe_allow_html=True)
 
-            st.markdown("")
             col_add, col_next = st.columns(2)
             with col_add:
-                if st.button("➕ Ajouter une autre activité", use_container_width=True):
-                    st.session_state["search_mode"] = "search"
-                    # Clear search keys
-                    for k in ["search_q", "sel_act"]:
-                        if k in st.session_state:
-                            del st.session_state[k]
+                if st.button("➕ Ajouter activité secondaire", use_container_width=True):
+                    # revenir au pick (autocomplétion)
+                    st.session_state["search_mode"] = "pick"
+                    # optionnel: nettoyer les keys selectbox
+                    clear_picker_keys()
                     st.rerun()
+
             with col_next:
                 if st.button("Continuer →", type="primary", use_container_width=True):
                     st.session_state["search_mode"] = "details"
@@ -405,18 +378,20 @@ if step == 0:
     # DETAILS MODE : fill in complementary info
     # ──────────────────────────────────────
     elif st.session_state["search_mode"] == "details":
-
         with st.expander("**② Détails complémentaires**", expanded=True):
-            activity_desc = st.text_area(
+            st.text_area(
                 "Décrivez brièvement votre activité",
                 placeholder="Ex : Vente de vêtements prêts-à-porter via boutique et réseaux sociaux…",
-                key="activity_desc", height=100,
+                key="activity_desc",
+                height=100,
             )
+
             col1, col2 = st.columns(2)
             with col1:
-                employees = st.number_input("Nombre d'employés", min_value=0, max_value=100000, value=0, step=1, key="employees")
+                st.number_input("Nombre d'employés", min_value=0, max_value=100000, value=0, step=1, key="employees")
             with col2:
-                capital = st.number_input("Capital social (FCFA)", min_value=0, value=0, step=100000, key="capital")
+                st.number_input("Capital social (FCFA)", min_value=0, value=0, step=100000, key="capital")
+
             st.markdown("**Informations de contact**")
             col3, col4 = st.columns(2)
             with col3:
@@ -434,11 +409,9 @@ if step == 0:
                 st.session_state["search_mode"] = "validated"
                 st.rerun()
         with col_add:
-            if st.button("➕ Autre activité", use_container_width=True):
-                st.session_state["search_mode"] = "search"
-                for k in ["search_q", "sel_act"]:
-                    if k in st.session_state:
-                        del st.session_state[k]
+            if st.button("➕ Ajouter activité secondaire", use_container_width=True):
+                st.session_state["search_mode"] = "pick"
+                clear_picker_keys()
                 st.rerun()
         with col_next:
             if st.button("Passer au récapitulatif →", type="primary", use_container_width=True, disabled=not can_continue):
@@ -454,12 +427,11 @@ if step == 0:
         if not can_continue:
             st.warning("Veuillez compléter la description de votre activité.")
 
-    # Bottom reset (always visible on step 0)
+    # Bottom reset
     st.divider()
     if st.button("🔄 Réinitialiser tout", use_container_width=False):
         reset_form()
         st.rerun()
-
 
 # ═════════════════════════════════════════════
 # ÉTAPE 1 : RÉCAPITULATIF FINAL
@@ -525,6 +497,7 @@ elif step == 1:
             st.session_state["step"] = 0
             st.session_state["search_mode"] = "details"
             st.rerun()
+
     with col2:
         can_validate = confirm1 and confirm2
         if st.button("Confirmer définitivement", type="primary", use_container_width=True, disabled=not can_validate):
@@ -548,9 +521,11 @@ elif step == 1:
             if st.button("Nouvelle immatriculation", type="primary", use_container_width=True):
                 reset_form()
                 st.rerun()
+
     with col3:
         if st.button("Annuler", use_container_width=True):
             reset_form()
             st.rerun()
-    if not can_validate:
+
+    if not (confirm1 and confirm2):
         st.info("Veuillez cocher les deux attestations pour valider.")
