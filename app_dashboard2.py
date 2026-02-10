@@ -234,18 +234,32 @@ if not df.empty:
     h_left, h_center, h_right = st.columns([1, 3, 1])
     
     with h_left:
-        # Filtre de dates
-        min_date = df["Date_Simple"].min()
-        max_date = df["Date_Simple"].max()
-        
-        # Vérifier que les dates sont valides
-        if pd.isna(min_date) or pd.isna(max_date):
+        # Filtre de dates avec gestion robuste des types
+        try:
+            min_date = pd.to_datetime(df["Date_Simple"].min()).date()
+            max_date = pd.to_datetime(df["Date_Simple"].max()).date()
+        except:
             min_date = today - timedelta(days=30)
             max_date = today
         
+        # S'assurer que les dates sont valides
+        if pd.isna(min_date) or pd.isna(max_date) or min_date > max_date:
+            min_date = today - timedelta(days=30)
+            max_date = today
+        
+        # Valeur par défaut : semaine en cours
+        default_start = today - timedelta(days=today.weekday())
+        default_end = today
+        
+        # S'assurer que les valeurs par défaut sont dans la plage
+        if default_start < min_date:
+            default_start = min_date
+        if default_end > max_date:
+            default_end = max_date
+        
         date_range = st.date_input(
             "Période",
-            value=(today - timedelta(days=today.weekday()), today),
+            value=(default_start, default_end),
             min_value=min_date,
             max_value=max_date,
             label_visibility="collapsed"
