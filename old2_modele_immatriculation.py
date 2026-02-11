@@ -324,33 +324,58 @@ if step == 0:
             title = f"**➕ Ajouter une activité secondaire (n°{label_num})**"
 
         with st.expander(title, expanded=True):
-            st.markdown("*Tapez directement pour filtrer en temps réel (ex : « service de banque »).*")
+            st.markdown("*Tapez votre recherche (ex : « service de banque ») — tous les mots sont pris en compte.*")
 
-            pick_key = f"sel_act_{label_num}"
-            choice = st.multiselect(
-                "Sélectionnez l'activité (tapez pour filtrer)",
-                ALL_LABELS,
-                default=None,
-                max_selections=1,
-                key=pick_key,
-                placeholder="Tapez ici pour rechercher…",
+            search_query = st.text_input(
+                "🔍 Rechercher une activité",
+                placeholder="Ex : service banque, vente vêtement, transport marchandise…",
+                key="search_query",
             )
 
-            if choice:
-                sel = LABEL_TO_ITEM[choice[0]]
+            # ── Filtrage plein texte : chaîne exacte EN PRIORITÉ, puis tous les mots ──
+            if search_query and search_query.strip():
+                query_lower = search_query.strip().lower()
+                words = query_lower.split()
 
-                # recap
-                st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
+                # 1) Correspondance exacte de la chaîne complète
+                exact = [lbl for lbl in ALL_LABELS if query_lower in lbl.lower()]
+                # 2) Correspondance "tous les mots présents" (plus souple)
+                all_words = [lbl for lbl in ALL_LABELS if all(w in lbl.lower() for w in words)]
 
-                # duplicate check
-                existing = [a["prod_code"] for a in st.session_state["activities"]]
-                if sel["prod_code"] in existing:
-                    st.info("✓ Cette activité est déjà dans votre liste.")
-                else:
-                    if st.button(f"✅ Valider « {sel['prod_lib']} »", type="primary", use_container_width=True):
-                        st.session_state["activities"].append(sel)
-                        st.session_state["search_mode"] = "validated"
-                        st.rerun()
+                # Combiner : exact d'abord, puis le reste sans doublons
+                seen = set(exact)
+                filtered = exact + [lbl for lbl in all_words if lbl not in seen]
+            else:
+                filtered = []
+
+            if search_query and search_query.strip() and not filtered:
+                st.warning("Aucun résultat. Essayez d'autres mots-clés.")
+            elif filtered:
+                st.caption(f"{len(filtered)} résultat(s) trouvé(s)")
+
+                pick_key = f"sel_act_{label_num}"
+                choice = st.selectbox(
+                    "Sélectionnez parmi les résultats",
+                    ["— Choisir parmi les résultats —"] + filtered,
+                    key=pick_key,
+                    label_visibility="visible",
+                )
+
+                if choice != "— Choisir parmi les résultats —":
+                    sel = LABEL_TO_ITEM[choice]
+
+                    # recap
+                    st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
+
+                    # duplicate check
+                    existing = [a["prod_code"] for a in st.session_state["activities"]]
+                    if sel["prod_code"] in existing:
+                        st.info("✓ Cette activité est déjà dans votre liste.")
+                    else:
+                        if st.button(f"✅ Valider « {sel['prod_lib']} »", type="primary", use_container_width=True):
+                            st.session_state["activities"].append(sel)
+                            st.session_state["search_mode"] = "validated"
+                            st.rerun()
 
     # ──────────────────────────────────────
     # VALIDATED MODE : show success + options
