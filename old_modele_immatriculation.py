@@ -232,7 +232,7 @@ def render_selection_recap(act):
 
 
 def clear_picker_keys():
-    # Nettoyage "soft" des anciennes clés de selectbox (au cas où)
+    # Nettoyage “soft” des anciennes clés de selectbox (au cas où)
     for k in list(st.session_state.keys()):
         if str(k).startswith("sel_act_"):
             del st.session_state[k]
@@ -313,7 +313,7 @@ if step == 0:
                         st.rerun()
 
     # ──────────────────────────────────────
-    # PICK MODE : text input for full-text search + selectbox for filtered results
+    # PICK MODE : no search bar, selectbox autocompletion/filtering
     # ──────────────────────────────────────
     if st.session_state["search_mode"] == "pick":
         label_num = len(activities) + 1
@@ -324,58 +324,31 @@ if step == 0:
             title = f"**➕ Ajouter une activité secondaire (n°{label_num})**"
 
         with st.expander(title, expanded=True):
-            st.markdown("*Tapez votre recherche (ex : « service de banque ») — tous les mots sont pris en compte.*")
+            st.markdown("*Cliquez puis tapez pour filtrer (autocomplétion).*")
 
-            search_query = st.text_input(
-                "🔍 Rechercher une activité",
-                placeholder="Ex : service banque, vente vêtement, transport marchandise…",
-                key="search_query",
+            pick_key = f"sel_act_{label_num}"
+            choice = st.selectbox(
+                "Sélectionnez l'activité (tapez pour filtrer)",
+                ["— Choisir parmi la liste —"] + ALL_LABELS,
+                key=pick_key,
+                label_visibility="visible",
             )
 
-            # ── Filtrage plein texte : chaîne exacte EN PRIORITÉ, puis tous les mots ──
-            if search_query and search_query.strip():
-                query_lower = search_query.strip().lower()
-                words = query_lower.split()
+            if choice != "— Choisir parmi la liste —":
+                sel = LABEL_TO_ITEM[choice]
 
-                # 1) Correspondance exacte de la chaîne complète
-                exact = [lbl for lbl in ALL_LABELS if query_lower in lbl.lower()]
-                # 2) Correspondance "tous les mots présents" (plus souple)
-                all_words = [lbl for lbl in ALL_LABELS if all(w in lbl.lower() for w in words)]
+                # recap
+                st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
 
-                # Combiner : exact d'abord, puis le reste sans doublons
-                seen = set(exact)
-                filtered = exact + [lbl for lbl in all_words if lbl not in seen]
-            else:
-                filtered = []
-
-            if search_query and search_query.strip() and not filtered:
-                st.warning("Aucun résultat. Essayez d'autres mots-clés.")
-            elif filtered:
-                st.caption(f"{len(filtered)} résultat(s) trouvé(s)")
-
-                pick_key = f"sel_act_{label_num}"
-                choice = st.selectbox(
-                    "Sélectionnez parmi les résultats",
-                    ["— Choisir parmi les résultats —"] + filtered,
-                    key=pick_key,
-                    label_visibility="visible",
-                )
-
-                if choice != "— Choisir parmi les résultats —":
-                    sel = LABEL_TO_ITEM[choice]
-
-                    # recap
-                    st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
-
-                    # duplicate check
-                    existing = [a["prod_code"] for a in st.session_state["activities"]]
-                    if sel["prod_code"] in existing:
-                        st.info("✓ Cette activité est déjà dans votre liste.")
-                    else:
-                        if st.button(f"✅ Valider « {sel['prod_lib']} »", type="primary", use_container_width=True):
-                            st.session_state["activities"].append(sel)
-                            st.session_state["search_mode"] = "validated"
-                            st.rerun()
+                # duplicate check
+                existing = [a["prod_code"] for a in st.session_state["activities"]]
+                if sel["prod_code"] in existing:
+                    st.info("✓ Cette activité est déjà dans votre liste.")
+                else:
+                    if st.button(f"✅ Valider « {sel['prod_lib']} »", type="primary", use_container_width=True):
+                        st.session_state["activities"].append(sel)
+                        st.session_state["search_mode"] = "validated"
+                        st.rerun()
 
     # ──────────────────────────────────────
     # VALIDATED MODE : show success + options
