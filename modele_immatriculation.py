@@ -329,7 +329,7 @@ if step == 0:
         with st.expander(title, expanded=True):
 
             # ━━━ FILTRE 1 : Groupe d'activités (Col C) ━━━
-            st.markdown("##### 🏷️ Étape 1 — Groupe d'activités")
+            st.markdown("##### <span style='color:#4E2A0A'>🏷️ Étape 1 — Groupe d'activités</span>", unsafe_allow_html=True)
             st.caption("Sélectionnez le grand domaine qui correspond à votre activité.")
 
             grp_display = [fmt_grp(g) for g in GROUPES]
@@ -353,7 +353,7 @@ if step == 0:
                 group_labels, group_map = build_labels_for_group(ALL_ITEMS, selected_grp_raw)
 
                 st.divider()
-                st.markdown("##### 🔍 Étape 2 — Recherchez votre activité / produit")
+                st.markdown("##### <span style='color:#4E2A0A'>🔍 Étape 2 — Recherchez votre activité / produit</span>", unsafe_allow_html=True)
                 st.caption(
                     f"{len(group_labels)} produits dans **{grp_choice}** — "
                     "tapez directement pour filtrer en temps réel."
