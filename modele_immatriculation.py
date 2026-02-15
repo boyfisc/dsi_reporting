@@ -215,6 +215,10 @@ div[data-testid="stExpander"]>details>summary svg{color:var(--gold-300)!importan
     color:var(--brown-800)!important;font-weight:600!important;font-size:.92rem!important}
 hr{border-color:var(--border)!important}
 h1,h2,h3{font-family:'Playfair Display',serif!important;color:var(--brown-800)!important}
+h4,h5{font-family:'Playfair Display',serif!important;
+    background:linear-gradient(135deg,var(--brown-800),var(--gold-600))!important;
+    -webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;
+    background-clip:text!important}
 </style>
 """, unsafe_allow_html=True)
 
