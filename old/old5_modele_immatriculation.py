@@ -123,22 +123,12 @@ st.markdown("""
     box-shadow:0 4px 16px rgba(218,165,32,.12);
 }
 .rs-level{
-    padding:.5rem .4rem;
-}
-.rs-tag{
-    font-size:.65rem;font-weight:700;text-transform:uppercase;
-    letter-spacing:1.2px;color:var(--brown-300);
-    margin-bottom:2px;
-}
-.rs-main{
     display:flex;align-items:baseline;gap:.7rem;
+    padding:.55rem .4rem;
 }
 .rs-level-top{
     background:linear-gradient(135deg,var(--brown-800),var(--brown-700));
-    border-radius:10px;padding:.7rem 1rem;margin-bottom:.1rem;
-}
-.rs-level-top .rs-tag{
-    color:var(--gold-300);margin-bottom:4px;
+    border-radius:10px;padding:.75rem 1rem;margin-bottom:.1rem;
 }
 .rs-level-top .rs-code{
     background:var(--gold-400);color:var(--brown-900);
@@ -149,10 +139,7 @@ st.markdown("""
     color:var(--white);font-weight:700;font-size:1rem;
 }
 .rs-level-bottom{
-    background:var(--brown-50);border-radius:8px;padding:.5rem .8rem;margin-top:.1rem;
-}
-.rs-level-bottom .rs-tag{
-    color:var(--brown-400);
+    background:var(--brown-50);border-radius:8px;padding:.55rem .8rem;margin-top:.1rem;
 }
 .rs-level-bottom .rs-code{
     color:var(--brown-400);font-weight:700;font-size:.78rem;flex-shrink:0;
@@ -258,51 +245,33 @@ def render_selection_recap(act):
     return f"""
     <div class="recap-select">
         <div class="rs-level rs-level-top">
-            <div class="rs-tag">Produit</div>
-            <div class="rs-main">
-                <div class="rs-code">{act['prod_code']}</div>
-                <div class="rs-lib">{act['prod_lib']}</div>
-            </div>
+            <div class="rs-code">{act['prod_code']}</div>
+            <div class="rs-lib">{act['prod_lib']}</div>
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Activité</div>
-            <div class="rs-main">
-                <div class="rs-code">{act['act_code']}</div>
-                <div class="rs-lib">{act['act_lib']}</div>
-            </div>
+            <div class="rs-code">{act['act_code']}</div>
+            <div class="rs-lib">{act['act_lib']}</div>
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Groupe NAEMA</div>
-            <div class="rs-main">
-                <div class="rs-code">{act['grp_code']}</div>
-                <div class="rs-lib">{act['grp_lib']}</div>
-            </div>
+            <div class="rs-code">{act['grp_code']}</div>
+            <div class="rs-lib">{act['grp_lib']}</div>
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Division</div>
-            <div class="rs-main">
-                <div class="rs-code">{act['div_code']}</div>
-                <div class="rs-lib">{act['div_lib']}</div>
-            </div>
+            <div class="rs-code">{act['div_code']}</div>
+            <div class="rs-lib">{act['div_lib']}</div>
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Section</div>
-            <div class="rs-main">
-                <div class="rs-code">{act['sec_code']}</div>
-                <div class="rs-lib">{act['sec_lib']}</div>
-            </div>
+            <div class="rs-code">{act['sec_code']}</div>
+            <div class="rs-lib">{act['sec_lib']}</div>
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level rs-level-bottom">
-            <div class="rs-tag">Groupe d'activités</div>
-            <div class="rs-main">
-                <div class="rs-code">{act['grp_act_code']}</div>
-                <div class="rs-lib">{act['grp_act_lib']}</div>
-            </div>
+            <div class="rs-code">{act['grp_act_code']}</div>
+            <div class="rs-lib">{act['grp_act_lib']}</div>
         </div>
     </div>
     """
