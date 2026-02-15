@@ -243,13 +243,13 @@ def render_activity_card(act, role_label):
     <div class="act-card">
         <div class="act-role">{role_label}</div>
         <div class="act-name">{act['prod_lib']}</div>
-        <div class="act-detail">Code produit : {act['prod_code']}  ·  Activité : {act['act_lib']}</div>
+        <div class="act-detail">Code produit NAEMA : {act['prod_code']}  ·  Activité : {act['act_lib']}</div>
         <div class="act-auto">
-            <div><span>Groupe d'activités :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
+            <div><span>Groupe d'activités DGID :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
         </div>
         <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
-            <div><span>Section :</span> <strong>{act['sec_code']} — {act['sec_lib']}</strong></div>
-            <div><span>Division :</span> <strong>{act['div_code']} — {act['div_lib']}</strong></div>
+            <div><span>Section NAEMA :</span> <strong>{act['sec_code']} — {act['sec_lib']}</strong></div>
+            <div><span>Division NAEMA:</span> <strong>{act['div_code']} — {act['div_lib']}</strong></div>
         </div>
         <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
             <div><span>Groupe NAEMA :</span> <strong>{act['grp_code']} — {act['grp_lib']}</strong></div>
@@ -262,7 +262,7 @@ def render_selection_recap(act):
     return f"""
     <div class="recap-select">
         <div class="rs-level rs-level-top">
-            <div class="rs-tag">Produit</div>
+            <div class="rs-tag">Produit NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['prod_code']}</div>
                 <div class="rs-lib">{act['prod_lib']}</div>
@@ -270,7 +270,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Activité</div>
+            <div class="rs-tag">Activité NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['act_code']}</div>
                 <div class="rs-lib">{act['act_lib']}</div>
@@ -286,7 +286,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Division</div>
+            <div class="rs-tag">Division NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['div_code']}</div>
                 <div class="rs-lib">{act['div_lib']}</div>
@@ -294,7 +294,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Section</div>
+            <div class="rs-tag">Section NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['sec_code']}</div>
                 <div class="rs-lib">{act['sec_lib']}</div>
@@ -302,7 +302,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level rs-level-bottom">
-            <div class="rs-tag">Groupe d'activités</div>
+            <div class="rs-tag">Groupe d'activités DGID</div>
             <div class="rs-main">
                 <div class="rs-code">{act['grp_act_code']}</div>
                 <div class="rs-lib">{act['grp_act_lib']}</div>
