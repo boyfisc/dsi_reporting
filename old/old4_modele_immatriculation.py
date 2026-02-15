@@ -118,50 +118,18 @@ st.markdown("""
 .recap-select{
     background:linear-gradient(135deg,#FFFBF0,#FFF8E7);
     border:2px solid var(--gold-400);border-radius:14px;
-    padding:1rem 1.2rem;margin:.8rem 0;
+    padding:1.2rem 1.4rem;margin:.8rem 0;
     font-family:'Source Sans 3',sans-serif;
     box-shadow:0 4px 16px rgba(218,165,32,.12);
 }
-.rs-level{
-    display:flex;align-items:baseline;gap:.7rem;
-    padding:.55rem .4rem;
-}
-.rs-level-top{
-    background:linear-gradient(135deg,var(--brown-800),var(--brown-700));
-    border-radius:10px;padding:.75rem 1rem;margin-bottom:.1rem;
-}
-.rs-level-top .rs-code{
-    background:var(--gold-400);color:var(--brown-900);
-    font-size:.72rem;font-weight:800;padding:3px 8px;border-radius:6px;
-    letter-spacing:.5px;flex-shrink:0;
-}
-.rs-level-top .rs-lib{
-    color:var(--white);font-weight:700;font-size:1rem;
-}
-.rs-level-bottom{
-    background:var(--brown-50);border-radius:8px;padding:.55rem .8rem;margin-top:.1rem;
-}
-.rs-level-bottom .rs-code{
-    color:var(--brown-400);font-weight:700;font-size:.78rem;flex-shrink:0;
-}
-.rs-level-bottom .rs-lib{
-    color:var(--brown-400);font-weight:600;font-size:.82rem;text-transform:uppercase;
-    letter-spacing:.3px;
-}
-.rs-code{
-    font-family:'Source Sans 3',sans-serif;font-weight:700;
-    color:var(--gold-600);font-size:.82rem;flex-shrink:0;
-    min-width:45px;
-}
-.rs-lib{
-    font-family:'Source Sans 3',sans-serif;font-weight:500;
-    color:var(--brown-900);font-size:.88rem;
-}
-.rs-sep{
-    height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold-200) 15%,var(--gold-200) 85%,transparent);
-    margin:0 .8rem;
-}
+.recap-select .rs-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem}
+.recap-select .rs-icon{font-size:1.5rem}
+.recap-select .rs-title{font-weight:700;color:var(--brown-900);font-size:1.05rem}
+.recap-select .rs-row{display:flex;align-items:baseline;padding:.45rem 0;
+    border-bottom:1px solid rgba(218,165,32,.2)}
+.recap-select .rs-row:last-child{border-bottom:none}
+.recap-select .rs-label{font-weight:600;color:var(--brown-600);width:170px;flex-shrink:0;font-size:.85rem}
+.recap-select .rs-val{color:var(--brown-900);font-size:.88rem;font-weight:500}
 
 /* Next steps */
 .next-steps{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.6rem}
@@ -244,34 +212,33 @@ def render_activity_card(act, role_label):
 def render_selection_recap(act):
     return f"""
     <div class="recap-select">
-        <div class="rs-level rs-level-top">
-            <div class="rs-code">{act['prod_code']}</div>
-            <div class="rs-lib">{act['prod_lib']}</div>
+        <div class="rs-header">
+            <div class="rs-icon">📌</div>
+            <div class="rs-title">{act['prod_lib']}</div>
         </div>
-        <div class="rs-sep"></div>
-        <div class="rs-level">
-            <div class="rs-code">{act['act_code']}</div>
-            <div class="rs-lib">{act['act_lib']}</div>
+        <div class="rs-row">
+            <div class="rs-label">Code produit</div>
+            <div class="rs-val">{act['prod_code']}</div>
         </div>
-        <div class="rs-sep"></div>
-        <div class="rs-level">
-            <div class="rs-code">{act['grp_code']}</div>
-            <div class="rs-lib">{act['grp_lib']}</div>
+        <div class="rs-row">
+            <div class="rs-label">Activité</div>
+            <div class="rs-val">{act['act_code']} — {act['act_lib']}</div>
         </div>
-        <div class="rs-sep"></div>
-        <div class="rs-level">
-            <div class="rs-code">{act['div_code']}</div>
-            <div class="rs-lib">{act['div_lib']}</div>
+        <div class="rs-row">
+            <div class="rs-label">Groupe d'activités</div>
+            <div class="rs-val">{fmt_grp(act['grp_act'])}</div>
         </div>
-        <div class="rs-sep"></div>
-        <div class="rs-level">
-            <div class="rs-code">{act['sec_code']}</div>
-            <div class="rs-lib">{act['sec_lib']}</div>
+        <div class="rs-row">
+            <div class="rs-label">Section</div>
+            <div class="rs-val">{act['sec_code']} — {act['sec_lib']}</div>
         </div>
-        <div class="rs-sep"></div>
-        <div class="rs-level rs-level-bottom">
-            <div class="rs-code">{act['grp_act_code']}</div>
-            <div class="rs-lib">{act['grp_act_lib']}</div>
+        <div class="rs-row">
+            <div class="rs-label">Division</div>
+            <div class="rs-val">{act['div_code']} — {act['div_lib']}</div>
+        </div>
+        <div class="rs-row">
+            <div class="rs-label">Groupe NAEMA</div>
+            <div class="rs-val">{act['grp_code']} — {act['grp_lib']}</div>
         </div>
     </div>
     """
@@ -362,7 +329,7 @@ if step == 0:
         with st.expander(title, expanded=True):
 
             # ━━━ FILTRE 1 : Groupe d'activités (Col C) ━━━
-            st.markdown("##### 🏷️ Étape 1 — Groupe d'activités")
+            st.markdown("##### <span style='color:#4E2A0A'>🏷️ Étape 1 — Groupe d'activités</span>", unsafe_allow_html=True)
             st.caption("Sélectionnez le grand domaine qui correspond à votre activité.")
 
             grp_display = [fmt_grp(g) for g in GROUPES]
@@ -386,7 +353,7 @@ if step == 0:
                 group_labels, group_map = build_labels_for_group(ALL_ITEMS, selected_grp_raw)
 
                 st.divider()
-                st.markdown("##### 🔍 Étape 2 — Recherchez votre activité / produit")
+                st.markdown("##### <span style='color:#4E2A0A'>🔍 Étape 2 — Recherchez votre activité / produit</span>", unsafe_allow_html=True)
                 st.caption(
                     f"{len(group_labels)} produits dans **{grp_choice}** — "
                     "tapez directement pour filtrer en temps réel."
