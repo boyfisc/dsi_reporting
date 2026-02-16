@@ -426,9 +426,9 @@ def render_empty_popup():
     """
 
 
-def clear_picker_keys():
+
     for k in list(st.session_state.keys()):
-        if str(k).startswith("sel_act_") or str(k).startswith("grp_act_") or str(k).startswith("precision_"):
+        if str(k).startswith("sel_act_") or str(k).startswith("grp_act_"):
             del st.session_state[k]
 
 
