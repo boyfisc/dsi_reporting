@@ -308,17 +308,20 @@ def render_activity_card(act, role_label):
     <div class="act-card">
         <div class="act-role">{role_label}</div>
         <div class="act-name">{act['prod_lib']}</div>
-        <div class="act-detail">Code produit : {act['prod_code']}  ·  Activité : <strong style="text-transform:uppercase">{act['act_lib']}</strong></div>
+        <div class="act-detail">Code produit : {act['prod_code']}</div>
         {precision_html}
         <div class="act-auto">
-            <div><span>Groupe d'activités :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
-        </div>
-        <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
-            <div><span>Section :</span> <strong>{act['sec_code']} — {act['sec_lib']}</strong></div>
-            <div><span>Division :</span> <strong>{act['div_code']} — {act['div_lib']}</strong></div>
+            <div><span>Activité :</span> <strong style="text-transform:uppercase">{act['act_code']} — {act['act_lib']}</strong></div>
         </div>
         <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
             <div><span>Groupe NAEMA :</span> <strong>{act['grp_code']} — {act['grp_lib']}</strong></div>
+        </div>
+        <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
+            <div><span>Division :</span> <strong>{act['div_code']} — {act['div_lib']}</strong></div>
+            <div><span>Section :</span> <strong>{act['sec_code']} — {act['sec_lib']}</strong></div>
+        </div>
+        <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
+            <div><span>Groupe d'activités :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
         </div>
     </div>
     """
