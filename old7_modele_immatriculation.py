@@ -148,19 +148,6 @@ st.markdown("""
 .rs-level-top .rs-lib{
     color:var(--white);font-weight:700;font-size:1rem;
 }
-.rs-level-activite{
-    background:var(--gold-100);border-radius:8px;padding:.55rem .8rem;
-}
-.rs-level-activite .rs-tag{
-    color:var(--gold-600);font-weight:800;
-}
-.rs-level-activite .rs-code{
-    color:var(--brown-900);font-weight:800;font-size:.85rem;
-}
-.rs-level-activite .rs-lib{
-    color:var(--brown-900);font-weight:800;font-size:.92rem;
-    text-transform:uppercase;
-}
 .rs-level-bottom{
     background:var(--brown-50);border-radius:8px;padding:.5rem .8rem;margin-top:.1rem;
 }
@@ -228,57 +215,6 @@ div[data-testid="stExpander"]>details>summary svg{color:var(--gold-300)!importan
     color:var(--brown-800)!important;font-weight:600!important;font-size:.92rem!important}
 hr{border-color:var(--border)!important}
 h1,h2,h3{font-family:'Playfair Display',serif!important;color:var(--brown-800)!important}
-
-/* Multiselect tag: white background instead of red */
-span[data-baseweb="tag"]{
-    background-color:var(--brown-800)!important;
-    color:var(--white)!important;
-    border-radius:8px!important;
-    font-family:'Source Sans 3',sans-serif!important;
-    font-weight:600!important;
-    font-size:.85rem!important;
-    padding:4px 10px!important;
-}
-span[data-baseweb="tag"] svg{
-    color:var(--gold-300)!important;
-}
-/* Hide multiselect input when a selection is made */
-.selection-made div[data-baseweb="select"] input{
-    display:none!important;
-}
-
-/* Recap phrase */
-.recap-phrase{
-    font-family:'Source Sans 3',sans-serif;
-    color:var(--text-mid);font-size:.92rem;line-height:1.6;
-    padding:.8rem 1rem;margin:.6rem 0;
-    background:var(--white);border-radius:10px;
-    border-left:4px solid var(--gold-500);
-}
-.recap-phrase strong{
-    color:var(--brown-900);text-transform:uppercase;
-}
-
-/* Empty results popup */
-.empty-popup{
-    background:linear-gradient(135deg,#FFF3E0,#FFF8E1);
-    border:2px solid #FFB74D;border-radius:14px;
-    padding:1.2rem 1.4rem;margin:.8rem 0;
-    font-family:'Source Sans 3',sans-serif;
-    box-shadow:0 4px 16px rgba(255,183,77,.2);
-}
-.empty-popup .ep-header{
-    display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;
-}
-.empty-popup .ep-icon{font-size:1.4rem}
-.empty-popup .ep-title{font-weight:700;color:#E65100;font-size:.95rem}
-.empty-popup .ep-body{color:#5D4037;font-size:.88rem;line-height:1.55}
-.empty-popup .ep-tip{
-    margin-top:.6rem;padding:.6rem .8rem;
-    background:rgba(255,255,255,.7);border-radius:8px;
-    font-size:.82rem;color:#6D4C41;
-}
-.empty-popup .ep-tip strong{color:#E65100}
 </style>
 """, unsafe_allow_html=True)
 
@@ -299,17 +235,11 @@ def fmt_grp(raw):
 
 
 def render_activity_card(act, role_label):
-    precision_html = ""
-    if act.get("precision"):
-        precision_html = f"""<div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
-            <div><span>Précision :</span> <strong>{act['precision']}</strong></div>
-        </div>"""
     return f"""
     <div class="act-card">
         <div class="act-role">{role_label}</div>
         <div class="act-name">{act['prod_lib']}</div>
-        <div class="act-detail">Code produit : {act['prod_code']}  ·  Activité : <strong style="text-transform:uppercase">{act['act_lib']}</strong></div>
-        {precision_html}
+        <div class="act-detail">Code produit : {act['prod_code']}  ·  Activité : {act['act_lib']}</div>
         <div class="act-auto">
             <div><span>Groupe d'activités :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
         </div>
@@ -335,7 +265,7 @@ def render_selection_recap(act):
             </div>
         </div>
         <div class="rs-sep"></div>
-        <div class="rs-level rs-level-activite">
+        <div class="rs-level">
             <div class="rs-tag">Activité</div>
             <div class="rs-main">
                 <div class="rs-code">{act['act_code']}</div>
@@ -378,40 +308,7 @@ def render_selection_recap(act):
     """
 
 
-def render_recap_phrase(act):
-    """Phrase récapitulative avec l'activité en gras majuscule."""
-    return f"""
-    <div class="recap-phrase">
-        Vous avez sélectionné le produit « {act['prod_lib']} » (code {act['prod_code']}),
-        rattaché à l'activité <strong>{act['act_lib']}</strong> (code {act['act_code']}),
-        dans la division « {act['div_lib']} », section « {act['sec_lib']} ».
-    </div>
-    """
-
-
-def render_empty_popup():
-    """Message d'aide quand la recherche ne retourne aucun résultat."""
-    return """
-    <div class="empty-popup">
-        <div class="ep-header">
-            <div class="ep-icon">💡</div>
-            <div class="ep-title">Aucun résultat trouvé</div>
-        </div>
-        <div class="ep-body">
-            Essayez un autre mot-clé pour trouver votre activité.
-        </div>
-        <div class="ep-tip">
-            <strong>Astuce :</strong> Certains termes courants ont des équivalents dans la nomenclature.
-            Par exemple, « voiture » peut se trouver sous « <strong>véhicule</strong> »,
-            « magasin » sous « <strong>commerce de détail</strong> »,
-            « resto » sous « <strong>restauration</strong> ».
-            Essayez de reformuler avec un vocabulaire plus formel.
-        </div>
-    </div>
-    """
-
-
-
+def clear_picker_keys():
     for k in list(st.session_state.keys()):
         if str(k).startswith("sel_act_") or str(k).startswith("grp_act_"):
             del st.session_state[k]
@@ -534,32 +431,9 @@ if step == 0:
                     label_visibility="collapsed",
                 )
 
-                # ── Si sélection faite : masquer l'input et afficher les résultats ──
                 if choice:
-                    # CSS pour cacher le champ de saisie après sélection
-                    st.markdown("""
-                    <style>
-                    div[data-baseweb="select"] input{display:none!important}
-                    div[data-baseweb="popover"]{display:none!important}
-                    </style>
-                    """, unsafe_allow_html=True)
-
                     sel = group_map[choice[0]]
-
-                    # Carte de résultat
                     st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
-
-                    # Phrase récapitulative
-                    st.markdown(render_recap_phrase(sel), unsafe_allow_html=True)
-
-                    # Champ Précision
-                    precision_key = f"precision_{label_num}"
-                    st.text_input(
-                        "Précision sur l'activité (120 caractères max)",
-                        placeholder="Ex : Spécialisé dans la vente en ligne de vêtements pour enfants…",
-                        key=precision_key,
-                        max_chars=120,
-                    )
 
                     existing_codes = [a["prod_code"] for a in st.session_state["activities"]]
                     if sel["prod_code"] in existing_codes:
@@ -570,15 +444,9 @@ if step == 0:
                             type="primary",
                             use_container_width=True,
                         ):
-                            sel["precision"] = st.session_state.get(precision_key, "")
                             st.session_state["activities"].append(sel)
                             st.session_state["search_mode"] = "validated"
                             st.rerun()
-
-                # ── Si aucun résultat visible (l'utilisateur tape mais rien ne correspond) ──
-                elif st.session_state.get(pick_key) is not None and len(st.session_state.get(pick_key, [])) == 0:
-                    # Afficher le popup d'aide
-                    st.markdown(render_empty_popup(), unsafe_allow_html=True)
 
     # ──────────────────────────────────────────
     # VALIDATED MODE
