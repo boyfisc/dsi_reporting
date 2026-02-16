@@ -511,15 +511,7 @@ if step == 0:
         with st.expander(title, expanded=True):
 
             # ━━━ FILTRE 1 : Groupe d'activités (Col C) ━━━
-            st.markdown("""
-            <div style="background:linear-gradient(135deg,var(--brown-800),var(--brown-700));
-                padding:.7rem 1rem;border-radius:10px;margin-bottom:.6rem;">
-                <span style="color:var(--gold-300);font-family:'Source Sans 3',sans-serif;
-                    font-size:.92rem;font-weight:700;letter-spacing:.5px;">
-                    🏷️ Étape 1 — Groupe d'activités
-                </span>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown("##### 🏷️ Étape 1 — Groupe d'activités")
             st.caption("Sélectionnez le grand domaine qui correspond à votre activité.")
 
             grp_display = [fmt_grp(g) for g in GROUPES]
@@ -577,18 +569,11 @@ if step == 0:
 
                     # Champ Précision
                     precision_key = f"precision_{label_num}"
-                    st.markdown("""
-                    <div style="font-family:'Source Sans 3',sans-serif;font-weight:700;
-                        color:var(--brown-800);font-size:1.05rem;margin-top:.8rem;margin-bottom:.3rem;">
-                        Vous avez d'autres précisions sur l'activité ? <span style="color:var(--brown-300);font-size:.85rem;font-weight:500;">(120 caractères max)</span>
-                    </div>
-                    """, unsafe_allow_html=True)
                     st.text_input(
-                        "Précision",
+                        "Précision sur l'activité (120 caractères max)",
                         placeholder="Ex : Spécialisé dans la vente en ligne de vêtements pour enfants…",
                         key=precision_key,
                         max_chars=120,
-                        label_visibility="collapsed",
                     )
 
                     existing_codes = [a["prod_code"] for a in st.session_state["activities"]]
