@@ -572,8 +572,17 @@ if step == 0:
                     # Carte de résultat
                     st.markdown(render_selection_recap(sel), unsafe_allow_html=True)
 
-                    # Phrase récapitulative
-                    st.markdown(render_recap_phrase(sel), unsafe_allow_html=True)
+                    # Phrase récapitulative (info-bulle Streamlit)
+                    st.info(
+                        f"Vous avez sélectionné le produit « {sel['prod_lib']} » "
+                        f"(code {sel['prod_code']}), "
+                        f"rattaché à l'activité **{sel['act_lib'].upper()}** "
+                        f"(code {sel['act_code']}), "
+                        f"dans le groupe « {sel['grp_lib']} », "
+                        f"division « {sel['div_lib']} », "
+                        f"section « {sel['sec_lib']} », "
+                        f"appartenant au groupe d'activités « {sel['grp_act_lib']} »."
+                    )
 
                     # Champ Précision
                     precision_key = f"precision_{label_num}"
