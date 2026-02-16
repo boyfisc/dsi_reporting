@@ -299,44 +299,32 @@ def fmt_grp(raw):
 
 
 def render_activity_card(act, role_label):
-    precision_line = ""
+    precision_html = ""
     if act.get("precision"):
-        precision_line = (
-            '<div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">'
-            '<div><span>Précision :</span> <strong>' + act["precision"] + '</strong></div>'
-            '</div>'
-        )
-    act_code = act["act_code"]
-    act_lib = act["act_lib"]
-    grp_code = act["grp_code"]
-    grp_lib = act["grp_lib"]
-    div_code = act["div_code"]
-    div_lib = act["div_lib"]
-    sec_code = act["sec_code"]
-    sec_lib = act["sec_lib"]
-    grp_act = fmt_grp(act["grp_act"])
-
-    return (
-        '<div class="act-card">'
-        '<div class="act-role">' + role_label + '</div>'
-        '<div class="act-name">' + act["prod_lib"] + '</div>'
-        '<div class="act-detail">Code produit : ' + act["prod_code"] + '</div>'
-        + precision_line +
-        '<div class="act-auto">'
-        '<div><span>Activité :</span> <strong style="text-transform:uppercase">' + act_code + ' — ' + act_lib + '</strong></div>'
-        '</div>'
-        '<div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">'
-        '<div><span>Groupe NAEMA :</span> <strong>' + grp_code + ' — ' + grp_lib + '</strong></div>'
-        '</div>'
-        '<div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">'
-        '<div><span>Division :</span> <strong>' + div_code + ' — ' + div_lib + '</strong></div>'
-        '<div><span>Section :</span> <strong>' + sec_code + ' — ' + sec_lib + '</strong></div>'
-        '</div>'
-        '<div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">'
-        '<div><span>Groupe d\'activités :</span> <strong>' + grp_act + '</strong></div>'
-        '</div>'
-        '</div>'
-    )
+        precision_html = f"""<div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
+            <div><span>Précision :</span> <strong>{act['precision']}</strong></div>
+        </div>"""
+    return f"""
+    <div class="act-card">
+        <div class="act-role">{role_label}</div>
+        <div class="act-name">{act['prod_lib']}</div>
+        <div class="act-detail">Code produit : {act['prod_code']}</div>
+        {precision_html}
+        <div class="act-auto">
+            <div><span>Activité :</span> <strong style="text-transform:uppercase">{act['act_code']} — {act['act_lib']}</strong></div>
+        </div>
+        <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
+            <div><span>Groupe NAEMA :</span> <strong>{act['grp_code']} — {act['grp_lib']}</strong></div>
+        </div>
+        <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
+            <div><span>Division :</span> <strong>{act['div_code']} — {act['div_lib']}</strong></div>
+            <div><span>Section :</span> <strong>{act['sec_code']} — {act['sec_lib']}</strong></div>
+        </div>
+        <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
+            <div><span>Groupe d'activités :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
+        </div>
+    </div>
+    """
 
 
 def render_selection_recap(act):
