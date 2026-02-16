@@ -215,6 +215,10 @@ div[data-testid="stExpander"]>details>summary svg{color:var(--gold-300)!importan
     color:var(--brown-800)!important;font-weight:600!important;font-size:.92rem!important}
 hr{border-color:var(--border)!important}
 h1,h2,h3{font-family:'Playfair Display',serif!important;color:var(--brown-800)!important}
+h4,h5{font-family:'Playfair Display',serif!important;
+    background:linear-gradient(135deg,var(--brown-800),var(--gold-600))!important;
+    -webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;
+    background-clip:text!important}
 </style>
 """, unsafe_allow_html=True)
 
@@ -239,13 +243,13 @@ def render_activity_card(act, role_label):
     <div class="act-card">
         <div class="act-role">{role_label}</div>
         <div class="act-name">{act['prod_lib']}</div>
-        <div class="act-detail">Code produit : {act['prod_code']}  ·  Activité : {act['act_lib']}</div>
+        <div class="act-detail">Code produit NAEMA : {act['prod_code']}  ·  Activité : {act['act_lib']}</div>
         <div class="act-auto">
-            <div><span>Groupe d'activités :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
+            <div><span>Groupe d'activités DGID :</span> <strong>{fmt_grp(act['grp_act'])}</strong></div>
         </div>
         <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
-            <div><span>Section :</span> <strong>{act['sec_code']} — {act['sec_lib']}</strong></div>
-            <div><span>Division :</span> <strong>{act['div_code']} — {act['div_lib']}</strong></div>
+            <div><span>Section NAEMA :</span> <strong>{act['sec_code']} — {act['sec_lib']}</strong></div>
+            <div><span>Division NAEMA:</span> <strong>{act['div_code']} — {act['div_lib']}</strong></div>
         </div>
         <div class="act-auto" style="border-top:none;padding-top:0;margin-top:2px;">
             <div><span>Groupe NAEMA :</span> <strong>{act['grp_code']} — {act['grp_lib']}</strong></div>
@@ -258,7 +262,7 @@ def render_selection_recap(act):
     return f"""
     <div class="recap-select">
         <div class="rs-level rs-level-top">
-            <div class="rs-tag">Produit</div>
+            <div class="rs-tag">Produit NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['prod_code']}</div>
                 <div class="rs-lib">{act['prod_lib']}</div>
@@ -266,7 +270,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Activité</div>
+            <div class="rs-tag">Activité NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['act_code']}</div>
                 <div class="rs-lib">{act['act_lib']}</div>
@@ -282,7 +286,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Division</div>
+            <div class="rs-tag">Division NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['div_code']}</div>
                 <div class="rs-lib">{act['div_lib']}</div>
@@ -290,7 +294,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level">
-            <div class="rs-tag">Section</div>
+            <div class="rs-tag">Section NAEMA</div>
             <div class="rs-main">
                 <div class="rs-code">{act['sec_code']}</div>
                 <div class="rs-lib">{act['sec_lib']}</div>
@@ -298,7 +302,7 @@ def render_selection_recap(act):
         </div>
         <div class="rs-sep"></div>
         <div class="rs-level rs-level-bottom">
-            <div class="rs-tag">Groupe d'activités</div>
+            <div class="rs-tag">Groupe d'activités DGID</div>
             <div class="rs-main">
                 <div class="rs-code">{act['grp_act_code']}</div>
                 <div class="rs-lib">{act['grp_act_lib']}</div>
@@ -412,13 +416,16 @@ if step == 0:
                 idx_sel = grp_display.index(grp_choice)
                 selected_grp_raw = GROUPES[idx_sel]
 
-        # ━━━ FILTRE 2 : apparaît APRÈS le choix du groupe ━━━
-        if selected_grp_raw:
-            group_labels, group_map = build_labels_for_group(ALL_ITEMS, selected_grp_raw)
+            # ━━━ FILTRE 2 : Recherche live (multiselect) dans le sous-arbre ━━━
+            if selected_grp_raw:
+                group_labels, group_map = build_labels_for_group(ALL_ITEMS, selected_grp_raw)
 
-            with st.expander(f"**🔍 Étape 2 — Recherchez dans « {grp_choice} » ({len(group_labels)} produits)**", expanded=True):
-
-                st.caption("Tapez directement pour filtrer en temps réel.")
+                st.divider()
+                st.markdown("##### 🔍 Étape 2 — Recherchez votre activité / produit")
+                st.caption(
+                    f"{len(group_labels)} produits dans **{grp_choice}** — "
+                    "tapez directement pour filtrer en temps réel."
+                )
 
                 pick_key = f"sel_act_{label_num}"
                 choice = st.multiselect(
